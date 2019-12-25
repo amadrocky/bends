@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    <div class="row headBar m-0 fixed-top">
+        <div class="col-4 my-auto">
+            <img class="menuButton" src="{{ asset('build/icons/Menu_button.png') }}"
+                 alt="Boutton Menu">
+        </div>
+        <div class="col-4 my-auto">
+            <h1 class="text-center">Bends</h1>
+        </div>
+        <div class="col-4 my-auto text-right">
+            <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
+                 alt="Avatar">
+        </div>
+    </div>
+{% endblock %}

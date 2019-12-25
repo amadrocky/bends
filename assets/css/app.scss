@@ -1,0 +1,62 @@
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  background-color: #607d8b;
+  margin: 0;
+  padding: 0;
+}
+
+.headBar {
+  max-width: 100%;
+  height: 100px;
+  background-color: whitesmoke;
+  box-shadow: -1px 5px 5px -4px black;
+}
+
+h1 {
+  font-family: 'Pacifico', cursive;
+  color: #3f51b5;
+  font-size: 50px;
+}
+
+.menuButton {
+  width: 50px;
+  height: 50px;
+}
+
+.homeSection {
+  padding-top: 120px!important;
+  height: 80%;
+}
+
+.homeCardOne {
+  background-image: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, .65)), url("../static/images/offering.jpg");
+  background-size: cover;
+  border-radius: 10px;
+  width: 90%;
+  h2 {
+    font-family: 'Oswald', sans-serif;
+  }
+}
+
+.homeCardTwo {
+  background-image: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, .65)), url("../static/images/girl-4181395_1920.jpg");
+  background-size: cover;
+  border-radius: 10px;
+  width: 90%;
+  h2 {
+    font-family: 'Oswald', sans-serif;
+  }
+}
+
+.homeCardThree {
+  background-image: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, .65)), url("../static/images/person-1245789_1920.jpg");
+  background-size: cover;
+  border-radius: 10px;
+  width: 90%;
+  h2 {
+    font-family: 'Oswald', sans-serif;
+  }
+}
