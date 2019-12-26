@@ -1,0 +1,32 @@
+.homeCardOne {
+  background-image: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, .65)), url("../static/images/offering.jpg");
+  background-size: cover;
+  border-radius: 10px;
+  width: 90%;
+
+  h2 {
+    font-family: 'Oswald', sans-serif;
+  }
+}
+
+.homeCardTwo {
+  background-image: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, .65)), url("../static/images/girl-4181395_1920.jpg");
+  background-size: cover;
+  border-radius: 10px;
+  width: 90%;
+
+  h2 {
+    font-family: 'Oswald', sans-serif;
+  }
+}
+
+.homeCardThree {
+  background-image: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, .65)), url("../static/images/person-1245789_1920.jpg");
+  background-size: cover;
+  border-radius: 10px;
+  width: 90%;
+
+  h2 {
+    font-family: 'Oswald', sans-serif;
+  }
+}

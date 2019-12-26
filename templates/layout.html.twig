@@ -1,17 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block header %}
-    <div class="row headBar m-0 fixed-top">
-        <div class="col-4 my-auto">
-            <img class="menuButton" src="{{ asset('build/icons/Menu_button.png') }}"
-                 alt="Boutton Menu">
+    <div class="fixed-top">
+        <div class="row headBar m-0">
+            <div class="col-4 my-auto">
+                <img class="menuButton cursorPointer" src="{{ asset('build/icons/Menu_button.png') }}"
+                     alt="Boutton Menu" onclick="actionMenu()">
+            </div>
+            <div class="col-4 my-auto">
+                <a href="{{ path('home') }}" class="noDecorationLink">
+                    <h1 class="text-center">Bends</h1>
+                </a>
+            </div>
+            <div class="col-4 my-auto text-right">
+                <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
+                     alt="Avatar">
+            </div>
         </div>
-        <div class="col-4 my-auto">
-            <h1 class="text-center">Bends</h1>
-        </div>
-        <div class="col-4 my-auto text-right">
-            <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
-                 alt="Avatar">
+        <div id="menu" class="menuLaunchpad d-none p-3">
+            <h4>Menu</h4>
+            <p><i class="far fa-plus-square"></i> Déposer une annonce</p>
+            <input type="search" class="form-control mb-2" placeholder="Rechercher">
+            <p><i class="far fa-eye"></i> Consulter les annonces</p>
+            <p><i class="fas fa-hands-helping"></i> Espace associations</p>
+            <h4>Mon éspace</h4>
+            <p><i class="fas fa-user-circle"></i> Profil</p>
+            <p><i class="fas fa-search"></i> Recherches</p>
+            <p><i class="far fa-star"></i> Favoris</p>
+            <p><i class="far fa-envelope"></i> Messages</p>
+            <h4 class="text-right">Se connecter</h4>
+            <h3 class="text-center">Bends</h3>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function actionMenu() {
+            let showMenu = document.getElementById('menu');
+
+            showMenu.classList.contains('d-none') ? showMenu.classList.remove('d-none') : showMenu.classList.add('d-none');
+        }
+    </script>
 {% endblock %}

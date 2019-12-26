@@ -1,0 +1,21 @@
+.menuLaunchpad {
+  background-color: rgba(245, 245, 245, 0.9);
+  width: 300px;
+  height: 520px;
+
+  h4 {
+    font-family: 'Oswald', sans-serif;
+    color: $violet;
+    margin-bottom: 15px;
+    border-bottom: 1px solid $violet;
+  }
+
+  h3 {
+    font-family: 'Pacifico', cursive;
+    color: $violet;
+  }
+
+  p {
+    font-family: 'Oswald', sans-serif;
+  }
+}
