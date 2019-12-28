@@ -13,8 +13,10 @@
                 </a>
             </div>
             <div class="col-4 my-auto text-right">
-                <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
-                     alt="Avatar">
+                <a href="{{ path('app_login') }}">
+                    <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
+                         alt="Avatar">
+                </a>
             </div>
         </div>
         <div id="menu" class="menuLaunchpad d-none p-3">
@@ -28,7 +30,7 @@
             <p><i class="fas fa-search"></i> Recherches</p>
             <p><i class="far fa-star"></i> Favoris</p>
             <p><i class="far fa-envelope"></i> Messages</p>
-            <h4 class="text-right">Se connecter</h4>
+            <a href="{{ path('app_login') }}" class="noDecorationLink"><h4 class="text-right">Se connecter</h4></a>
             <h3 class="text-center">Bends</h3>
         </div>
     </div>
