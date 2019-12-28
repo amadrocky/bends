@@ -4,8 +4,8 @@
 
 {% block body %}
     <div class="homeSection">
-        <div class="row loginBlock m-2">
-            <div class="col col-md-4 offset-md-4">
+        <div class="row justify-content-center p-3 w-100 m-0">
+            <div class="col col-md-4 offset-md-4 loginBlock m-2 p-3">
                 <form method="post">
                     {% if error %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -17,12 +17,12 @@
                         </div>
                     {% endif %}
 
-                    <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
-                    <label for="inputEmail" class="text-white">Adresse email</label>
+                    <h2 class="loginTitle mb-3 text-center">Connexion</h2>
+                    <label for="inputEmail">Adresse email</label>
                     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-2"
                            required
                            autofocus>
-                    <label for="inputPassword" class="text-white">Mot de passe</label>
+                    <label for="inputPassword">Mot de passe</label>
                     <input type="password" name="password" id="inputPassword" class="form-control" required>
 
                     <input type="hidden" name="_csrf_token"
@@ -43,9 +43,9 @@
                     <button class="btn btn-primary btn-block mt-3" type="submit">
                         Se connecter
                     </button>
-                    <button class="btn btn-success btn-block mt-3">
+                    <a href="{{ path('app_register') }}" class="btn btn-success btn-block mt-3">
                         Créer un compte
-                    </button>
+                    </a>
                 </form>
             </div>
         </div>

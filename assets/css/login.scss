@@ -1,3 +1,9 @@
 .loginBlock {
-  background-color: rgba(245, 245, 245, 0.5);
+  background-color: rgba(245, 245, 245, 0.9);
+  border-radius: 5px;
+}
+
+.loginTitle {
+  font-family: 'Oswald', sans-serif;
+  color: $violet;
 }

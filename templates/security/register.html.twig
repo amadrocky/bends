@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Créer un compte{% endblock %}
+
+{% block body %}
+    <div class="homeSection">
+        <div class="row justify-content-center p-3 w-100 m-0">
+            <div class="col col-md-4 offset-md-4 loginBlock m-2 p-3">
+                <h2 class="loginTitle mb-3 text-center">Créer un compte</h2>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+                <button type="submit" class="btn btn-success btn-block mt-3">
+                    Valider
+                </button>
+                <a href="{{ path('app_login') }}" class="btn btn-danger btn-block mt-3">
+                    Annuler
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
