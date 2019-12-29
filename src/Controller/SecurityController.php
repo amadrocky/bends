@@ -20,9 +20,9 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+         if ($this->getUser()) {
+             return $this->redirectToRoute('home');
+         }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -36,6 +36,7 @@ class SecurityController extends AbstractController
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
+     * @throws \Exception
      * @Route("/register", name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
@@ -50,6 +51,8 @@ class SecurityController extends AbstractController
                 $user,
                 $user->getPassword()
             ));
+            $user->setCreatedAt(new \DateTime());
+            $user->setWorkflowState('Created');
             $em->persist($user);
             $em->flush();
             $this->addFlash('success', 'Compte créé !');

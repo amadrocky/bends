@@ -9,10 +9,10 @@
                 <h2 class="loginTitle mb-3 text-center">Créer un compte</h2>
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
-                {{ form_end(form) }}
                 <button type="submit" class="btn btn-success btn-block mt-3">
                     Valider
                 </button>
+                {{ form_end(form) }}
                 <a href="{{ path('app_login') }}" class="btn btn-danger btn-block mt-3">
                     Annuler
                 </a>
