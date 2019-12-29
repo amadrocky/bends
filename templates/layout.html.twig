@@ -1,6 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block header %}
+    <script type="text/javascript">
+        {% for label, messages in app.flashes %}
+        {% for message in messages %}
+
+        swal({
+            title: "{{ message }}",
+            icon: "{{ label }}",
+            button: "Fermer"
+        });
+
+        {% endfor %}
+        {% endfor %}
+    </script>
+
     <div class="fixed-top">
         <div class="row headBar m-0">
             <div class="col-4 my-auto">
