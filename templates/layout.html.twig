@@ -27,10 +27,17 @@
                 </a>
             </div>
             <div class="col-4 my-auto text-right">
-                <a href="{{ path('app_login') }}">
-                    <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
-                         alt="Avatar">
-                </a>
+                {% if app.user %}
+                    <a href="{{ path('profil') }}">
+                        <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
+                             alt="Avatar">
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_login') }}">
+                        <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
+                             alt="Avatar">
+                    </a>
+                {% endif %}
             </div>
         </div>
         <div id="menu" class="menuLaunchpad d-none p-3">
@@ -44,7 +51,11 @@
             <p><i class="fas fa-search"></i> Recherches</p>
             <p><i class="far fa-star"></i> Favoris</p>
             <p><i class="far fa-envelope"></i> Messages</p>
-            <a href="{{ path('app_login') }}" class="noDecorationLink"><h4 class="text-right">Se connecter</h4></a>
+            {% if app.user %}
+                <a href="{{ path('app_logout') }}" class="noDecorationLink"><h4 class="text-right">Se déconnecter</h4></a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="noDecorationLink"><h4 class="text-right">Se connecter</h4></a>
+            {% endif %}
             <h3 class="text-center">Bends</h3>
         </div>
     </div>

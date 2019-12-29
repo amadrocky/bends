@@ -153,6 +153,15 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getAge()
+    {
+        $now = new \DateTime('now');
+        $age = $this->getDateOfBirth();
+        $difference = $now->diff($age);
+
+        return $difference->format('%y ans');
+    }
+
     public function getDateOfBirth(): ?\DateTimeInterface
     {
         return $this->dateOfBirth;

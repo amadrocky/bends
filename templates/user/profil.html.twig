@@ -1,0 +1,39 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <div class="homeSection">
+        <div class="row justify-content-center p-3 w-100 m-0">
+            <div class="col col-md-4 offset-md-4 loginBlock m-2 p-3">
+                <div class="card">
+                    <img src="{{ asset('build/images/31799.jpg') }}" class="card-img-top" style="max-height: 300px"
+                         alt="texture">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img class="profilImage rounded-circle img-thumbnail"
+                                 src="{{ asset('build/icons/Avatar.png') }}"
+                                 alt="Avatar">
+                        </div>
+                        <h2 class="loginTitle my-3 text-center">{{ user.firstname }} {{ user.lastname }}</h2>
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th>Adresse email</th>
+                                <td>{{ user.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Sexe</th>
+                                <td>{{ user.gender }}</td>
+                            </tr>
+                            <tr>
+                                <th>Age</th>
+                                <td>{{ user.age }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
