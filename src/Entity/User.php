@@ -63,6 +63,11 @@ class User implements UserInterface
      */
     private $workflowState;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profilImage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -218,6 +223,18 @@ class User implements UserInterface
     public function setWorkflowState(string $workflowState): self
     {
         $this->workflowState = $workflowState;
+
+        return $this;
+    }
+
+    public function getProfilImage(): ?string
+    {
+        return $this->profilImage;
+    }
+
+    public function setProfilImage(?string $profilImage): self
+    {
+        $this->profilImage = $profilImage;
 
         return $this;
     }

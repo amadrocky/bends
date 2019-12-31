@@ -11,11 +11,24 @@
                          alt="texture">
                     <div class="card-body">
                         <div class="text-center">
-                            <img class="profilImage rounded-circle img-thumbnail"
-                                 src="{{ asset('build/icons/Avatar.png') }}"
-                                 alt="Avatar">
+                            {% if user.profilImage %}
+                                <img class="profilImage rounded-circle img-thumbnail"
+                                     src="/build/images/profil/{{ user.profilImage }}"
+                                     alt="Avatar">
+                            {% else %}
+                                <img class="profilImage rounded-circle img-thumbnail"
+                                     src="{{ asset('build/icons/Avatar.png') }}"
+                                     alt="Avatar">
+                            {% endif %}
                         </div>
                         <h2 class="loginTitle my-3 text-center">{{ user.firstname }} {{ user.lastname }}</h2>
+                        <div class="my-2">
+                            {{ form_start(form) }}
+                            {{ form_row(form.profilImage) }}
+                            <input type="submit" class="btn btn-primary">
+                            {{ form_end(form) }}
+                        </div>
+
                         <table class="table">
                             <tbody>
                             <tr>

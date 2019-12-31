@@ -28,8 +28,14 @@
             </div>
             <div class="col-4 my-auto text-right">
                 <a href="{{ path('profil') }}">
-                    <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
-                         alt="Avatar">
+                    {% if user %}
+                        <img class="menuButton rounded-circle"
+                             src="/build/images/profil/{{ user.profilImage }}"
+                             alt="Avatar">
+                    {% else %}
+                        <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
+                             alt="Avatar">
+                    {% endif %}
                 </a>
             </div>
         </div>
