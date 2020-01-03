@@ -33,7 +33,15 @@ class UserController extends AbstractController
             $imageProfil = $form['profilImage']->getData();
 
             $profilFileName = $fileUploader->upload($imageProfil);
+
+            // suppression de l'ancienne image
+            /*if ($user->getProfilImage()){
+                unlink('assets/static/images/profil/' . $user->getProfilImage());
+            }*/
+
+            $em = $this->getDoctrine()->getManager();
             $user->setProfilImage($profilFileName);
+            $em->flush();
 
             $this->addFlash('success', 'Image de profil mise à jour');
             return $this->redirect($this->generateUrl('profil'));

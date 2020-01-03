@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}Profil{% endblock %}
 
 {% block body %}
     <div class="homeSection">
@@ -44,6 +44,9 @@
                                 <td>{{ user.age }}</td>
                             </tr>
                         </table>
+                        <a href="{{ path('app_logout') }}" class="btn btn-outline-danger btn-block mt-3">
+                            Déconnexion
+                        </a>
                     </div>
                 </div>
             </div>
