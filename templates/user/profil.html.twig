@@ -44,12 +44,34 @@
                                 <td>{{ user.age }}</td>
                             </tr>
                         </table>
-                        <a href="{{ path('app_logout') }}" class="btn btn-outline-danger btn-block mt-3">
+                        <button onclick="confirm()" class="btn btn-outline-danger btn-block mt-3">
                             Déconnexion
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function confirm() {
+            swal({
+                title: "Êtes vous sûr(e)?",
+                text: "Veuillez confirmer la déconnexion",
+                icon: "warning",
+                buttons: ["Annuler", "Déconnexion"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        document.location.href='/logout';
+                        swal("Vous avez bien été déconnecté", {
+                            icon: "success",
+                        });
+                    } else {
+                        swal("Vous êtes toujours connecté");
+                    }
+                });
+        }
+    </script>
 {% endblock %}

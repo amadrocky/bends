@@ -56,7 +56,7 @@
             <p><i class="far fa-star"></i> Favoris</p>
             <p><i class="far fa-envelope"></i> Messages</p>
             {% if app.user %}
-                <a href="{{ path('app_logout') }}" class="noDecorationLink"><h4 class="text-right">Se déconnecter</h4>
+                <a onclick="confirm()" class="noDecorationLink cursorPointer"><h4 class="text-right">Se déconnecter</h4>
                 </a>
             {% else %}
                 <a href="{{ path('app_login') }}" class="noDecorationLink"><h4 class="text-right">Se connecter</h4></a>
@@ -70,6 +70,26 @@
             let showMenu = document.getElementById('menu');
 
             showMenu.classList.contains('d-none') ? showMenu.classList.remove('d-none') : showMenu.classList.add('d-none');
+        }
+
+        function confirm() {
+            swal({
+                title: "Êtes vous sûr(e)?",
+                text: "Veuillez confirmer la déconnexion",
+                icon: "warning",
+                buttons: ["Annuler", "Déconnexion"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        document.location.href='/logout';
+                        swal("Vous avez bien été déconnecté", {
+                            icon: "success",
+                        });
+                    } else {
+                        swal("Vous êtes toujours connecté");
+                    }
+                });
         }
     </script>
 {% endblock %}
