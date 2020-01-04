@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}New Offers{% endblock %}
+
+{% block body %}
+    <div class="homeSection">
+        <div class="row justify-content-center p-3 w-100 m-0">
+            <div class="col col-md-4 offset-md-4 loginBlock m-2 p-3">
+                <h2 class="loginTitle mb-3 text-center">Déposer une annonce</h2>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button class="btn btn-success btn-block">{{ button_label|default('Valider') }}</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

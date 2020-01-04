@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offers index{% endblock %}
+
+{% block body %}
+    <h1>Offers index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>CreatedBy</th>
+                <th>CreatedAt</th>
+                <th>FirstImage</th>
+                <th>SecondImage</th>
+                <th>ThirdImage</th>
+                <th>WorkflowState</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for offer in offers %}
+            <tr>
+                <td>{{ offer.id }}</td>
+                <td>{{ offer.title }}</td>
+                <td>{{ offer.description }}</td>
+                <td>{{ offer.category }}</td>
+                <td>{{ offer.createdBy }}</td>
+                <td>{{ offer.createdAt ? offer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ offer.firstImage }}</td>
+                <td>{{ offer.secondImage }}</td>
+                <td>{{ offer.thirdImage }}</td>
+                <td>{{ offer.workflowState }}</td>
+                <td>
+                    <a href="{{ path('offers_show', {'id': offer.id}) }}">show</a>
+                    <a href="{{ path('offers_edit', {'id': offer.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('offers_new') }}">Create new</a>
+{% endblock %}

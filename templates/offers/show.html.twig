@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offers{% endblock %}
+
+{% block body %}
+    <h1>Offers</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ offer.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ offer.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ offer.description }}</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td>{{ offer.category }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ offer.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ offer.createdAt ? offer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>FirstImage</th>
+                <td>{{ offer.firstImage }}</td>
+            </tr>
+            <tr>
+                <th>SecondImage</th>
+                <td>{{ offer.secondImage }}</td>
+            </tr>
+            <tr>
+                <th>ThirdImage</th>
+                <td>{{ offer.thirdImage }}</td>
+            </tr>
+            <tr>
+                <th>WorkflowState</th>
+                <td>{{ offer.workflowState }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('offers_index') }}">back to list</a>
+
+    <a href="{{ path('offers_edit', {'id': offer.id}) }}">edit</a>
+
+    {{ include('offers/_delete_form.html.twig') }}
+{% endblock %}
