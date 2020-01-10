@@ -46,9 +46,7 @@ class OffersType extends AbstractType
                     'Autre' => 'Autre'
                 ]
             ])
-            ->add('firstImage', FileType::class, ['label' => 'Photo 1', 'required' => false])
-            ->add('secondImage', FileType::class, ['label' => 'Photo 2', 'required' => false])
-            ->add('thirdImage', FileType::class, ['label' => 'Photo 3', 'required' => false])
+            //->add('pictures')
             /*->add('createdBy')
             ->add('createdAt')
             ->add('workflowState')*/

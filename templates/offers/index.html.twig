@@ -14,9 +14,6 @@
                 <th>Category</th>
                 <th>CreatedBy</th>
                 <th>CreatedAt</th>
-                <th>FirstImage</th>
-                <th>SecondImage</th>
-                <th>ThirdImage</th>
                 <th>WorkflowState</th>
                 <th>actions</th>
             </tr>
@@ -30,9 +27,6 @@
                 <td>{{ offer.category }}</td>
                 <td>{{ offer.createdBy }}</td>
                 <td>{{ offer.createdAt ? offer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ offer.firstImage }}</td>
-                <td>{{ offer.secondImage }}</td>
-                <td>{{ offer.thirdImage }}</td>
                 <td>{{ offer.workflowState }}</td>
                 <td>
                     <a href="{{ path('offers_show', {'id': offer.id}) }}">show</a>
@@ -48,4 +42,5 @@
     </table>
 
     <a href="{{ path('offers_new') }}">Create new</a>
+
 {% endblock %}

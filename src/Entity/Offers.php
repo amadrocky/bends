@@ -42,24 +42,14 @@ class Offers
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $firstImage;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $secondImage;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $thirdImage;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $workflowState;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $pictures = [];
 
     public function getId(): ?int
     {
@@ -126,42 +116,6 @@ class Offers
         return $this;
     }
 
-    public function getFirstImage(): ?string
-    {
-        return $this->firstImage;
-    }
-
-    public function setFirstImage(?string $firstImage): self
-    {
-        $this->firstImage = $firstImage;
-
-        return $this;
-    }
-
-    public function getSecondImage(): ?string
-    {
-        return $this->secondImage;
-    }
-
-    public function setSecondImage(?string $secondImage): self
-    {
-        $this->secondImage = $secondImage;
-
-        return $this;
-    }
-
-    public function getThirdImage(): ?string
-    {
-        return $this->thirdImage;
-    }
-
-    public function setThirdImage(?string $thirdImage): self
-    {
-        $this->thirdImage = $thirdImage;
-
-        return $this;
-    }
-
     public function getWorkflowState(): ?string
     {
         return $this->workflowState;
@@ -170,6 +124,18 @@ class Offers
     public function setWorkflowState(string $workflowState): self
     {
         $this->workflowState = $workflowState;
+
+        return $this;
+    }
+
+    public function getPictures(): ?array
+    {
+        return $this->pictures;
+    }
+
+    public function setPictures(?array $pictures): self
+    {
+        $this->pictures = $pictures;
 
         return $this;
     }
