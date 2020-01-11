@@ -22,6 +22,7 @@ class OffersController extends AbstractController
     {
         return $this->render('offers/index.html.twig', [
             'offers' => $offersRepository->findAll(),
+            'user' => $this->getUser()
         ]);
     }
 
