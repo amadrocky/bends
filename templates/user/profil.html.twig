@@ -22,12 +22,11 @@
                             {% endif %}
                         </div>
                         <h2 class="loginTitle my-3 text-center">{{ user.firstname }} {{ user.lastname }}</h2>
-                        <div class="my-2">
-                            {{ form_start(form) }}
-                            {{ form_row(form.profilImage) }}
-                            <input type="submit" class="btn btn-primary">
-                            {{ form_end(form) }}
-                        </div>
+                        <form action="{{ path('profil') }}" method="post" enctype="multipart/form-data" class="my-3 d-flex">
+                            <a onclick="document.getElementById('profilFile').click()" class="my-auto text-primary cursorPointer"><i class="fas fa-image"></i> Modifier mon image de profil</a>
+                            <input type="file" id="profilFile" hidden/>
+                            <input type="submit" class="btn btn-primary mx-auto">
+                        </form>
 
                         <table class="table">
                             <tbody>
