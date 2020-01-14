@@ -5,33 +5,35 @@
 {% block body %}
 
     <div class="homeSection">
-        <div class="container loginBlock h-100 p-2">
-            {% if offers|length > 0 %}
-                <a href="{{ path('offers_new') }}" class="btn btn-primary">Déposer une annonce</a>
-            {% endif %}
-            <div class="row p-3 w-100 m-0">
-                {% for offer in offers %}
-                    <div class="col-8  m-1 p-3">
-                        <a href="{{ path('offers_show', {'id': offer.id}) }}">
-                            <div class="card flex-row flex-wrap">
-                                <div class="card-header border-0">
-                                    <img src="//placehold.it/200" alt="">
+        <div class="row justify-content-center p-3 w-100 m-0">
+            <div class="loginBlock h-100 p-2">
+                {% if offers|length > 0 %}
+                    <a href="{{ path('offers_new') }}" class="btn btn-primary btn-block">Déposer une annonce</a>
+                {% endif %}
+                <div class="row p-3 w-100 m-0">
+                    {% for offer in offers %}
+                        <div class="col-8  m-1 p-3">
+                            <a href="{{ path('offers_show', {'id': offer.id}) }}">
+                                <div class="card flex-row flex-wrap">
+                                    <div class="card-header border-0">
+                                        <img src="//placehold.it/200" alt="">
+                                    </div>
+                                    <div class="card-block p-2">
+                                        <h4 class="card-title">{{ offer.title }}</h4>
+                                        <p class="card-text">{{ offer.category }}</p>
+                                        <p class="card-text">{{ offer.description }}</p>
+                                        <p class="card-text">{{ offer.createdAt|date('d-m-Y, H:i') }}</p>
+                                    </div>
+                                    <div class="w-100"></div>
                                 </div>
-                                <div class="card-block p-2">
-                                    <h4 class="card-title">{{ offer.title }}</h4>
-                                    <p class="card-text">{{ offer.category }}</p>
-                                    <p class="card-text">{{ offer.description }}</p>
-                                    <p class="card-text">{{ offer.createdAt|date('d-m-Y, H:i') }}</p>
-                                </div>
-                                <div class="w-100"></div>
-                            </div>
-                        </a>
-                    </div>
-                {% else %}
-                    <tr>
-                        <td colspan="11">Aucune annonce disponible.</td>
-                    </tr>
-                {% endfor %}
+                            </a>
+                        </div>
+                    {% else %}
+                        <tr>
+                            <td colspan="11">Aucune annonce disponible.</td>
+                        </tr>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
