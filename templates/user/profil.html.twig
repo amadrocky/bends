@@ -22,11 +22,10 @@
                             {% endif %}
                         </div>
                         <h2 class="loginTitle my-3 text-center">{{ user.firstname }} {{ user.lastname }}</h2>
-                        <form action="{{ path('profil') }}" method="post" enctype="multipart/form-data" class="my-3 d-flex">
-                            <a onclick="document.getElementById('profilFile').click()" class="my-auto text-primary cursorPointer"><i class="fas fa-image"></i> Modifier mon image de profil</a>
-                            <input type="file" id="profilFile" hidden/>
-                            <input type="submit" class="btn btn-primary mx-auto">
-                        </form>
+                        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                            {{ form_widget(form) }}
+                        <button type="submit" class="btn btn-primary mx-auto my-2">Valider</button>
+                        {{ form_end(form) }}
 
                         <table class="table">
                             <tbody>
@@ -63,7 +62,7 @@
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        document.location.href='/logout';
+                        document.location.href = '/logout';
                         swal("Vous avez bien été déconnecté", {
                             icon: "success",
                         });
