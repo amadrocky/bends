@@ -46,18 +46,17 @@
         </div>
         <div id="menu" class="menuLaunchpad d-none p-3">
             <h4>Menu</h4>
-            <p><i class="far fa-plus-square"></i> Déposer une annonce</p>
+            <a href="{{ path('offers_new') }}" class="lightLink"><p><i class="far fa-plus-square"></i> Déposer une annonce</p></a>
             <input type="search" class="form-control mb-2" placeholder="Rechercher">
-            <p><i class="far fa-eye"></i> Consulter les annonces</p>
+            <a href="{{ path('offers_index') }}" class="lightLink"><p><i class="far fa-eye"></i> Consulter les annonces</p></a>
             <p><i class="fas fa-hands-helping"></i> Espace associations</p>
             <h4>Mon éspace</h4>
-            <p><i class="fas fa-user-circle"></i> Profil</p>
+            <a href="{{ path('profil') }}" class="lightLink"><p><i class="fas fa-user-circle"></i> Profil</p></a>
             <p><i class="fas fa-search"></i> Recherches</p>
             <p><i class="far fa-star"></i> Favoris</p>
             <p><i class="far fa-envelope"></i> Messages</p>
             {% if app.user %}
-                <a onclick="confirm()" class="noDecorationLink cursorPointer"><h4 class="text-right">Se déconnecter</h4>
-                </a>
+                <h4 class="text-right noDecorationLink cursorPointer" onclick="confirm()">Se déconnecter</h4>
             {% else %}
                 <a href="{{ path('app_login') }}" class="noDecorationLink"><h4 class="text-right">Se connecter</h4></a>
             {% endif %}
@@ -82,7 +81,7 @@
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        document.location.href='/logout';
+                        document.location.href = '/logout';
                         swal("Vous avez bien été déconnecté", {
                             icon: "success",
                         });

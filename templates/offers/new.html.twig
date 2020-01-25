@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}New Offers{% endblock %}
+{% block title %}Déposer une annonce{% endblock %}
 
 {% block body %}
     <div class="homeSection">
@@ -9,9 +9,32 @@
                 <h2 class="loginTitle mb-3 text-center">Déposer une annonce</h2>
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
-                <button class="btn btn-success btn-block">{{ button_label|default('Valider') }}</button>
+                <button class="btn btn-success btn-block my-3">{{ button_label|default('Valider') }}</button>
                 {{ form_end(form) }}
+                <button onclick="confirmAbandonment()" class="btn btn-outline-danger btn-block">Abandonner</button>
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function confirmAbandonment() {
+            swal({
+                title: "Êtes vous sûr(e)?",
+                text: "Veuillez confirmer l'abandon",
+                icon: "warning",
+                buttons: ["Annuler", "Abandonner l'ajout"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        window.history.back();
+                        swal("Annonce non ajoutée", {
+                            icon: "success",
+                        });
+                    } else {
+                        swal("Vous pouvez poursuivre l'ajout");
+                    }
+                });
+        }
+    </script>
 {% endblock %}

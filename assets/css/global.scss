@@ -8,7 +8,7 @@ html::-webkit-scrollbar {
 
 html::-webkit-scrollbar-thumb {
   background-color: $violet;
-  border-radius: 10px!important;
+  border-radius: 10px !important;
 }
 
 html::-webkit-scrollbar-track {
@@ -35,6 +35,15 @@ h1 {
 
 .cursorPointer:hover {
   cursor: pointer;
+}
+
+.lightLink {
+  color: black;
+}
+
+.lightLink:hover {
+  color: $violet;
+  text-decoration: none;
 }
 
 .noDecorationLink:hover {
