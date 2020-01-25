@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Offers;
+use App\Entity\Type;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -16,8 +18,6 @@ class OffersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, ['label' => 'Titre de l\'annonce'])
-            ->add('description' ,TextareaType::class, ['label' => 'Description'])
             ->add('category', ChoiceType::class, [
                 'label' => 'Catégorie',
                 'choices' => [
@@ -46,6 +46,13 @@ class OffersType extends AbstractType
                     'Autre' => 'Autre'
                 ]
             ])
+            ->add('type', EntityType::class, [
+                'label' => 'Type',
+                'class' => Type::class,
+                'choice_label' => 'name',
+            ])
+            ->add('title', TextType::class, ['label' => 'Titre de l\'annonce'])
+            ->add('description' ,TextareaType::class, ['label' => 'Description'])
             //->add('pictures')
             /*->add('createdBy')
             ->add('createdAt')

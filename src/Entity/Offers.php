@@ -51,6 +51,12 @@ class Offers
      */
     private $pictures = [];
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Type", inversedBy="offers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +142,18 @@ class Offers
     public function setPictures(?array $pictures): self
     {
         $this->pictures = $pictures;
+
+        return $this;
+    }
+
+    public function getType(): ?Type
+    {
+        return $this->type;
+    }
+
+    public function setType(?Type $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
