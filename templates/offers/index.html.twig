@@ -7,9 +7,21 @@
     <div class="homeSection">
         <div class="row justify-content-center p-3 w-100 m-0">
             <div class="loginBlock h-100 p-2">
-                {% if offers|length > 0 %}
-                    <a href="{{ path('offers_new') }}" class="btn btn-primary btn-block">Déposer une annonce</a>
-                {% endif %}
+                <h2 class="loginTitle mb-5 text-center">Annonces</h2>
+                <div class="row justify-content-center filtersZone p-3 w-100 m-0">
+                    <div class="col">
+                        <a href="{{ path('offers_new') }}" class="btn btn-primary btn-block"><i class="far fa-plus-square"></i> Déposer
+                            une annonce</a>
+                    </div>
+                    <div class="col">
+                        <input type="search" class="form-control" placeholder="Rechercher">
+                    </div>
+                    <div class="col">
+                        <select name="categories" id="categories" class="form-control">
+                            <option value="null">Localisation</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="row p-3 w-100 m-0">
                     {% for offer in offers %}
                         <div class="col-12  m-1 p-3">

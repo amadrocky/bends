@@ -1,3 +1,13 @@
+.subtitleZone {
+  background-color: $violet;
+  box-shadow: -1px 5px 5px -4px gray;
+}
+
+.filtersZone {
+  background-color: $violet;
+  box-shadow: -1px 5px 5px -4px gray;
+}
+
 @media screen and (max-width: 667px) {
   .card {
     width: 240px;
