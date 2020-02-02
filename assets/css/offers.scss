@@ -8,6 +8,11 @@
   box-shadow: -1px 5px 5px -4px gray;
 }
 
+.position-icon {
+  font-size: 50px;
+  color: $violet;
+}
+
 @media screen and (max-width: 667px) {
   .card {
     width: 240px;
