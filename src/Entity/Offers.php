@@ -57,6 +57,26 @@ class Offers
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $zipCode;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $phoneNumber;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $phoneVisible;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +174,54 @@ class Offers
     public function setType(?Type $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?int
+    {
+        return $this->zipCode;
+    }
+
+    public function setZipCode(int $zipCode): self
+    {
+        $this->zipcode = $zipCode;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?int
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(int $phoneNumber): self
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    public function getPhoneVisible(): ?bool
+    {
+        return $this->phoneVisible;
+    }
+
+    public function setPhoneVisible(bool $phoneVisible): self
+    {
+        $this->phoneVisible = $phoneVisible;
 
         return $this;
     }
