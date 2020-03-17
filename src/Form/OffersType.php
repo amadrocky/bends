@@ -24,11 +24,13 @@ class OffersType extends AbstractType
                 'label' => 'Catégorie',
                 'class' => Categories::class,
                 'choice_label' => 'name',
+                'placeholder' => 'Séléctionnez une catégorie'
             ])
             ->add('type', EntityType::class, [
                 'label' => 'Type',
                 'class' => Type::class,
                 'choice_label' => 'name',
+                'placeholder' => 'Séléctionnez un type'
             ])
             ->add('title', TextType::class, ['label' => 'Titre de l\'annonce'])
             ->add('description' ,TextareaType::class, ['label' => 'Description'])
