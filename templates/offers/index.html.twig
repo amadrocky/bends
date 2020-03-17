@@ -9,19 +9,26 @@
                 <h2 class="loginTitle mb-5 text-center">Annonces</h2>
                 <div class="row justify-content-center filtersZone p-3 w-100 m-0">
                     <div class="col-1">
-                        <a href="{{ path('offers_new') }}" class="btn btn-primary btn-block"><i class="far fa-plus-square"></i></a>
+                        <a href="{{ path('offers_new') }}" class="btn btn-primary btn-block"><i
+                                    class="far fa-plus-square"></i></a>
                     </div>
                     <div class="col">
                         <input type="search" class="form-control" placeholder="Rechercher">
                     </div>
                     <div class="col">
                         <select name="categories" id="categories" class="form-control">
-                            <option value="null">Catégorie</option>
+                            <option value="allCat" selected>Catégories</option>
+                            {% for categorie in categories %}
+                                <option value="{{ categorie.id }}">{{ categorie.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="col">
                         <select name="categories" id="categories" class="form-control">
-                            <option value="null">Localisation</option>
+                            <option value="allReg" selected>Régions</option>
+                            {% for region in regions %}
+                                <option value="{{ region.code }}">{{ region.nom }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="col-1">

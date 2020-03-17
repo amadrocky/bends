@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Offers;
 use App\Form\OffersType;
+use App\Repository\CategoriesRepository;
 use App\Repository\OffersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,17 +18,27 @@ class OffersController extends AbstractController
 {
     /**
      * @Route("/", name="offers_index", methods={"GET"})
+     * @param OffersRepository $offersRepository
+     * @param CategoriesRepository $categoriesRepository
+     * @return Response
      */
-    public function index(OffersRepository $offersRepository): Response
+    public function index(OffersRepository $offersRepository, CategoriesRepository $categoriesRepository): Response
     {
+        $regions = file_get_contents("https://geo.api.gouv.fr/regions");
+
         return $this->render('offers/index.html.twig', [
             'offers' => $offersRepository->findAll(),
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'categories' => $categoriesRepository->findAll(),
+            'regions' => json_decode($regions)
         ]);
     }
 
     /**
      * @Route("/new", name="offers_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
      */
     public function new(Request $request): Response
     {
@@ -57,6 +68,8 @@ class OffersController extends AbstractController
 
     /**
      * @Route("/{id}", name="offers_show", methods={"GET"})
+     * @param Offers $offer
+     * @return Response
      */
     public function show(Offers $offer): Response
     {
@@ -67,6 +80,9 @@ class OffersController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="offers_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Offers $offer
+     * @return Response
      */
     public function edit(Request $request, Offers $offer): Response
     {
@@ -87,6 +103,9 @@ class OffersController extends AbstractController
 
     /**
      * @Route("/{id}", name="offers_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Offers $offer
+     * @return Response
      */
     public function delete(Request $request, Offers $offer): Response
     {
