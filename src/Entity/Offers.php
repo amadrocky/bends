@@ -32,11 +32,6 @@ class Offers
     private $category;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $createdBy;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -77,6 +72,12 @@ class Offers
      */
     private $phoneVisible;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="offers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $createdBy;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -114,18 +115,6 @@ class Offers
     public function setCategory(string $category): self
     {
         $this->category = $category;
-
-        return $this;
-    }
-
-    public function getCreatedBy(): ?int
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(int $createdBy): self
-    {
-        $this->createdBy = $createdBy;
 
         return $this;
     }
@@ -222,6 +211,18 @@ class Offers
     public function setPhoneVisible(bool $phoneVisible): self
     {
         $this->phoneVisible = $phoneVisible;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

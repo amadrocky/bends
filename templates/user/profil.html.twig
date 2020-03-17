@@ -42,6 +42,9 @@
                                 <td>{{ user.age }}</td>
                             </tr>
                         </table>
+                        <div class="text-center text-blue font-weight-bold">
+                            {{ user.offers|length }} annonces
+                        </div>
                         <button onclick="confirm()" class="btn btn-outline-danger btn-block mt-3">
                             Déconnexion
                         </button>
