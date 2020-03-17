@@ -23,7 +23,7 @@
                         </div>
                         <h2 class="loginTitle my-3 text-center">{{ user.firstname }} {{ user.lastname }}</h2>
                         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-                            {{ form_widget(form) }}
+                        {{ form_widget(form) }}
                         <button type="submit" class="btn btn-primary mx-auto my-2">Valider</button>
                         {{ form_end(form) }}
 
@@ -41,10 +41,22 @@
                                 <th>Age</th>
                                 <td>{{ user.age }}</td>
                             </tr>
+                            <tr>
+                                <th>Membre depuis le</th>
+                                <td>{{ user.createdAt|date('d/m/Y') }}</td>
+                            </tr>
                         </table>
-                        <div class="text-center text-blue font-weight-bold">
-                            {{ user.offers|length }} annonces
-                        </div>
+                        {% if user.offers|length %}
+                            {% if user.offers|length == 1 %}
+                                <div class="text-center font-weight-bold">
+                                    {{ user.offers|length }} annonce
+                                </div>
+                            {% else %}
+                                <div class="text-center font-weight-bold">
+                                    {{ user.offers|length }} annonces
+                                </div>
+                            {% endif %}
+                        {% endif %}
                         <button onclick="confirm()" class="btn btn-outline-danger btn-block mt-3">
                             Déconnexion
                         </button>
