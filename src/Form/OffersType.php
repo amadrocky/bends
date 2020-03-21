@@ -34,8 +34,8 @@ class OffersType extends AbstractType
             ])
             ->add('title', TextType::class, ['label' => 'Titre de l\'annonce'])
             ->add('description' ,TextareaType::class, ['label' => 'Description'])
-            ->add('zipcode' ,IntegerType::class, ['label' => 'Code postal',])
-            ->add('city' ,TextType::class, ['label' => 'Ville'])
+            /*->add('zipcode' ,IntegerType::class, ['label' => 'Code postal',])
+            ->add('city' ,TextType::class, ['label' => 'Ville'])*/
             ->add('createdBy' ,EmailType::class, ['label' => 'Email'])
             ->add('phoneNumber' ,IntegerType::class, ['label' => 'Téléphone'])
             ->add('phoneVisible' ,CheckboxType::class, [

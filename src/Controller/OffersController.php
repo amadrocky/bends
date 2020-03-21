@@ -7,6 +7,7 @@ use App\Form\OffersType;
 use App\Repository\CategoriesRepository;
 use App\Repository\OffersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,6 +46,7 @@ class OffersController extends AbstractController
         $offer = new Offers();
         $form = $this->createForm(OffersType::class, $offer);
         $form->handleRequest($request);
+        $cities = [];
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -59,10 +61,22 @@ class OffersController extends AbstractController
             return $this->redirectToRoute('offers_index');
         }
 
+        if ($request->isXmlHttpRequest()) {
+            $apiRequest = json_decode(file_get_contents('https://api-adresse.data.gouv.fr/search/?q=' . intval($_POST['zipCode'])), true);
+
+            foreach ($apiRequest['features'] as $key => $value) {
+                if ($value['properties']['type'] === 'municipality') {
+                    $cities[$key]['id'] = $value['properties']['id'];
+                    $cities[$key]['name'] = $value['properties']['label'];
+                }
+            }
+        }
+
         return $this->render('offers/new.html.twig', [
             'offer' => $offer,
             'form' => $form->createView(),
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'cities' => $cities
         ]);
     }
 
@@ -109,7 +123,7 @@ class OffersController extends AbstractController
      */
     public function delete(Request $request, Offers $offer): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$offer->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $offer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($offer);
             $entityManager->flush();

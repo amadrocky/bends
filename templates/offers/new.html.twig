@@ -19,9 +19,21 @@
                     <h5 class="text-white m-0">Localisation</h5>
                 </div>
                 <div class="row w-100">
-                    <div class="col">{{ form_row(form.zipcode) }}</div>
-                    <div class="col">{{ form_row(form.city) }}</div>
-                    <div class="col text-center pt-2">
+                    <div class="col mb-3">
+                        <label for="zip">Code postal</label>
+                        <input id="zip" name="zip" type="text" maxlength="5" onchange="setZipCode(this.value)"
+                               class="form-control"
+                               pattern="[0-9]{5}">
+                    </div>
+                    <div class="col">
+                        <label for="filteredCities">Ville</label>
+                        <select name="filtered_cities" id="filteredCities" class="form-control">
+                            {% for city in cities %}
+                                <option value="{{ city.id }}">{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col d-none d-sm-block text-center pt-2">
                         <i class="fas fa-map-marker-alt position-icon"></i>
                     </div>
                 </div>
@@ -29,8 +41,8 @@
                     <h5 class="text-white m-0">Vos informations</h5>
                 </div>
                 <div class="row w-100">
-                    <div class="col">{{ form_row(form.createdBy) }}</div>
-                    <div class="col">{{ form_row(form.phoneNumber) }}</div>
+                    <div class="col-12 col-sm-6">{{ form_row(form.createdBy) }}</div>
+                    <div class="col-12 col-sm-6">{{ form_row(form.phoneNumber) }}</div>
                 </div>
                 {{ form_row(form.phoneVisible) }}
                 <button class="btn btn-success btn-block my-3">{{ button_label|default('Valider') }}</button>
@@ -60,5 +72,23 @@
                     }
                 });
         }
+
+        function setZipCode(value) {
+            if (value.length === 5) {
+                $.ajax({
+                    url: '{{ path('offers_new') }}',
+                    type: 'POST',
+                    dataType: "json",
+                    data: {zipCode: value},
+                    success: function (data) {
+                        return data;
+                    },
+                    error: function () {
+                        alert('error')
+                    }
+                })
+            }
+        }
+
     </script>
 {% endblock %}
