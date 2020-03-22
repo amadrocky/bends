@@ -61,8 +61,12 @@ class OffersController extends AbstractController
             return $this->redirectToRoute('offers_index');
         }
 
-        if ($request->isXmlHttpRequest()) {
-            $apiRequest = json_decode(file_get_contents('https://api-adresse.data.gouv.fr/search/?q=' . intval($_POST['zipCode'])), true);
+        if ($request->IsMethod('POST')) {
+            $apiRequest = json_decode(
+                file_get_contents(
+                    'https://api-adresse.data.gouv.fr/search/?q=' . intval($request->request->get('zipCode'))
+                ), true
+            );
 
             foreach ($apiRequest['features'] as $key => $value) {
                 if ($value['properties']['type'] === 'municipality') {
@@ -70,6 +74,8 @@ class OffersController extends AbstractController
                     $cities[$key]['name'] = $value['properties']['label'];
                 }
             }
+
+            /*return new JsonResponse($cities, 200);*/
         }
 
         return $this->render('offers/new.html.twig', [

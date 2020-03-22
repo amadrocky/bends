@@ -78,10 +78,11 @@
                 $.ajax({
                     url: '{{ path('offers_new') }}',
                     type: 'POST',
-                    dataType: "json",
+                    dataType: "html",
                     data: {zipCode: value},
                     success: function (data) {
-                        return data;
+                        var result = $('<div />').append(data).find('#filteredCities').html();
+                        $('#filteredCities').html(result);
                     },
                     error: function () {
                         alert('error')
