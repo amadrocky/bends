@@ -6,9 +6,11 @@
     <div class="homeSection">
         <div class="row justify-content-center p-3 w-100 m-0">
             <div class="col col-md-4 offset-md-4 loginBlock m-2 p-3">
-                <div class="card">
-                    <img src="{{ asset('build/images/31799.jpg') }}" class="card-img-top" style="max-height: 200px"
-                         alt="texture">
+                <div class="card profil-card">
+                    <div class="card-header">
+                        {#<img src="{{ asset('build/images/31799.jpg') }}" class="card-img-top" alt="texture">#}
+                    </div>
+
                     <div class="card-body">
                         <div class="text-center">
                             {% if user.profilImage %}
