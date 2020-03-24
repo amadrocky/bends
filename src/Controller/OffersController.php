@@ -48,19 +48,6 @@ class OffersController extends AbstractController
         $form->handleRequest($request);
         $cities = [];
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $offer->setCreatedAt(new \DateTime());
-            if ($this->getUser()) {
-                $offer->setCreatedBy($this->getUser()->getEmail());
-            }
-            $offer->setWorkflowState('created');
-            $entityManager->persist($offer);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('offers_index');
-        }
-
         if ($request->IsMethod('POST')) {
             $apiRequest = json_decode(
                 file_get_contents(
@@ -72,10 +59,27 @@ class OffersController extends AbstractController
                 if ($value['properties']['type'] === 'municipality') {
                     $cities[$key]['id'] = $value['properties']['id'];
                     $cities[$key]['name'] = $value['properties']['label'];
+                    $cities[$key]['context'] = $value['properties']['context'];
+                }
+            }
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $offer->setCreatedAt(new \DateTime());
+
+            /* Récupération du context (dep, region) */
+            foreach ($cities as $key => $city) {
+                if ($city[$key]['label'] === $_POST['filtered_cities']){
+                    $offer->setContext($city[$key]['context']);
                 }
             }
 
-            /*return new JsonResponse($cities, 200);*/
+            $offer->setWorkflowState('created');
+            $entityManager->persist($offer);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('offers_index');
         }
 
         return $this->render('offers/new.html.twig', [

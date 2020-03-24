@@ -78,6 +78,11 @@ class Offers
      */
     private $createdBy;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $context;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -223,6 +228,18 @@ class Offers
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getContext(): ?string
+    {
+        return $this->context;
+    }
+
+    public function setContext(string $context): self
+    {
+        $this->context = $context;
 
         return $this;
     }
