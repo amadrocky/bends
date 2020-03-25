@@ -33,19 +33,12 @@ class OffersType extends AbstractType
                 'placeholder' => 'Séléctionnez un type'
             ])
             ->add('title', TextType::class, ['label' => 'Titre de l\'annonce'])
-            ->add('description' ,TextareaType::class, ['label' => 'Description'])
-            /*->add('zipcode' ,IntegerType::class, ['label' => 'Code postal',])
-            ->add('city' ,TextType::class, ['label' => 'Ville'])*/
-            ->add('createdBy' ,EmailType::class, ['label' => 'Email'])
-            ->add('phoneNumber' ,IntegerType::class, ['label' => 'Téléphone'])
-            ->add('phoneVisible' ,CheckboxType::class, [
+            ->add('description', TextareaType::class, ['label' => 'Description'])
+            ->add('createdBy', EmailType::class, ['label' => 'Email'])
+            ->add('phoneNumber', IntegerType::class, ['label' => 'Téléphone'])
+            ->add('phoneVisible', CheckboxType::class, [
                 'label' => 'Masquer le numéro de téléphone dans l\'annonce'
-            ])
-            //->add('pictures')
-            /*->add('createdBy')
-            ->add('createdAt')
-            ->add('workflowState')*/
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

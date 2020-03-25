@@ -54,9 +54,11 @@
                             </a>
                         </div>
                     {% else %}
-                        <tr>
-                            <td colspan="11">Aucune annonce disponible.</td>
-                        </tr>
+                        <div class="col-12">
+                            <p class="alert alert-primary">
+                                Aucune annonce disponible. Déposez la votre <a href="{{ path('offers_new') }}">ici</a>.
+                            </p>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

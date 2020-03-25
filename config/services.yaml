@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     profil_images: '%kernel.project_dir%/assets/static/images/profil'
+    offer_images: '%kernel.project_dir%/assets/static/images/offers'
 
 services:
     # default configuration for services in *this* file
@@ -30,3 +31,4 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectory: '%profil_images%'
+            $offerTargetDirectory: '%offer_images%'
