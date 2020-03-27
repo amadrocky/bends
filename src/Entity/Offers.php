@@ -50,11 +50,6 @@ class Offers
     private $type;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $zipCode;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $city;
@@ -70,7 +65,7 @@ class Offers
     private $phoneVisible;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $createdBy;
 
@@ -84,6 +79,11 @@ class Offers
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $zipCode;
 
     public function getId(): ?int
     {
@@ -162,18 +162,6 @@ class Offers
         return $this;
     }
 
-    public function getZipCode(): ?int
-    {
-        return $this->zipCode;
-    }
-
-    public function setZipCode(int $zipCode): self
-    {
-        $this->zipcode = $zipCode;
-
-        return $this;
-    }
-
     public function getCity(): ?string
     {
         return $this->city;
@@ -242,6 +230,18 @@ class Offers
     public function setCategory(?Categories $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?int
+    {
+        return $this->zipCode;
+    }
+
+    public function setZipCode(int $zipCode): self
+    {
+        $this->zipCode = $zipCode;
 
         return $this;
     }

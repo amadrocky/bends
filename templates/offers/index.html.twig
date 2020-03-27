@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Offers index{% endblock %}
+{% block title %}Consulter les annonces{% endblock %}
 
 {% block body %}
     <div class="homeSection">
@@ -45,7 +45,7 @@
                                     </div>
                                     <div class="card-block p-2">
                                         <h4 class="card-title">{{ offer.title }}</h4>
-                                        <p class="card-text">{{ offer.category }}</p>
+                                        <p class="card-text">{{ offer.category.name }}</p>
                                         <p class="card-text">{{ offer.description }}</p>
                                         <p class="card-text">{{ offer.createdAt|date('d-m-Y, H:i') }}</p>
                                     </div>

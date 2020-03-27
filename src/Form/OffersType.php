@@ -37,7 +37,8 @@ class OffersType extends AbstractType
             ->add('createdBy', EmailType::class, ['label' => 'Email'])
             ->add('phoneNumber', IntegerType::class, ['label' => 'Téléphone'])
             ->add('phoneVisible', CheckboxType::class, [
-                'label' => 'Masquer le numéro de téléphone dans l\'annonce'
+                'label' => 'Masquer le numéro de téléphone dans l\'annonce',
+                'required' => false
             ]);
     }
 
