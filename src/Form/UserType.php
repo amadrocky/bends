@@ -40,10 +40,7 @@ class UserType extends AbstractType
                 'required' => true,
                 'first_options' => array('label' => 'Mot de passe'),
                 'second_options' => array('label' => 'Répétez le mot de passe'),
-            ))
-            //->add('createdAt')
-            //->add('workflowState')
-        ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

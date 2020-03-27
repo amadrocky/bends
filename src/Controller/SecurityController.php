@@ -56,6 +56,7 @@ class SecurityController extends AbstractController
                 $user->getPassword()
             ));
             $user->setCreatedAt(new \DateTime());
+            $user->setModifiedAt(new \DateTime());
             $user->setWorkflowState('Created');
             $em->persist($user);
             $em->flush();

@@ -41,6 +41,7 @@ class UserController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
             $user->setProfilImage($profilFileName);
+            $user->setModifiedAt(new \DateTime());
             $em->flush();
 
             $this->addFlash('success', 'Image de profil mise à jour');

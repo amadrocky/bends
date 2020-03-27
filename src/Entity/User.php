@@ -75,6 +75,11 @@ class User implements UserInterface
      */
     private $offers;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $modifiedAt;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -278,6 +283,18 @@ class User implements UserInterface
                 $offer->setCreatedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getModifiedAt(): ?\DateTimeInterface
+    {
+        return $this->modifiedAt;
+    }
+
+    public function setModifiedAt(\DateTimeInterface $modifiedAt): self
+    {
+        $this->modifiedAt = $modifiedAt;
 
         return $this;
     }
