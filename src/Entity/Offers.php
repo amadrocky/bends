@@ -70,8 +70,7 @@ class Offers
     private $phoneVisible;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="offers")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $createdBy;
 
@@ -211,12 +210,12 @@ class Offers
         return $this;
     }
 
-    public function getCreatedBy(): ?User
+    public function getCreatedBy(): ?string
     {
         return $this->createdBy;
     }
 
-    public function setCreatedBy(?User $createdBy): self
+    public function setCreatedBy(?string $createdBy): self
     {
         $this->createdBy = $createdBy;
 

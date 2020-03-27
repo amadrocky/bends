@@ -71,11 +71,6 @@ class User implements UserInterface
     private $profilImage;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Offers", mappedBy="createdBy")
-     */
-    private $offers;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $modifiedAt;
@@ -252,37 +247,6 @@ class User implements UserInterface
     public function setProfilImage(?string $profilImage): self
     {
         $this->profilImage = $profilImage;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Offers[]
-     */
-    public function getOffers(): Collection
-    {
-        return $this->offers;
-    }
-
-    public function addOffer(Offers $offer): self
-    {
-        if (!$this->offers->contains($offer)) {
-            $this->offers[] = $offer;
-            $offer->setCreatedBy($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOffer(Offers $offer): self
-    {
-        if ($this->offers->contains($offer)) {
-            $this->offers->removeElement($offer);
-            // set the owning side to null (unless already changed)
-            if ($offer->getCreatedBy() === $this) {
-                $offer->setCreatedBy(null);
-            }
-        }
 
         return $this;
     }
