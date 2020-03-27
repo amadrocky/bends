@@ -54,7 +54,7 @@ class OffersController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $offer->setZipCode(intval($_POST['zip']));
+            $offer->setZipCode($_POST['zip']);
             $offer->setCity($_POST['filtered_cities']);
             $offer->setCreatedAt(new \DateTime());
 
