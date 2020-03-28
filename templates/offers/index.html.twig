@@ -41,13 +41,20 @@
                             <a href="{{ path('offers_show', {'id': offer.id}) }}">
                                 <div class="card flex-row flex-wrap">
                                     <div class="card-header border-0">
-                                        <img src="//placehold.it/200" alt="">
+                                        <img src="//placehold.it/150" alt="photo">
                                     </div>
-                                    <div class="card-block p-2">
-                                        <h4 class="card-title">{{ offer.title }}</h4>
-                                        <p class="card-text">{{ offer.category.name }}</p>
-                                        <p class="card-text">{{ offer.description }}</p>
-                                        <p class="card-text">{{ offer.createdAt|date('d-m-Y, H:i') }}</p>
+                                    <div class="card-block p-2 w-75">
+                                        <div class="row w-100">
+                                            <div class="col">
+                                                <h4 class="card-title mb-5">{{ offer.title }}</h4>
+                                            </div>
+                                            <div class="col text-right">
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <p class="card-text m-0">{{ offer.category.name }}</p>
+                                        <p class="card-text m-0">{{ offer.city }}</p>
+                                        <p class="card-text m-0">{{ offer.createdAt|date('d-m-Y, H:i') }}</p>
                                     </div>
                                     <div class="w-100"></div>
                                 </div>

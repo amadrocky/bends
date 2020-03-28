@@ -45,17 +45,6 @@
                                 <td>{{ user.createdAt|date('d/m/Y') }}</td>
                             </tr>
                         </table>
-                        {% if user.offers|length %}
-                            {% if user.offers|length == 1 %}
-                                <div class="text-center font-weight-bold">
-                                    {{ user.offers|length }} annonce
-                                </div>
-                            {% else %}
-                                <div class="text-center font-weight-bold">
-                                    {{ user.offers|length }} annonces
-                                </div>
-                            {% endif %}
-                        {% endif %}
                         <button onclick="confirm()" class="btn btn-outline-danger btn-block mt-3">
                             Déconnexion
                         </button>
