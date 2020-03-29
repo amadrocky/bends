@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,7 +36,7 @@ class OffersType extends AbstractType
             ->add('title', TextType::class, ['label' => 'Titre de l\'annonce'])
             ->add('description', TextareaType::class, ['label' => 'Description'])
             ->add('createdBy', EmailType::class, ['label' => 'Email'])
-            ->add('phoneNumber', IntegerType::class, ['label' => 'Téléphone'])
+            ->add('phoneNumber', TelType::class, ['label' => 'Téléphone'])
             ->add('phoneVisible', CheckboxType::class, [
                 'label' => 'Masquer le numéro de téléphone dans l\'annonce',
                 'required' => false
