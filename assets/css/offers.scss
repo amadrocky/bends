@@ -13,6 +13,11 @@
   color: $violet;
 }
 
+.input-photo {
+  max-height: 200px;
+  max-width: 300px;
+}
+
 @media screen and (max-width: 667px) {
   .card {
     width: 240px;
