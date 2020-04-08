@@ -44,34 +44,41 @@
                 </a>
             </div>
         </div>
-        <div id="menu" class="menuLaunchpad d-none p-3">
-            <h4>Menu</h4>
-            <a href="{{ path('offers_new') }}" class="lightLink"><p><i class="far fa-plus-square"></i> Déposer une annonce</p></a>
-            <div class="d-flex">
-                <input type="search" class="form-control mb-2" placeholder="Rechercher">
-                <button class="btn btn-primary" style="height: 38px"><i class="fas fa-search"></i></button>
-            </div>
-            <a href="{{ path('offers_index') }}" class="lightLink"><p><i class="far fa-eye"></i> Consulter les annonces</p></a>
-            <p><i class="fas fa-hands-helping"></i> Espace associations</p>
-            <h4>Mon éspace</h4>
-            <a href="{{ path('profil') }}" class="lightLink"><p><i class="fas fa-user-circle"></i> Profil</p></a>
-            <p><i class="fas fa-search"></i> Recherches</p>
-            <p><i class="far fa-star"></i> Favoris</p>
-            <p><i class="far fa-envelope"></i> Messages</p>
-            {% if app.user %}
-                <h4 class="text-right noDecorationLink cursorPointer" onclick="confirm()">Se déconnecter</h4>
-            {% else %}
-                <a href="{{ path('app_login') }}" class="noDecorationLink"><h4 class="text-right">Se connecter</h4></a>
-            {% endif %}
-            <h3 class="text-center">B</h3>
+        <input type="checkbox" name="" id="side-menu-switch" checked>
+        <div class="side-menu">
+            <div class="image-menu-top mb-3"></div>
+            <form action="">
+                <input type="text" placeholder="Rechercher">
+                <button>
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+            <nav>
+                <a href="{{ path('offers_new') }}" class="lightLink"><p><i class="far fa-plus-square"></i> Déposer une
+                        annonce</p></a>
+                <a href="{{ path('offers_index') }}" class="lightLink"><p><i class="far fa-eye"></i> Consulter les
+                        annonces</p></a>
+                <a href="#" class="lightLink"><p><i class="fas fa-hands-helping"></i> Espace associations</p></a>
+                <h4 class="mx-2">Mon éspace</h4>
+                <a href="{{ path('profil') }}" class="lightLink"><p><i class="fas fa-user-circle"></i> Profil</p></a>
+                <a href="#" class="lightLink"><p><i class="fas fa-search"></i> Recherches</p></a>
+                <a href="#" class="lightLink"><p><i class="far fa-star"></i> Favoris</p></a>
+                <a href="#" class="lightLink"><p><i class="far fa-envelope"></i> Messages</p></a>
+                {% if app.user %}
+                    <h4 class="text-right noDecorationLink cursorPointer mx-2" onclick="confirm()">Se déconnecter</h4>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="noDecorationLink"><h4 class="text-right mx-2">Se
+                            connecter</h4>
+                    </a>
+                {% endif %}
+                <h3 class="text-center">B</h3>
+            </nav>
         </div>
     </div>
 
     <script type="text/javascript">
         function actionMenu() {
-            let showMenu = document.getElementById('menu');
-
-            showMenu.classList.contains('d-none') ? showMenu.classList.remove('d-none') : showMenu.classList.add('d-none');
+            document.querySelector('#side-menu-switch').click();
         }
 
         function confirm() {
