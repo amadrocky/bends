@@ -18,18 +18,34 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastname', TextType::class, ['label' => 'Nom'])
-            ->add('firstname', TextType::class, ['label' => 'Prénom'])
-            ->add('email', EmailType::class, ['label' => 'Adresse email'])
+            ->add('lastname', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Nom'
+                ]
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Prénom'
+                ]
+            ])
+            ->add('email', EmailType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Adresse email'
+                ]
+            ])
             ->add('gender', ChoiceType::class, [
-                'label' => 'Sexe',
+                'label' => false,
+                'placeholder' => 'Sexe',
                 'choices' => [
                     'Homme' => 'M',
                     'Femme' => 'F'
                 ]
             ])
             ->add('dateOfBirth', DateType::class, [
-                'label' => 'Date de naissance',
+                'label' => false,
                 'widget' => 'single_text',
                 'html5' => true
             ])
@@ -38,8 +54,18 @@ class UserType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'Le mot de passe doit être similaire.',
                 'required' => true,
-                'first_options' => array('label' => 'Mot de passe'),
-                'second_options' => array('label' => 'Répétez le mot de passe'),
+                'first_options' => [
+                    'label' => false,
+                    'attr' => [
+                        'placeholder' => 'Mot de passe'
+                    ]
+                ],
+                'second_options' => [
+                    'label' => false,
+                    'attr' => [
+                        'placeholder' => 'Répétez le mot de passe'
+                    ]
+                ]
             ));
     }
 

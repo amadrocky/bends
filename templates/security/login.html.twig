@@ -5,7 +5,7 @@
 {% block body %}
     <div class="homeSection">
         <div class="row justify-content-center p-3 w-100 m-0">
-            <div class="col col-md-4 offset-md-4 loginBlock m-2 p-3">
+            <div class="col col-md-4 offset-md-4 loginBlock m-2 p-3 form-style">
                 <form method="post">
                     {% if error %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -18,12 +18,15 @@
                     {% endif %}
 
                     <h2 class="loginTitle mb-3 text-center">Connexion</h2>
-                    <label for="inputEmail">Adresse email</label>
+                    <label for="inputEmail" class="d-none">Adresse email</label>
                     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-2"
                            required
+                           placeholder="Adresse email"
                            autofocus>
-                    <label for="inputPassword">Mot de passe</label>
-                    <input type="password" name="password" id="inputPassword" class="form-control" required>
+                    <label for="inputPassword" class="d-none">Mot de passe</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control"
+                           required
+                           placeholder="Mot de passe">
 
                     <input type="hidden" name="_csrf_token"
                            value="{{ csrf_token('authenticate') }}"

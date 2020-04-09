@@ -18,6 +18,12 @@
   max-width: 300px;
 }
 
+.img-offers {
+  padding: 10px;
+  border: 1px dashed $violet;
+  border-radius: 5px;
+}
+
 @media screen and (max-width: 667px) {
   .card {
     width: 240px;

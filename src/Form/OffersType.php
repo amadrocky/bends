@@ -22,21 +22,41 @@ class OffersType extends AbstractType
     {
         $builder
             ->add('category', EntityType::class, [
-                'label' => 'Catégorie',
+                'label' => false,
                 'class' => Categories::class,
                 'choice_label' => 'name',
                 'placeholder' => 'Séléctionnez une catégorie'
             ])
             ->add('type', EntityType::class, [
-                'label' => 'Type',
+                'label' => false,
                 'class' => Type::class,
                 'choice_label' => 'name',
                 'placeholder' => 'Séléctionnez un type'
             ])
-            ->add('title', TextType::class, ['label' => 'Titre de l\'annonce'])
-            ->add('description', TextareaType::class, ['label' => 'Description'])
-            ->add('createdBy', EmailType::class, ['label' => 'Email'])
-            ->add('phoneNumber', TelType::class, ['label' => 'Téléphone'])
+            ->add('title', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Titre de l\'annonce'
+                ]
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Description'
+                ]
+            ])
+            ->add('createdBy', EmailType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Email'
+                ]
+            ])
+            ->add('phoneNumber', TelType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Téléphone'
+                ]
+            ])
             ->add('phoneVisible', CheckboxType::class, [
                 'label' => 'Masquer le numéro de téléphone dans l\'annonce',
                 'required' => false

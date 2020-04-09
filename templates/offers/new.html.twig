@@ -5,7 +5,7 @@
 {% block body %}
     <div class="homeSection">
         <div class="row justify-content-center p-3 w-100 m-0">
-            <div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
+            <div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3 form-style">
                 <h2 class="loginTitle mb-5 text-center">Déposer une annonce</h2>
                 {{ form_start(form) }}
                 <div class="subtitleZone p-1 mb-3">
@@ -20,22 +20,27 @@
                 </div>
                 <div class="mb-3">
                     <div class="mb-2">
-                        <label for="img1"><i class="fas fa-camera"></i> Photo 1</label>
+                        <label for="img1" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo 1</label>
                         <input id="img1" name="img1" type="file" accept="image/png, image/jpeg"
-                               onchange="loadFile('output1')"/>
+                               onchange="loadFile('output1')" hidden/>
                         <img id="output1" class="input-photo my-1" />
                     </div>
                     <div class="mb-2">
-                        <label for="img2"><i class="fas fa-camera"></i> Photo 2</label>
+                        <label for="img2" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo 2</label>
                         <input id="img2" name="img2" type="file" accept="image/png, image/jpeg"
-                               onchange="loadFile('output2')"/>
+                               onchange="loadFile('output2')" hidden/>
                         <img id="output2" class="input-photo my-1" />
                     </div>
                     <div class="mb-2">
-                        <label for="img3"><i class="fas fa-camera"></i> Photo 3</label>
+                        <label for="img3" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo 3</label>
                         <input id="img3" name="img3" type="file" accept="image/png, image/jpeg"
-                               onchange="loadFile('output3')"/>
+                               onchange="loadFile('output3')" hidden/>
                         <img id="output3" class="input-photo my-1" />
+                    </div>
+                    <div class="col-12 p-0">
+                        <small class="text-muted"><i class="fas fa-info-circle"></i>
+                            Ciquez sur l'icone pour séléctionner une photo.
+                        </small>
                     </div>
                 </div>
                 <div class="subtitleZone p-1 mb-3">
