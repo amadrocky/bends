@@ -20,22 +20,25 @@
                 </div>
                 <div class="mb-3">
                     <div class="mb-2">
-                        <label for="img1" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo 1</label>
+                        <label for="img1" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo
+                            1</label>
                         <input id="img1" name="img1" type="file" accept="image/png, image/jpeg"
                                onchange="loadFile('output1')" hidden/>
-                        <img id="output1" class="input-photo my-1" />
+                        <img id="output1" class="input-photo my-1"/>
                     </div>
                     <div class="mb-2">
-                        <label for="img2" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo 2</label>
+                        <label for="img2" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo
+                            2</label>
                         <input id="img2" name="img2" type="file" accept="image/png, image/jpeg"
                                onchange="loadFile('output2')" hidden/>
-                        <img id="output2" class="input-photo my-1" />
+                        <img id="output2" class="input-photo my-1"/>
                     </div>
                     <div class="mb-2">
-                        <label for="img3" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo 3</label>
+                        <label for="img3" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo
+                            3</label>
                         <input id="img3" name="img3" type="file" accept="image/png, image/jpeg"
                                onchange="loadFile('output3')" hidden/>
-                        <img id="output3" class="input-photo my-1" />
+                        <img id="output3" class="input-photo my-1"/>
                     </div>
                     <div class="col-12 p-0">
                         <small class="text-muted"><i class="fas fa-info-circle"></i>
@@ -48,13 +51,13 @@
                 </div>
                 <div class="row w-100">
                     <div class="col mb-1">
-                        <label for="zip">Code postal</label>
                         <input id="zip" name="zip" type="text" maxlength="5" onchange="setZipCode(this.value)"
                                class="form-control"
-                               pattern="[0-9]{5}">
+                               placeholder="Code postal"
+                               pattern="[0-9]{5}"
+                               required>
                     </div>
                     <div class="col">
-                        <label for="filteredCities">Ville</label>
                         <select name="filtered_cities" id="filteredCities" class="form-control">
                             {% for city in cities %}
                                 <option value="{{ city.name }}">{{ city.name }}</option>
