@@ -118,3 +118,23 @@ nav a:hover .far {
   margin-right: 0.3em;
   transform: scale(1);
 }
+
+@media screen and (max-width: 768px) {
+  #side-menu-switch:checked + .side-menu label .fas {
+    transform: none;
+  }
+
+  #side-menu-switch:checked + .side-menu label .far {
+    transform: none;
+  }
+
+  nav a .far {
+    margin-right: 0px;
+    transform: scale(1);
+  }
+
+  nav a .fas {
+    margin-right: 0px;
+    transform: scale(1);
+  }
+}
