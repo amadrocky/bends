@@ -8,6 +8,11 @@
   src: url('../fonts/Oswald-VariableFont_wght.ttf');
 }
 
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../fonts/Montserrat-Regular.ttf');
+}
+
 html {
   height: 100%;
 }
@@ -26,10 +31,49 @@ html::-webkit-scrollbar-track {
 }
 
 body {
+  //font-family: 'Montserrat', sans-serif;
   height: 100%;
   background-color: $blue;
   margin: 0;
   padding: 0;
+}
+
+.btn-primary {
+  background-color: $primary;
+  border: $primary;
+  box-shadow: -1px 5px 5px -4px gray;
+}
+
+.btn-primary:hover {
+  background-color: $darkPrimary;
+}
+
+.btn-success {
+  background-color: $success;
+  border: $success;
+  box-shadow: -1px 5px 5px -4px gray;
+}
+
+.btn-success:hover {
+  background-color: $darkSuccess;
+}
+
+.btn-danger {
+  background-color: $danger;
+  border: $danger;
+  box-shadow: -1px 5px 5px -4px gray;
+}
+
+.btn-danger:hover {
+  background-color: $darkDanger;
+}
+
+.btn-outline-danger {
+  border: $danger;
+}
+
+.btn-outline-danger:hover {
+  background-color: $danger;
 }
 
 h1 {

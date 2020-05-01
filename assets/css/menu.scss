@@ -5,10 +5,9 @@
   background-image: linear-gradient(0deg, whitesmoke, whitesmoke);
   display: flex;
   flex-flow: column nowrap;
-  box-shadow: 2px 5px 5px rgba(17, 26, 41, 0.9);
   position: absolute;
+  box-shadow: 2px 5px 5px rgba(17, 26, 41, 0.9);
   border-top: 1px solid $violet;
-
   transition: .5s;
   /* transform: translateX(0); */
 
@@ -58,6 +57,7 @@
 
 #side-menu-switch:checked + .side-menu {
   transform: translateX(-100%);
+  box-shadow: none;
 }
 
 #side-menu-switch:checked + .side-menu label .fas {
