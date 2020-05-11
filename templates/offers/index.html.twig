@@ -7,15 +7,16 @@
         <div class="row justify-content-center p-3 w-100 m-0">
             <div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
                 <h2 class="loginTitle mb-5 text-center">Annonces</h2>
-                <div class="row justify-content-center filtersZone p-3 w-100 m-0">
-                    <div class="col-1">
-                        <a href="{{ path('offers_new') }}" class="btn btn-primary btn-block"><i
+                <div class="row justify-content-center filtersZone p-3 w-100 m-0 d-block d-md-flex">
+                    <div class="col-md-1">
+                        <a href="{{ path('offers_new') }}" class="btn btn-primary btn-block"
+                           style="box-shadow: -1px 5px 5px -4px black;"><i
                                     class="far fa-plus-square"></i></a>
                     </div>
-                    <div class="col">
+                    <div class="col my-1">
                         <input type="search" class="form-control" placeholder="Rechercher">
                     </div>
-                    <div class="col">
+                    <div class="col my-1">
                         <select name="categories" id="categories" class="form-control">
                             <option value="allCat" selected>Catégories</option>
                             {% for categorie in categories %}
@@ -23,7 +24,7 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="col">
+                    <div class="col my-1">
                         <select name="categories" id="categories" class="form-control">
                             <option value="allReg" selected>Régions</option>
                             {% for region in regions %}
@@ -31,8 +32,9 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="col-1">
-                        <button class="btn btn-primary btn-block"><i class="fas fa-search"></i></button>
+                    <div class="col-md-1">
+                        <button class="btn btn-primary btn-block" style="box-shadow: -1px 5px 5px -4px black;"><i
+                                    class="fas fa-search"></i></button>
                     </div>
                 </div>
                 <div class="row p-3 w-100 m-0">
