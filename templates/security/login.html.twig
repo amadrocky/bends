@@ -19,7 +19,8 @@
 
                     <h2 class="loginTitle mb-3 text-center">Connexion</h2>
                     <label for="inputEmail" class="d-none">Adresse email</label>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-2"
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                           class="form-control mb-2"
                            required
                            placeholder="Adresse email"
                            autofocus>
@@ -50,6 +51,34 @@
                         Créer un compte
                     </a>
                 </form>
+                <div class="accordion" id="accordionLogin">
+                    <div id="headingLogin">
+                        <h2 class="mt-2">
+                            <button class="btn btn-link btn-block text-center" type="button" data-toggle="collapse"
+                                    data-target="#collapseLogin" aria-expanded="true" aria-controls="collapseLogin">
+                                Pourquoi créer un compte ?
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseLogin" class="collapse" aria-labelledby="headingLogin"
+                         data-parent="#accordionLogin">
+                        <div class="collapse-body p-2">
+                            <h6>Général :</h6>
+                            <ul>
+                                <li>Visibilité des annonces plus longue</li>
+                                <li>Accès à la <em class="bnds">Bends</em> <em class="cmnty">community</em></li>
+                            </ul>
+                            <h6>Espace membre :</h6>
+                            <ul>
+                                <li>Gérer mon profil</li>
+                                <li>Historique des recherches</li>
+                                <li>Annonces favorites</li>
+                                <li>Messages directs</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
