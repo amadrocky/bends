@@ -40,6 +40,22 @@
                                onchange="loadFile('output3')" hidden/>
                         <img id="output3" class="input-photo my-1"/>
                     </div>
+                    {% if user %}
+                        <div class="mb-2">
+                            <label for="img4" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo
+                                4</label>
+                            <input id="img4" name="img4" type="file" accept="image/png, image/jpeg"
+                                   onchange="loadFile('output4')" hidden/>
+                            <img id="output4" class="input-photo my-1"/>
+                        </div>
+                        <div class="mb-2">
+                            <label for="img5" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo
+                                5</label>
+                            <input id="img5" name="img5" type="file" accept="image/png, image/jpeg"
+                                   onchange="loadFile('output5')" hidden/>
+                            <img id="output5" class="input-photo my-1"/>
+                        </div>
+                    {% endif %}
                     <div class="col-12 p-0">
                         <small class="text-muted"><i class="fas fa-info-circle"></i>
                             Ciquez sur l'icone pour séléctionner une photo.
