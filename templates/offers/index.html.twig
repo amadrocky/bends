@@ -39,26 +39,32 @@
                 </div>
                 <div class="row p-3 w-100 m-0">
                     {% for offer in offers %}
-                        <div class="col-12  m-1 p-3">
-                            <a href="{{ path('offers_show', {'id': offer.id}) }}">
-                                <div class="card flex-row flex-wrap">
+                        <div class="col-12  m-1">
+                            <a href="{{ path('offers_show', {'id': offer.id}) }}" class="offer-link">
+                                <div class="card offer-card flex-md-row flex-sm-wrap">
                                     <div class="card-header border-0">
-                                        <img src="//placehold.it/150" alt="photo">
+                                        {% if offer.pictures is not empty %}
+                                            <img src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}"
+                                                 style="max-height: 150px; max-width: 150px"
+                                                 class="d-block mx-auto"
+                                                 alt="photo">
+                                        {% else %}
+                                            <img src="{{ asset('build/images/picture-no-image.jpg') }}"
+                                                 style="max-height: 150px"
+                                                 class="d-block mx-auto"
+                                                 alt="photo">
+                                        {% endif %}
                                     </div>
-                                    <div class="card-block p-2 w-75">
-                                        <div class="row w-100">
+                                    <div class="card-block p-2">
+                                        <div class="row">
                                             <div class="col">
-                                                <h4 class="card-title mb-5">{{ offer.title }}</h4>
-                                            </div>
-                                            <div class="col text-right">
-                                                <i class="far fa-star"></i>
+                                                <h3 class="card-title mb-4">{{ offer.title }}</h3>
                                             </div>
                                         </div>
-                                        <p class="card-text m-0">{{ offer.category.name }}</p>
-                                        <p class="card-text m-0">{{ offer.city }}</p>
-                                        <p class="card-text m-0">{{ offer.createdAt|date('d-m-Y, H:i') }}</p>
+                                        <p class="card-text text-dark mb-2"><b>{{ offer.category.name }}</p></b>
+                                        <p class="card-text text-dark m-0">{{ offer.city }}</p>
+                                        <small class="text-muted m-0">{{ offer.createdAt|date('d-m-Y, H:i') }}</small>
                                     </div>
-                                    <div class="w-100"></div>
                                 </div>
                             </a>
                         </div>

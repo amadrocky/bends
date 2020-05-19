@@ -24,6 +24,19 @@
   border-radius: 5px;
 }
 
+.offer-card {
+  box-shadow: 2px 2px 20px darkgrey;
+}
+
+.offer-link:hover {
+  text-decoration: none;
+}
+
+.card-title {
+  font-family: 'Oswald', sans-serif;
+  color: $violet;
+}
+
 @media screen and (max-width: 667px) {
   .card {
     width: 240px;
