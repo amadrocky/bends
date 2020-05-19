@@ -25,6 +25,7 @@
 }
 
 .offer-card {
+  border: none;
   box-shadow: 2px 2px 20px darkgrey;
 }
 
@@ -32,9 +33,24 @@
   text-decoration: none;
 }
 
+.card-image {
+  min-width: 200px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 0px !important;
+}
+
 .card-title {
   font-family: 'Oswald', sans-serif;
   color: $violet;
+}
+
+.image-card {
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.card-badge {
+  box-shadow: -1px 5px 5px -4px gray;
 }
 
 @media screen and (max-width: 667px) {

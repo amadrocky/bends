@@ -33,7 +33,9 @@ class OffersController extends AbstractController
             'offers' => $offersRepository->findAll(),
             'user' => $this->getUser(),
             'categories' => $categoriesRepository->findAll(),
-            'regions' => json_decode($regions)
+            'regions' => json_decode($regions),
+            'today' => new \DateTime(),
+            'yesterday' => (new \DateTime())->modify('-1 day')
         ]);
     }
 

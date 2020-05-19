@@ -42,16 +42,14 @@
                         <div class="col-12  m-1">
                             <a href="{{ path('offers_show', {'id': offer.id}) }}" class="offer-link">
                                 <div class="card offer-card flex-md-row flex-sm-wrap">
-                                    <div class="card-header border-0">
+                                    <div class="card-header card-image border-0">
                                         {% if offer.pictures is not empty %}
                                             <img src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}"
-                                                 style="max-height: 150px; max-width: 150px"
-                                                 class="d-block mx-auto"
+                                                 class="image-card d-block m-auto"
                                                  alt="photo">
                                         {% else %}
                                             <img src="{{ asset('build/images/picture-no-image.jpg') }}"
-                                                 style="max-height: 150px"
-                                                 class="d-block mx-auto"
+                                                 class="image-card d-block m-auto"
                                                  alt="photo">
                                         {% endif %}
                                     </div>
@@ -61,9 +59,24 @@
                                                 <h3 class="card-title mb-4">{{ offer.title }}</h3>
                                             </div>
                                         </div>
+                                        {% if offer.type.id == 2 %}
+                                            <span class="card-badge badge-pill badge-warning text-white">Demande</span>
+                                        {% endif %}
                                         <p class="card-text text-dark mb-2"><b>{{ offer.category.name }}</p></b>
                                         <p class="card-text text-dark m-0">{{ offer.city }}</p>
-                                        <small class="text-muted m-0">{{ offer.createdAt|date('d-m-Y, H:i') }}</small>
+                                        {% if offer.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
+                                            <small class="text-muted m-0">
+                                                Aujourd'hui, {{ offer.createdAt|date('H:i') }}
+                                            </small>
+                                        {% elseif offer.createdAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
+                                            <small class="text-muted m-0">
+                                                Hier, {{ offer.createdAt|date('H:i') }}
+                                            </small>
+                                        {% else %}
+                                            <small class="text-muted m-0">
+                                                {{ offer.createdAt|date('d-m-Y, H:i') }}
+                                            </small>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </a>
