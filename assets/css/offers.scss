@@ -53,6 +53,14 @@
   box-shadow: -1px 5px 5px -4px gray;
 }
 
+.offer-title {
+  font-family: Oswald, 'sans-serif';
+}
+
+.h_iframe iframe {
+  width:100%;
+}
+
 @media screen and (max-width: 667px) {
   .card {
     width: 240px;

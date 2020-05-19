@@ -124,8 +124,19 @@ class OffersController extends AbstractController
      */
     public function show(Offers $offer): Response
     {
+        $apiRequest = json_decode(
+            file_get_contents(
+                'https://api-adresse.data.gouv.fr/search/?q=' . $offer->getZipCode()
+            ), true
+        );
+
+        $coordinates = $apiRequest['features'][0]['geometry']['coordinates'];
+        //dd($coordinates);
+
         return $this->render('offers/show.html.twig', [
             'offer' => $offer,
+            'user' => $this->getUser(),
+            'coordinates' => $coordinates
         ]);
     }
 

@@ -1,58 +1,65 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}Offers{% endblock %}
+{% block title %}{{ offer.title }}{% endblock %}
 
 {% block body %}
-    <h1>Offers</h1>
+    <div class="homeSection">
+        <div class="row justify-content-center p-3 w-100 m-0">
+            <div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
+                <h1 class="h2 offer-title pl-2">{{ offer.title }}</h1>
+                <div class="d-flex flex-wrap">
+                    <div class="card flex-fill m-2 p-2">
+                        <h5>Description :</h5>
+                        <p>{{ offer.description }}</p>
+                    </div>
+                    <div class="card flex-fill m-2 p-2">
+                        <h5>Informations :</h5>
+                        <p>Mis en ligne le : {{ offer.createdAt|date('d-m-Y à H:i') }}</p>
+                        <p>Mis en ligne par : {{ offer.createdBy }}</p>
+                    </div>
+                </div>
+                <div class="card h_iframe m-2 p-2">
+                    <h5>Localisation :</h5>
+                    <p>{{ offer.city }} {{ offer.context }}</p>
+                    <div id="map" style="height: 150px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ offer.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ offer.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ offer.description }}</td>
-            </tr>
-            <tr>
-                <th>Category</th>
-                <td>{{ offer.category }}</td>
-            </tr>
-            <tr>
-                <th>CreatedBy</th>
-                <td>{{ offer.createdBy }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ offer.createdAt ? offer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>FirstImage</th>
-                <td>{{ offer.firstImage }}</td>
-            </tr>
-            <tr>
-                <th>SecondImage</th>
-                <td>{{ offer.secondImage }}</td>
-            </tr>
-            <tr>
-                <th>ThirdImage</th>
-                <td>{{ offer.thirdImage }}</td>
-            </tr>
-            <tr>
-                <th>WorkflowState</th>
-                <td>{{ offer.workflowState }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <script type="text/javascript">
 
-    <a href="{{ path('offers_index') }}">back to list</a>
+        var lat = {{ coordinates[1] }};
+        var lon = {{ coordinates[0] }};
 
-    <a href="{{ path('offers_edit', {'id': offer.id}) }}">edit</a>
+        var points = {
+            "{{ offer.city }} {{ offer.context }}": {"lat": {{ coordinates[1] }}, "lon": {{ coordinates[0] }}}
+        };
 
-    {{ include('offers/_delete_form.html.twig') }}
+        var macarte = null;
+
+
+        function initMap() {
+
+            macarte = L.map('map').setView([lat, lon], 11);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+                attribution: 'données © OpenStreetMap/ODbL - rendu OSM France',
+                minZoom: 1,
+                maxZoom: 20
+            }).addTo(macarte);
+
+            for (point in points) {
+                var marker = L.marker([points[point].lat, points[point].lon]).addTo(macarte);
+                marker.bindPopup(point);
+            }
+        }
+
+        window.onload = function () {
+            initMap();
+        };
+
+    </script>
+
+    {#{{ include('offers/_delete_form.html.twig') }}#}
 {% endblock %}
