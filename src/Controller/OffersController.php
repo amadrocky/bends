@@ -67,22 +67,18 @@ class OffersController extends AbstractController
             }
 
             /* Récupération des images */
-            if (!empty($_POST['img1'])) {
-                /** @var UploadedFile $image1 */
-                $image1 = $_POST['img1']->getData();
-                $image1Name = $fileUploader->uploadOffer($image1);
-                $offer->setPictures([$image1Name]);
-            } elseif (!empty($_POST['img2'])) {
-                /** @var UploadedFile $image2 */
-                $image2 = $_POST['img2']->getData();
-                $image2Name = $fileUploader->uploadOffer($image2);
-                $offer->setPictures([$image2Name]);
-            } elseif (!empty($_POST['img3'])) {
-                /** @var UploadedFile $image3 */
-                $image3 = $_POST['img3']->getData();
-                $image3Name = $fileUploader->uploadOffer($image3);
-                $offer->setPictures([$image3Name]);
+            $uploadDir = $_SERVER['PWD'] . '/assets/static/images/offers/';
+            $files = [];
+
+            for ($i = 1; $i < 6; $i++) {
+                if (isset($_FILES['img' . $i])) {
+                    $uploadFile = $uploadDir . basename($_FILES['img' . $i]['name']);
+                    move_uploaded_file($_FILES['img' . $i]['tmp_name'], $uploadFile);
+                    $files[] = basename($uploadFile);
+                }
             }
+
+            $offer->setPictures($files);
 
             $offer->setWorkflowState('created');
             $entityManager->persist($offer);
