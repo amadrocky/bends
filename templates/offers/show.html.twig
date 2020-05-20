@@ -9,18 +9,43 @@
                 <h1 class="h2 offer-title pl-2">{{ offer.title }}</h1>
                 <div class="d-flex flex-wrap">
                     <div class="card flex-fill m-2 p-2">
-                        <h5>Description :</h5>
+                        <h6><b>Description</b></h6>
                         <p>{{ offer.description }}</p>
                     </div>
                     <div class="card flex-fill m-2 p-2">
-                        <h5>Informations :</h5>
-                        <p>Mis en ligne le : {{ offer.createdAt|date('d-m-Y à H:i') }}</p>
-                        <p>Mis en ligne par : {{ offer.createdBy }}</p>
+                        <h6><b>Informations</b></h6>
+                        {% if offer.type.id == 2 %}
+                            <div class="d-flex">
+                                <span class="card-badge badge-pill badge-warning text-center text-white mb-2"><b>Demande</b></span>
+                            </div>
+                        {% endif %}
+                        {% if offer.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
+                            <p>Mis en ligne : Aujourd'hui à {{ offer.createdAt|date('H:i') }}</p>
+                        {% elseif offer.createdAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
+                            <p>Mis en ligne : Hier à {{ offer.createdAt|date('H:i') }}</p>
+                        {% else %}
+                            <p>Mis en ligne le : {{ offer.createdAt|date('d-m-Y à H:i') }}</p>
+                        {% endif %}
+                        <p>Catégorie : {{ offer.category.name }}</p>
+                        <button class="btn btn-primary mx-auto w-75" type="button" data-toggle="collapse"
+                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fas fa-comments"></i> Contacter l'annonceur
+                        </button>
+                        <div class="collapse w-75 mx-auto" id="collapseExample">
+                            <div class="offer-contact m-3 p-3 mx-auto text-center">
+                                <p><i class="fas fa-envelope"></i> <b>Adresse email</b></p>
+                                <p>{{ offer.createdBy }}</p>
+                                {% if not offer.phoneVisible %}
+                                    <p><i class="fas fa-phone"></i> <b>Numéro de téléphone</b></p>
+                                    <p>{{ offer.phoneNumber }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="card h_iframe m-2 p-2">
-                    <h5>Localisation :</h5>
-                    <p>{{ offer.city }} {{ offer.context }}</p>
+                    <p><i class="fas fa-map-marker-alt"></i> {{ offer.city }} {{ offer.context }}</p>
                     <div id="map" style="height: 150px"></div>
                 </div>
             </div>

@@ -131,12 +131,13 @@ class OffersController extends AbstractController
         );
 
         $coordinates = $apiRequest['features'][0]['geometry']['coordinates'];
-        //dd($coordinates);
 
         return $this->render('offers/show.html.twig', [
             'offer' => $offer,
             'user' => $this->getUser(),
-            'coordinates' => $coordinates
+            'coordinates' => $coordinates,
+            'today' => new \DateTime(),
+            'yesterday' => (new \DateTime())->modify('-1 day')
         ]);
     }
 

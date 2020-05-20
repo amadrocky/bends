@@ -61,8 +61,29 @@
   width:100%;
 }
 
+.h_iframe i {
+  color: $violet;
+}
+
+.offer-contact {
+  border: 1px solid $violet!important;
+  border-radius: 5px!important;
+
+  p {
+    margin-bottom: 5px!important;
+  }
+
+  i {
+    color: $violet;
+  }
+}
+
 @media screen and (max-width: 667px) {
   .card {
     width: 240px;
+  }
+
+  .h_iframe {
+    width: auto;
   }
 }
