@@ -43,14 +43,16 @@
                         </div>
                         {% if user %}
                             <div class="mb-2">
-                                <label for="img4" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo
+                                <label for="img4" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i>
+                                    Photo
                                     4</label>
                                 <input id="img4" name="img4" type="file" accept="image/png, image/jpeg"
                                        onchange="loadFile('output4')" hidden/>
                                 <img id="output4" class="input-photo my-1"/>
                             </div>
                             <div class="mb-2">
-                                <label for="img5" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i> Photo
+                                <label for="img5" class="cursorPointer m-0 img-offers"><i class="fas fa-camera"></i>
+                                    Photo
                                     5</label>
                                 <input id="img5" name="img5" type="file" accept="image/png, image/jpeg"
                                        onchange="loadFile('output5')" hidden/>
@@ -98,6 +100,11 @@
                         <div class="col-12 col-sm-6">{{ form_row(form.phoneNumber) }}</div>
                     </div>
                     {{ form_row(form.phoneVisible) }}
+                    <div class="CGU p-2 d-flex">
+                        <input id="CGU" type="checkbox" class="mt-1 mr-2" required>
+                        <label for="CGU" class="m-0">J'ai lu et j'accepte les <a href="">conditions générales
+                                d'utilisation</a>.</label>
+                    </div>
                     <button class="btn btn-primary btn-block my-3">{{ button_label|default('Valider') }}</button>
                     {{ form_end(form) }}
                 </form>
