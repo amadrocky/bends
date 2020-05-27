@@ -24,6 +24,11 @@
   border-radius: 5px;
 }
 
+.offer-pictures {
+  max-width: 200px;
+  max-height: 200px;
+}
+
 .offer-card {
   border: none;
   box-shadow: 2px 2px 20px darkgrey;
@@ -89,6 +94,10 @@
   }
 
   .h_iframe {
+    width: auto;
+  }
+
+  .offer-pictures-zone {
     width: auto;
   }
 }

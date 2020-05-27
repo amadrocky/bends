@@ -7,6 +7,91 @@
         <div class="row justify-content-center p-3 w-100 m-0">
             <div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
                 <h1 class="h2 offer-title pl-2">{{ offer.title }}</h1>
+                <div class="card offer-pictures-zone m-2 p-2">
+                    {% if offer.pictures|length > 0 %}
+                        <div class="row">
+                            {% for picture in offer.pictures %}
+                                <div class="col m-1 text-center">
+                                    <img
+                                        class="offer-pictures"
+                                        src="{{ asset('build/images/offers/') }}{{ picture }}" 
+                                        alt="photo"
+                                        OnClick="initGallery()"
+                                    >
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="col-12">
+                            <p class="alert alert-primary m-0">
+                                <i class="far fa-eye-slash"></i> Aucune photo disponible.
+                            </p>
+                        </div>
+                    {% endif %}
+                    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+                    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+                        <!-- Background of PhotoSwipe. 
+                            It's a separate element as animating opacity is faster than rgba(). -->
+                        <div class="pswp__bg"></div>
+
+                        <!-- Slides wrapper with overflow:hidden. -->
+                        <div class="pswp__scroll-wrap">
+
+                            <!-- Container that holds slides. 
+                                PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                                Don't modify these 3 pswp__item elements, data is added later on. -->
+                            <div class="pswp__container">
+                                <div class="pswp__item"></div>
+                                <div class="pswp__item"></div>
+                                <div class="pswp__item"></div>
+                            </div>
+
+                            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                            <div class="pswp__ui pswp__ui--hidden">
+
+                                <div class="pswp__top-bar">
+
+                                    <!--  Controls are self-explanatory. Order can be changed. -->
+
+                                    <div class="pswp__counter"></div>
+
+                                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                                    <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+                                    <!-- element will get class pswp__preloader--active when preloader is running -->
+                                    <div class="pswp__preloader">
+                                        <div class="pswp__preloader__icn">
+                                        <div class="pswp__preloader__cut">
+                                            <div class="pswp__preloader__donut"></div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                                    <div class="pswp__share-tooltip"></div> 
+                                </div>
+
+                                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+                                </button>
+
+                                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                                </button>
+
+                                <div class="pswp__caption">
+                                    <div class="pswp__caption__center"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
                 <div class="d-flex flex-wrap">
                     <div class="card flex-fill m-2 p-2">
                         <h6><b>Description</b></h6>
@@ -41,7 +126,6 @@
                                 {% endif %}
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="card h_iframe m-2 p-2">
@@ -53,6 +137,36 @@
     </div>
 
     <script type="text/javascript">
+
+        var pswpElement = document.querySelectorAll('.pswp')[0];
+
+        // build items array
+        var items = [
+            {
+                src: 'https://placekitten.com/600/400',
+                w: 600,
+                h: 400
+            },
+            {
+                src: 'https://placekitten.com/1200/900',
+                w: 1200,
+                h: 900
+            }
+        ];
+
+        // define options (if needed)
+        var options = {
+            // optionName: 'option value'
+            // for example:
+            index: 0 // start at first slide
+        };
+
+        // Initializes and opens PhotoSwipe
+        var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+
+        function initGallery() {
+            gallery.init();
+        }
 
         var lat = {{ coordinates[1] }};
         var lon = {{ coordinates[0] }};
@@ -69,7 +183,7 @@
             macarte = L.map('map').setView([lat, lon], 11);
 
             L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-                attribution: 'données © OpenStreetMap/ODbL - rendu OSM France',
+                attribution: 'données © OpenStreetMap',
                 minZoom: 1,
                 maxZoom: 20
             }).addTo(macarte);
