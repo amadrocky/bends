@@ -29,6 +29,11 @@
   max-height: 200px;
 }
 
+.pswp img {
+  max-width: none;
+  object-fit: contain;
+}
+
 .offer-card {
   border: none;
   box-shadow: 2px 2px 20px darkgrey;

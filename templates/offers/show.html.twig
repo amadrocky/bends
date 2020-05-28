@@ -1,204 +1,493 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}{{ offer.title }}{% endblock %}
+{% block title %}
+	{{ offer.title }}
+{% endblock %}
 
 {% block body %}
-    <div class="homeSection">
-        <div class="row justify-content-center p-3 w-100 m-0">
-            <div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
-                <h1 class="h2 offer-title pl-2">{{ offer.title }}</h1>
-                <div class="card offer-pictures-zone m-2 p-2">
-                    {% if offer.pictures|length > 0 %}
-                        <div class="row">
-                            {% for picture in offer.pictures %}
-                                <div class="col m-1 text-center">
-                                    <img
-                                        class="offer-pictures"
-                                        src="{{ asset('build/images/offers/') }}{{ picture }}" 
-                                        alt="photo"
-                                        OnClick="initGallery()"
-                                    >
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="col-12">
-                            <p class="alert alert-primary m-0">
-                                <i class="far fa-eye-slash"></i> Aucune photo disponible.
-                            </p>
-                        </div>
-                    {% endif %}
-                    <!-- Root element of PhotoSwipe. Must have class pswp. -->
-                    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
+				<h1 class="h2 offer-title pl-2">{{ offer.title }}</h1>
+				<div class="card offer-pictures-zone m-2 p-2">
+					{% if offer.pictures|length > 0 %}
+						<div id="demo-test-gallery" class="demo-gallery text-center">
+							{% for picture in offer.pictures %}
+                                <a href="{{ asset('build/images/offers/') }}{{ picture }}" 
+                                    data-size="1024x1024" 
+                                    data-med="{{ asset('build/images/offers/') }}{{ picture }}" 
+                                    data-med-size="1024x1024" 
+                                    class="demo-gallery__img--main"
+                                >
+									<img class="offer-pictures m-1" src="{{ asset('build/images/offers/') }}{{ picture }}" itemprop="thumbnail" alt="Photo"/>
+								</a>
+							{% endfor %}
+						</div>
+					{% else %}
+						<div>
+							<p class="alert alert-primary m-0">
+								<i class="far fa-eye-slash"></i>
+								Aucune photo disponible.
+							</p>
+						</div>
+					{% endif %}
+					<!-- Root element of PhotoSwipe. Must have class pswp. -->
+					<div
+						class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
-                        <!-- Background of PhotoSwipe. 
-                            It's a separate element as animating opacity is faster than rgba(). -->
-                        <div class="pswp__bg"></div>
+						<!-- Background of PhotoSwipe. It's a separate element, as animating opacity is faster than rgba(). -->
+						<div class="pswp__bg"></div>
 
-                        <!-- Slides wrapper with overflow:hidden. -->
-                        <div class="pswp__scroll-wrap">
+						<!-- Slides wrapper with overflow:hidden. -->
+						<div class="pswp__scroll-wrap">
 
-                            <!-- Container that holds slides. 
-                                PhotoSwipe keeps only 3 of them in the DOM to save memory.
-                                Don't modify these 3 pswp__item elements, data is added later on. -->
-                            <div class="pswp__container">
-                                <div class="pswp__item"></div>
-                                <div class="pswp__item"></div>
-                                <div class="pswp__item"></div>
-                            </div>
+							<!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+							<!-- don't modify these 3 pswp__item elements, data is added later on. -->
+								<div class="pswp__container"> <div class="pswp__item"></div>
+								<div class="pswp__item"></div>
+								<div class="pswp__item"></div>
+							</div>
 
-                            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-                            <div class="pswp__ui pswp__ui--hidden">
+							<!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+							<div class="pswp__ui pswp__ui--hidden">
 
-                                <div class="pswp__top-bar">
+								<div
+									class="pswp__top-bar">
 
-                                    <!--  Controls are self-explanatory. Order can be changed. -->
+									<!--  Controls are self-explanatory. Order can be changed. -->
 
-                                    <div class="pswp__counter"></div>
+									<div class="pswp__counter"></div>
 
-                                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+									<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
 
-                                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+									<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
 
-                                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+									<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
 
-                                    <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
-                                    <!-- element will get class pswp__preloader--active when preloader is running -->
-                                    <div class="pswp__preloader">
-                                        <div class="pswp__preloader__icn">
-                                        <div class="pswp__preloader__cut">
-                                            <div class="pswp__preloader__donut"></div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>
+									<!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+									<!-- element will get class pswp__preloader--active when preloader is running -->
+									<div class="pswp__preloader">
+										<div class="pswp__preloader__icn">
+											<div class="pswp__preloader__cut">
+												<div class="pswp__preloader__donut"></div>
+											</div>
+										</div>
+									</div>
+								</div>
 
-                                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                                    <div class="pswp__share-tooltip"></div> 
-                                </div>
+								<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+									<div class="pswp__share-tooltip"></div>
+								</div>
 
-                                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-                                </button>
+								<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
 
-                                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-                                </button>
+								<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
 
-                                <div class="pswp__caption">
-                                    <div class="pswp__caption__center"></div>
-                                </div>
+								<div class="pswp__caption">
+									<div class="pswp__caption__center"></div>
+								</div>
 
-                            </div>
+							</div>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex flex-wrap">
-                    <div class="card flex-fill m-2 p-2">
-                        <h6><b>Description</b></h6>
-                        <p>{{ offer.description }}</p>
-                    </div>
-                    <div class="card flex-fill m-2 p-2">
-                        <h6><b>Informations</b></h6>
-                        {% if offer.type.id == 2 %}
-                            <div class="d-flex">
-                                <span class="card-badge badge-pill badge-warning text-center text-white mb-2"><b>Demande</b></span>
-                            </div>
-                        {% endif %}
-                        {% if offer.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
-                            <p>Mis en ligne : Aujourd'hui à {{ offer.createdAt|date('H:i') }}</p>
-                        {% elseif offer.createdAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
-                            <p>Mis en ligne : Hier à {{ offer.createdAt|date('H:i') }}</p>
-                        {% else %}
-                            <p>Mis en ligne le : {{ offer.createdAt|date('d-m-Y à H:i') }}</p>
-                        {% endif %}
-                        <p>Catégorie : {{ offer.category.name }}</p>
-                        <button class="btn btn-primary mx-auto w-75" type="button" data-toggle="collapse"
-                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fas fa-comments"></i> Contacter l'annonceur
-                        </button>
-                        <div class="collapse w-75 mx-auto" id="collapseExample">
-                            <div class="offer-contact m-3 p-3 mx-auto text-center">
-                                <p><i class="fas fa-envelope"></i> <b>Adresse email</b></p>
-                                <p>{{ offer.createdBy }}</p>
-                                {% if not offer.phoneVisible %}
-                                    <p><i class="fas fa-phone"></i> <b>Numéro de téléphone</b></p>
-                                    <p>{{ offer.phoneNumber }}</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card h_iframe m-2 p-2">
-                    <p><i class="fas fa-map-marker-alt"></i> {{ offer.city }} {{ offer.context }}</p>
-                    <div id="map" style="height: 150px"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+						</div>
 
-    <script type="text/javascript">
+					</div>
+					<div class="d-flex flex-wrap">
+						<div class="card flex-fill m-2 p-2">
+							<h6>
+								<b>Description</b>
+							</h6>
+							<p>{{ offer.description }}</p>
+						</div>
+						<div class="card flex-fill m-2 p-2">
+							<h6>
+								<b>Informations</b>
+							</h6>
+							{% if offer.type.id == 2 %}
+								<div class="d-flex">
+									<span class="card-badge badge-pill badge-warning text-center text-white mb-2">
+										<b>Demande</b>
+									</span>
+								</div>
+							{% endif %}
+							{% if offer.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
+								<p>Mis en ligne : Aujourd'hui à
+									{{ offer.createdAt|date('H:i') }}</p>
+							{% elseif offer.createdAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
+								<p>Mis en ligne : Hier à
+									{{ offer.createdAt|date('H:i') }}</p>
+							{% else %}
+								<p>Mis en ligne le :
+									{{ offer.createdAt|date('d-m-Y à H:i') }}</p>
+							{% endif %}
+							<p>Catégorie :
+								{{ offer.category.name }}</p>
+							<button class="btn btn-primary mx-auto w-75" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+								<i class="fas fa-comments"></i>
+								Contacter l'annonceur
+							</button>
+							<div class="collapse w-75 mx-auto" id="collapseExample">
+								<div class="offer-contact m-3 p-3 mx-auto text-center">
+									<p>
+										<i class="fas fa-envelope"></i>
+										<b>Adresse email</b>
+									</p>
+									<p>{{ offer.createdBy }}</p>
+									{% if not offer.phoneVisible %}
+										<p>
+											<i class="fas fa-phone"></i>
+											<b>Numéro de téléphone</b>
+										</p>
+										<p>{{ offer.phoneNumber }}</p>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card h_iframe m-2 p-2">
+						<p>
+							<i class="fas fa-map-marker-alt"></i>
+							{{ offer.city }}
+							{{ offer.context }}</p>
+						<div id="map" style="height: 150px"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        var pswpElement = document.querySelectorAll('.pswp')[0];
+		<script type="text/javascript">
+			try {
+Typekit.load();
+} catch (e) {}(function () {
 
-        // build items array
-        var items = [
-            {
-                src: 'https://placekitten.com/600/400',
-                w: 600,
-                h: 400
-            },
-            {
-                src: 'https://placekitten.com/1200/900',
-                w: 1200,
-                h: 900
-            }
-        ];
+var initPhotoSwipeFromDOM = function (gallerySelector) {
 
-        // define options (if needed)
-        var options = {
-            // optionName: 'option value'
-            // for example:
-            index: 0 // start at first slide
-        };
+var parseThumbnailElements = function (el) {
+var thumbElements = el.childNodes,
+numNodes = thumbElements.length,
+items = [],
+el,
+childElements,
+thumbnailEl,
+size,
+item;
 
-        // Initializes and opens PhotoSwipe
-        var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+for (var i = 0; i < numNodes; i++) {
+el = thumbElements[i];
 
-        function initGallery() {
-            gallery.init();
-        }
+// include only element nodes
+if (el.nodeType !== 1) {
+continue;
+}
 
-        var lat = {{ coordinates[1] }};
-        var lon = {{ coordinates[0] }};
+childElements = el.children;
 
-        var points = {
-            "{{ offer.city }} {{ offer.context }}": {"lat": {{ coordinates[1] }}, "lon": {{ coordinates[0] }}}
-        };
+size = el.getAttribute('data-size').split('x');
 
-        var macarte = null;
+// create slide object
+item = {
+src: el.getAttribute('href'),
+w: parseInt(size[0], 10),
+h: parseInt(size[1], 10),
+author: el.getAttribute('data-author')
+};
+
+item.el = el; // save link to element for getThumbBoundsFn
+
+if (childElements.length > 0) {
+item.msrc = childElements[0].getAttribute('src'); // thumbnail url
+if (childElements.length > 1) {
+item.title = childElements[1].innerHTML; // caption (contents of figure)
+}
+}
+
+var mediumSrc = el.getAttribute('data-med');
+if (mediumSrc) {
+size = el.getAttribute('data-med-size').split('x');
+// "medium-sized" image
+item.m = {
+src: mediumSrc,
+w: parseInt(size[0], 10),
+h: parseInt(size[1], 10)
+};
+}
+// original image
+item.o = {
+src: item.src,
+w: item.w,
+h: item.h
+};
+
+items.push(item);
+}
+
+return items;
+};
+
+// find nearest parent element
+var closest = function closest(el, fn) {
+return el && (fn(el) ? el : closest(el.parentNode, fn));
+};
+
+var onThumbnailsClick = function (e) {
+e = e || window.event;
+e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
+var eTarget = e.target || e.srcElement;
+
+var clickedListItem = closest(eTarget, function (el) {
+return el.tagName === 'A';
+});
+
+if (! clickedListItem) {
+return;
+}
+
+var clickedGallery = clickedListItem.parentNode;
+
+var childNodes = clickedListItem.parentNode.childNodes,
+numChildNodes = childNodes.length,
+nodeIndex = 0,
+index;
+
+for (var i = 0; i < numChildNodes; i++) {
+if (childNodes[i].nodeType !== 1) {
+continue;
+}
+
+if (childNodes[i] === clickedListItem) {
+index = nodeIndex;
+break;
+}
+nodeIndex++;
+}
+
+if (index >= 0) {
+openPhotoSwipe(index, clickedGallery);
+}
+return false;
+};
+
+var photoswipeParseHash = function () {
+var hash = window.location.hash.substring(1),
+params = {};
+
+if (hash.length < 5) { // pid=1
+return params;
+}
+
+var vars = hash.split('&');
+for (var i = 0; i < vars.length; i++) {
+if (! vars[i]) {
+continue;
+}
+var pair = vars[i].split('=');
+if (pair.length < 2) {
+continue;
+}
+params[pair[0]] = pair[1];
+}
+
+if (params.gid) {
+params.gid = parseInt(params.gid, 10);
+}
+
+return params;
+};
+
+var openPhotoSwipe = function (index, galleryElement, disableAnimation, fromURL) {
+var pswpElement = document.querySelectorAll('.pswp')[0],
+gallery,
+options,
+items;
+
+items = parseThumbnailElements(galleryElement);
+
+// define options (if needed)
+options = {
+
+galleryUID: galleryElement.getAttribute('data-pswp-uid'),
+
+getThumbBoundsFn: function (index) { // See Options->getThumbBoundsFn section of docs for more info
+var thumbnail = items[index].el.children[0],
+pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+rect = thumbnail.getBoundingClientRect();
+
+return {
+x: rect.left,
+y: rect.top + pageYScroll,
+w: rect.width
+};
+},
+
+addCaptionHTMLFn: function (item, captionEl, isFake) {
+if (! item.title) {
+captionEl.children[0].innerText = '';
+return false;
+}
+captionEl.children[0].innerHTML = item.title + '<br/><small>Photo: ' + item.author + '</small>';
+return true;
+}
+
+};
+
+if (fromURL) {
+if (options.galleryPIDs) {
+// parse real index when custom PIDs are used
+// http://photoswipe.com/documentation/faq.html#custom-pid-in-url
+for (var j = 0; j < items.length; j++) {
+if (items[j].pid == index) {
+options.index = j;
+break;
+}
+}
+} else {
+options.index = parseInt(index, 10) - 1;
+}
+} else {
+options.index = parseInt(index, 10);
+}
+
+// exit if index not found
+if (isNaN(options.index)) {
+return;
+}
+
+var radios = document.getElementsByName('gallery-style');
+for (var i = 0, length = radios.length; i < length; i++) {
+if (radios[i].checked) {
+if (radios[i].id == 'radio-all-controls') {} else if (radios[i].id == 'radio-minimal-black') {
+options.mainClass = 'pswp--minimal--dark';
+options.barsSize = {
+top: 0,
+bottom: 0
+};
+options.captionEl = false;
+options.fullscreenEl = false;
+options.shareEl = false;
+options.bgOpacity = 0.85;
+options.tapToClose = true;
+options.tapToToggleControls = false;
+}
+break;
+}
+}
+
+if (disableAnimation) {
+options.showAnimationDuration = 0;
+}
+
+// Pass data to PhotoSwipe and initialize it
+gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+
+// see: http://photoswipe.com/documentation/responsive-images.html
+var realViewportWidth,
+useLargeImages = false,
+firstResize = true,
+imageSrcWillChange;
+
+gallery.listen('beforeResize', function () {
+
+var dpiRatio = window.devicePixelRatio ? window.devicePixelRatio : 1;
+dpiRatio = Math.min(dpiRatio, 2.5);
+realViewportWidth = gallery.viewportSize.x * dpiRatio;
+
+if (realViewportWidth >= 1200 || (! gallery.likelyTouchDevice && realViewportWidth > 800) || screen.width > 1200) {
+if (! useLargeImages) {
+useLargeImages = true;
+imageSrcWillChange = true;
+}
+
+} else {
+if (useLargeImages) {
+useLargeImages = false;
+imageSrcWillChange = true;
+}
+}
+
+if (imageSrcWillChange && ! firstResize) {
+gallery.invalidateCurrItems();
+}
+
+if (firstResize) {
+firstResize = false;
+}
+
+imageSrcWillChange = false;
+
+});
+
+gallery.listen('gettingData', function (index, item) {
+if (useLargeImages) {
+item.src = item.o.src;
+item.w = item.o.w;
+item.h = item.o.h;
+} else {
+item.src = item.m.src;
+item.w = item.m.w;
+item.h = item.m.h;
+}
+});
+
+gallery.init();
+};
+
+// select all gallery elements
+var galleryElements = document.querySelectorAll(gallerySelector);
+for (var i = 0, l = galleryElements.length; i < l; i++) {
+galleryElements[i].setAttribute('data-pswp-uid', i + 1);
+galleryElements[i].onclick = onThumbnailsClick;
+}
+
+// Parse URL and open gallery if it contains #&pid=3&gid=1
+var hashData = photoswipeParseHash();
+if (hashData.pid && hashData.gid) {
+openPhotoSwipe(hashData.pid, galleryElements[hashData.gid - 1], true, true);
+}
+};
+
+initPhotoSwipeFromDOM('.demo-gallery');
+
+})();
+
+var lat = {{ coordinates[1] }};
+var lon = {{ coordinates[0] }};
+
+var points = {
+"{{ offer.city }}{{ offer.context }}": {
+"lat": {{ coordinates[1] }},
+"lon": {{ coordinates[0] }}
+}
+};
+
+var macarte = null;
 
 
-        function initMap() {
+function initMap() {
 
-            macarte = L.map('map').setView([lat, lon], 11);
+macarte = L.map('map').setView([
+lat, lon
+], 11);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-                attribution: 'données © OpenStreetMap',
-                minZoom: 1,
-                maxZoom: 20
-            }).addTo(macarte);
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+attribution: 'données © OpenStreetMap',
+minZoom: 1,
+maxZoom: 20
+}).addTo(macarte);
 
-            for (point in points) {
-                var marker = L.marker([points[point].lat, points[point].lon]).addTo(macarte);
-                marker.bindPopup(point);
-            }
-        }
+for (point in points) {
+var marker = L.marker([
+points[point].lat,
+points[point].lon
+]).addTo(macarte);
+marker.bindPopup(point);
+}
+}
 
-        window.onload = function () {
-            initMap();
-        };
+window.onload = function () {
+initMap();
+};
+		</script>
 
-    </script>
-
-    {#{{ include('offers/_delete_form.html.twig') }}#}
-{% endblock %}
+		{#{{ include('offers/_delete_form.html.twig') }}#}
+	{% endblock %}
