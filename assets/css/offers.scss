@@ -34,6 +34,10 @@
   object-fit: contain;
 }
 
+.demo-gallery a:hover {
+  text-decoration: none;
+}
+
 .offer-card {
   border: none;
   box-shadow: 2px 2px 20px darkgrey;
