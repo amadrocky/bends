@@ -47,6 +47,10 @@
                                             <img src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}"
                                                  class="image-card d-block m-auto"
                                                  alt="photo">
+                                                 <div class="text-right" style="margin-top: -10px;">
+                                                    <span class="photo-indicator p-2 rounded-circle text-center"><i class="fas fa-camera"></i> {{ offer.pictures|length }}</span>
+                                                 </div>
+                                                 
                                         {% else %}
                                             <img src="{{ asset('build/images/picture-no-image.jpg') }}"
                                                  class="image-card d-block m-auto"
