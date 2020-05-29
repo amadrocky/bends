@@ -11,14 +11,9 @@
 				<h1 class="h2 offer-title pl-2">{{ offer.title }}</h1>
 				<div class="card offer-pictures-zone m-2 p-2">
 					{% if offer.pictures|length > 0 %}
-						<div id="demo-test-gallery" class="demo-gallery text-center">
+						<div id="demo-test-gallery" class="demo-gallery text-center m-2 p-2">
 							{% for picture in offer.pictures %}
-                                <a href="{{ asset('build/images/offers/') }}{{ picture }}" 
-                                    data-size="1024x1024" 
-                                    data-med="{{ asset('build/images/offers/') }}{{ picture }}" 
-                                    data-med-size="1024x1024" 
-                                    class="demo-gallery__img--main"
-                                >
+								<a href="{{ asset('build/images/offers/') }}{{ picture }}" data-size="1024x1024" data-med="{{ asset('build/images/offers/') }}{{ picture }}" data-med-size="1024x1024" class="demo-gallery__img--main">
 									<img class="offer-pictures m-1" src="{{ asset('build/images/offers/') }}{{ picture }}" itemprop="thumbnail" alt="Photo"/>
 								</a>
 							{% endfor %}
