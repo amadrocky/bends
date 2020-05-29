@@ -72,13 +72,13 @@ class OffersController extends AbstractController
             $uploadDir = $_SERVER['PWD'] . '/assets/static/images/offers/';
             $files = [];
 
-            if ($_FILES['img1']['name'] !== "") {
-                for ($i = 1; $i < 6; $i++) {
-                    if (isset($_FILES['img' . $i])) {
+            for ($i = 1; $i < 6; $i++) {
+                if (isset($_FILES['img' . $i])) {
+                    if ($_FILES['img' . $i]['name'] !== "") {
                         $uploadFile = $uploadDir . basename($_FILES['img' . $i]['name']);
                         move_uploaded_file($_FILES['img' . $i]['tmp_name'], $uploadFile);
                         $files[] = basename($uploadFile);
-                    }
+                    }   
                 }
             }
 
