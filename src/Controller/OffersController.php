@@ -10,6 +10,7 @@ use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,16 +22,27 @@ class OffersController extends AbstractController
 {
     /**
      * @Route("/", name="offers_index", methods={"GET"})
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @param OffersRepository $offersRepository
      * @param CategoriesRepository $categoriesRepository
      * @return Response
      */
-    public function index(OffersRepository $offersRepository, CategoriesRepository $categoriesRepository): Response
+    public function index(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository): Response
     {
+        $datas = $offersRepository->findBy([], ['createdAt' => 'desc']);
+
+        $offers = $paginator->paginate(
+            $datas, //on passe les données
+            $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
+            4 // nombre d'éléments
+        );
+
         $regions = file_get_contents("https://geo.api.gouv.fr/regions");
 
         return $this->render('offers/index.html.twig', [
-            'offers' => $offersRepository->findAll(),
+            'offers' => $offers,
             'user' => $this->getUser(),
             'categories' => $categoriesRepository->findAll(),
             'regions' => json_decode($regions),
