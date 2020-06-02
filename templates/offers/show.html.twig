@@ -105,6 +105,13 @@
 									</span>
 								</div>
 							{% endif %}
+							{% if offer.isPro %}
+								<div class="d-flex">
+									<span class="card-badge badge-pill badge-primary text-center text-white mb-2">
+										<b>Pro</b>
+									</span>
+								</div>
+							{% endif %}
 							{% if offer.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
 								<p>Mis en ligne : Aujourd'hui à
 									{{ offer.createdAt|date('H:i') }}</p>

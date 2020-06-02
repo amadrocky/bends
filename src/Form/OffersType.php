@@ -20,6 +20,10 @@ class OffersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('isPro', CheckboxType::class, [
+                'label' => 'Je suis un professionnel',
+                'required' => false
+            ])
             ->add('category', EntityType::class, [
                 'label' => false,
                 'class' => Categories::class,

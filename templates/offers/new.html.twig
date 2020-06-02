@@ -12,6 +12,12 @@
                     <div class="subtitleZone p-1 mb-3">
                         <h5 class="text-white m-0">Votre annonce</h5>
                     </div>
+                    {{ form_row(form.isPro) }}
+                    <div class="col-12 p-0 mb-2" style="margin-top: -15px;">
+                        <small class="text-muted"><i class="fas fa-info-circle"></i>
+                            Cochez la case si vous êtes un professionnel.
+                        </small>
+                    </div>
                     {{ form_row(form.category) }}
                     {{ form_row(form.type) }}
                     {{ form_row(form.title) }}
@@ -68,7 +74,7 @@
                     <div class="subtitleZone p-1 mb-3">
                         <h5 class="text-white m-0">Localisation</h5>
                     </div>
-                    <div class="row w-100">
+                    <div class="row">
                         <div class="col mb-1">
                             <input id="zip" name="zip" type="text" maxlength="5" onchange="setZipCode(this.value)"
                                    class="form-control"
@@ -95,7 +101,7 @@
                     <div class="subtitleZone p-1 mb-3">
                         <h5 class="text-white m-0">Vos informations</h5>
                     </div>
-                    <div class="row w-100">
+                    <div class="row">
                         <div class="col-12 col-sm-6">{{ form_row(form.createdBy) }}</div>
                         <div class="col-12 col-sm-6">{{ form_row(form.phoneNumber) }}</div>
                     </div>

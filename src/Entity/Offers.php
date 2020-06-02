@@ -85,6 +85,11 @@ class Offers
      */
     private $zipCode;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPro;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -242,6 +247,18 @@ class Offers
     public function setZipCode(int $zipCode): self
     {
         $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    public function getIsPro(): ?bool
+    {
+        return $this->isPro;
+    }
+
+    public function setIsPro(bool $isPro): self
+    {
+        $this->isPro = $isPro;
 
         return $this;
     }
