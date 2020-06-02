@@ -36,7 +36,7 @@ class OffersController extends AbstractController
         $offers = $paginator->paginate(
             $datas, //on passe les données
             $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
-            4 // nombre d'éléments
+            20 // nombre d'éléments
         );
 
         $regions = file_get_contents("https://geo.api.gouv.fr/regions");
