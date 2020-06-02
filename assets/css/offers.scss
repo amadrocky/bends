@@ -108,11 +108,18 @@
   border-radius: 5px;
 }
 
-@media screen and (max-width: 667px) {
-  .card {
-    width: 240px;
-  }
+.page-link {
+  color: $violet!important;
+  background-color: white!important;
+}
 
+.page-item.active .page-link {
+  color: white!important;
+  background-color: $violet!important;
+  border-color: $violet!important;
+}
+
+@media screen and (max-width: 667px) {
   .h_iframe {
     width: auto;
   }
