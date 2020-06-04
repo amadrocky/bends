@@ -6,6 +6,7 @@ use App\Entity\Offers;
 use App\Form\OffersType;
 use App\Repository\CategoriesRepository;
 use App\Repository\OffersRepository;
+use App\Repository\UserRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -136,7 +137,7 @@ class OffersController extends AbstractController
      * @param Offers $offer
      * @return Response
      */
-    public function show(Offers $offer): Response
+    public function show(Offers $offer, UserRepository $userRepository): Response
     {
         $apiRequest = json_decode(
             file_get_contents(
@@ -146,9 +147,12 @@ class OffersController extends AbstractController
 
         $coordinates = $apiRequest['features'][0]['geometry']['coordinates'];
 
+        $author = $userRepository->findByEmail($offer->getCreatedBy());
+
         return $this->render('offers/show.html.twig', [
             'offer' => $offer,
             'user' => $this->getUser(),
+            'author' => $author,
             'coordinates' => $coordinates,
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day')

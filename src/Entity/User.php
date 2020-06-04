@@ -75,6 +75,11 @@ class User implements UserInterface
      */
     private $modifiedAt;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $pseudonym;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -259,6 +264,18 @@ class User implements UserInterface
     public function setModifiedAt(\DateTimeInterface $modifiedAt): self
     {
         $this->modifiedAt = $modifiedAt;
+
+        return $this;
+    }
+
+    public function getPseudonym(): ?string
+    {
+        return $this->pseudonym;
+    }
+
+    public function setPseudonym(string $pseudonym): self
+    {
+        $this->pseudonym = $pseudonym;
 
         return $this;
     }

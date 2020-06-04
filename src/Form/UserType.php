@@ -30,6 +30,12 @@ class UserType extends AbstractType
                     'placeholder' => 'Prénom'
                 ]
             ])
+            ->add('pseudonym', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Pseudonyme (nom d\'utilisateur)'
+                ]
+            ])
             ->add('email', EmailType::class, [
                 'label' => false,
                 'attr' => [
