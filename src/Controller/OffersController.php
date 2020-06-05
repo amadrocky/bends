@@ -176,7 +176,7 @@ class OffersController extends AbstractController
         return $this->render('offers/show.html.twig', [
             'offer' => $offer,
             'user' => $this->getUser(),
-            'messages' => $session->get('messages'),
+            'messages' => $request->getSession()->get('messages'),
             'author' => $author,
             'coordinates' => $coordinates,
             'today' => new \DateTime(),
