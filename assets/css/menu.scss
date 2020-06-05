@@ -94,6 +94,15 @@ nav a {
   position: relative;
   font-family: 'Oswald', sans-serif;
   font-size: 18px;
+
+  .notification-number {
+    background-color: $danger;
+    color: white;
+    border-radius: 100%;
+    padding: 0px 5px 3px 5px;
+    font-size: 15px;
+    box-shadow: -1px 5px 5px -4px gray;
+  }
 }
 
 /* Method 1 */

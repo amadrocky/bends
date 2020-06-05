@@ -50,6 +50,7 @@ class UserController extends AbstractController
 
         return $this->render('user/profil.html.twig', [
             'user' => $user,
+            'messages' => $request->getSession()->get('messages'),
             'form' => $form->createView()
         ]);
     }

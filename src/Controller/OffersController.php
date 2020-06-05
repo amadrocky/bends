@@ -47,6 +47,7 @@ class OffersController extends AbstractController
         return $this->render('offers/index.html.twig', [
             'offers' => $offers,
             'user' => $this->getUser(),
+            'messages' => $request->getSession()->get('messages'),
             'categories' => $categoriesRepository->findAll(),
             'regions' => json_decode($regions),
             'today' => new \DateTime(),
@@ -128,6 +129,7 @@ class OffersController extends AbstractController
         }
 
         return $this->render('offers/new.html.twig', [
+            'messages' => $session->get('messages'),
             'offer' => $offer,
             'form' => $form->createView(),
             'user' => $this->getUser(),
@@ -174,6 +176,7 @@ class OffersController extends AbstractController
         return $this->render('offers/show.html.twig', [
             'offer' => $offer,
             'user' => $this->getUser(),
+            'messages' => $session->get('messages'),
             'author' => $author,
             'coordinates' => $coordinates,
             'today' => new \DateTime(),
