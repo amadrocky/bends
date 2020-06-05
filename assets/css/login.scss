@@ -33,16 +33,16 @@
     width: 1em; /* Also needed for space (tweak if needed) */
     margin-left: -1em; /* Also needed for space (tweak if needed) */
   }
+}
 
-  .bnds {
-    font-family: Pacifico, 'cursive';
-    color: $violet;
-    font-style: normal;
-  }
+.bnds {
+  font-family: Pacifico, 'cursive';
+  color: $violet;
+  font-style: normal;
+}
 
-  .cmnty {
-    font-family: Oswald, 'sans-serif';
-    color: $blue;
-    font-style: normal;
-  }
+.cmnty {
+  font-family: Oswald, 'sans-serif';
+  color: $blue;
+  font-style: normal;
 }

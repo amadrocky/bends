@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Offers;
+use App\Entity\Message;
 use App\Form\OffersType;
+use App\Form\MessageType;
 use App\Repository\CategoriesRepository;
 use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
@@ -54,6 +56,7 @@ class OffersController extends AbstractController
 
     /**
      * @Route("/new", name="offers_new", methods={"GET","POST"})
+     * 
      * @param Request $request
      * @param FileUploader $fileUploader
      * @return Response
@@ -133,12 +136,31 @@ class OffersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="offers_show", methods={"GET"})
+     * @Route("/{id}", name="offers_show", methods={"GET","POST"})
+     *
+     * @param Request $request
      * @param Offers $offer
+     * @param UserRepository $userRepository
      * @return Response
      */
-    public function show(Offers $offer, UserRepository $userRepository): Response
+    public function show(Request $request, Offers $offer, UserRepository $userRepository): Response
     {
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $message->setOffer($offer);
+            $message->setCreatedAt(new \DateTime());
+            $message->setWorkflowState('created');
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre message a bien été envoyé');
+            return $this->redirectToRoute('offers_show', ['id' => $offer->getId()]);
+        }
+
         $apiRequest = json_decode(
             file_get_contents(
                 'https://api-adresse.data.gouv.fr/search/?q=' . $offer->getZipCode()
@@ -155,7 +177,8 @@ class OffersController extends AbstractController
             'author' => $author,
             'coordinates' => $coordinates,
             'today' => new \DateTime(),
-            'yesterday' => (new \DateTime())->modify('-1 day')
+            'yesterday' => (new \DateTime())->modify('-1 day'),
+            'form' => $form->createView()
         ]);
     }
 
