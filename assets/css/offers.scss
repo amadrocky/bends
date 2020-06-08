@@ -14,6 +14,10 @@
 }
 
 .photo-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
   background-color: rgba(#3f51b5, 0.5);
   color: White;
   font-size: 10px;
@@ -59,8 +63,8 @@
 }
 
 .card-image {
+  position: relative;
   min-width: 200px;
-  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 0px !important;
 }
 
@@ -120,6 +124,16 @@
 }
 
 @media screen and (max-width: 667px) {
+  .card-image {
+    min-width: 100px!important;
+    padding-top: 10%!important;
+  }
+
+  .image-card {
+    max-width: 100px;
+    max-height: 100px;
+  }
+  
   .h_iframe {
     width: auto;
   }

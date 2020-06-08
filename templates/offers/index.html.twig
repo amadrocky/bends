@@ -41,16 +41,13 @@
                     {% for offer in offers %}
                         <div class="col-12 m-1">
                             <a href="{{ path('offers_show', {'id': offer.id}) }}" class="offer-link">
-                                <div class="card offer-card flex-md-row flex-sm-wrap">
-                                    <div class="card-header card-image border-0">
+                                <div class="card offer-card flex-row">
+                                    <div class="card-header card-image bg-dark border-0 p-0">
                                         {% if offer.pictures is not empty %}
                                             <img src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}"
                                                  class="image-card d-block m-auto"
                                                  alt="photo">
-                                                 <div class="text-right" style="margin-top: -10px;">
-                                                    <span class="photo-indicator p-2 rounded-circle text-center"><i class="fas fa-camera"></i> {{ offer.pictures|length }}</span>
-                                                 </div>
-                                                 
+                                            <span class="photo-indicator p-2 rounded-circle text-center"><i class="fas fa-camera"></i> {{ offer.pictures|length }}</span>
                                         {% else %}
                                             <img src="{{ asset('build/images/picture-no-image.jpg') }}"
                                                  class="image-card d-block m-auto"
@@ -60,14 +57,14 @@
                                     <div class="card-block p-2">
                                         <div class="row">
                                             <div class="col">
-                                                <h3 class="card-title mb-4">{{ offer.title }}</h3>
+                                                <h4 class="card-title">{{ offer.title }}</h4>
                                             </div>
                                         </div>
                                         {% if offer.type.id == 2 %}
-                                            <span class="card-badge badge-pill badge-warning text-white"><b>Demande</b></span>
+                                            <span class="card-badge badge-pill badge-warning text-white" style="font-size: 12px"><b>Demande</b></span>
                                         {% endif %}
                                         {% if offer.isPro == 2 %}
-                                            <span class="card-badge badge-pill badge-primary text-white"><b>Pro</b></span>
+                                            <span class="card-badge badge-pill badge-primary text-white" style="font-size: 12px"><b>Pro</b></span>
                                         {% endif %}
                                         <p class="card-text text-dark mb-2"><b>{{ offer.category.name }}</p></b>
                                         <p class="card-text text-dark m-0">{{ offer.city }}</p>
