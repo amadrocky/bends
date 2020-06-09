@@ -45,12 +45,10 @@
                                     <div class="card-header card-image bg-dark border-0 p-0">
                                         {% if offer.pictures is not empty %}
                                             <img src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}"
-                                                 class="image-card d-block m-auto"
                                                  alt="photo">
                                             <span class="photo-indicator p-2 rounded-circle text-center"><i class="fas fa-camera"></i> {{ offer.pictures|length }}</span>
                                         {% else %}
                                             <img src="{{ asset('build/images/picture-no-image.jpg') }}"
-                                                 class="image-card d-block m-auto"
                                                  alt="photo">
                                         {% endif %}
                                     </div>

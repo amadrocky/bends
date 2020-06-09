@@ -63,19 +63,18 @@
 }
 
 .card-image {
-  position: relative;
-  min-width: 200px;
   border-radius: 0px !important;
+
+  img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+  }
 }
 
 .card-title {
   font-family: "Oswald", sans-serif;
   color: $violet;
-}
-
-.image-card {
-  max-width: 150px;
-  max-height: 150px;
 }
 
 .card-badge {
@@ -125,13 +124,13 @@
 
 @media screen and (max-width: 667px) {
   .card-image {
-    min-width: 100px!important;
-    padding-top: 10%!important;
-  }
-
-  .image-card {
-    max-width: 100px;
-    max-height: 100px;
+    padding-top: 20px!important;
+  
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
   }
   
   .h_iframe {
