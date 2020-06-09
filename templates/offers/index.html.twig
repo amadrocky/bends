@@ -7,82 +7,10 @@
         <div class="row justify-content-center p-3 w-100 m-0">
             <div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
                 <h2 class="loginTitle mb-5 text-center">Annonces</h2>
-                <div class="row justify-content-center filtersZone p-3 w-100 m-0 d-block d-md-flex">
-                    <div class="col-md-1">
-                        <a href="{{ path('offers_new') }}" class="btn btn-primary btn-block"
-                           style="box-shadow: -1px 5px 5px -4px black;"><i
-                                    class="fas fa-plus-circle"></i></a>
-                    </div>
-                    <div class="col my-1">
-                        <input type="search" class="form-control" placeholder="Rechercher">
-                    </div>
-                    <div class="col my-1">
-                        <select name="categories" id="categories" class="form-control">
-                            <option value="allCat" selected>Catégories</option>
-                            {% for categorie in categories %}
-                                <option value="{{ categorie.id }}">{{ categorie.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col my-1">
-                        <select name="categories" id="categories" class="form-control">
-                            <option value="allReg" selected>Régions</option>
-                            {% for region in regions %}
-                                <option value="{{ region.code }}">{{ region.nom }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-1">
-                        <button class="btn btn-primary btn-block" style="box-shadow: -1px 5px 5px -4px black;"><i
-                                    class="fas fa-search"></i></button>
-                    </div>
-                </div>
+                    {% include 'offers/_partials/search.html.twig' %}
                 <div class="row p-3 w-100 m-0">
                     {% for offer in offers %}
-                        <div class="col-12 m-1">
-                            <a href="{{ path('offers_show', {'id': offer.id}) }}" class="offer-link">
-                                <div class="card offer-card flex-row">
-                                    <div class="card-header card-image bg-dark border-0 p-0">
-                                        {% if offer.pictures is not empty %}
-                                            <img src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}"
-                                                 alt="photo">
-                                            <span class="photo-indicator p-2 rounded-circle"><i class="fas fa-camera"></i> {{ offer.pictures|length }}</span>
-                                        {% else %}
-                                            <img src="{{ asset('build/images/picture-no-image.jpg') }}"
-                                                 alt="photo">
-                                        {% endif %}
-                                    </div>
-                                    <div class="card-block p-2">
-                                        <div class="row">
-                                            <div class="col">
-                                                <h4 class="card-title">{{ offer.title }}</h4>
-                                            </div>
-                                        </div>
-                                        {% if offer.type.id == 2 %}
-                                            <span class="card-badge badge-pill badge-warning text-white" style="font-size: 12px"><b>Demande</b></span>
-                                        {% endif %}
-                                        {% if offer.isPro == 2 %}
-                                            <span class="card-badge badge-pill badge-primary text-white" style="font-size: 12px"><b>Pro</b></span>
-                                        {% endif %}
-                                        <p class="card-text text-dark mb-2"><b>{{ offer.category.name }}</p></b>
-                                        <p class="card-text text-dark m-0">{{ offer.city }}</p>
-                                        {% if offer.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
-                                            <small class="text-muted m-0">
-                                                Aujourd'hui, {{ offer.createdAt|date('H:i') }}
-                                            </small>
-                                        {% elseif offer.createdAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
-                                            <small class="text-muted m-0">
-                                                Hier, {{ offer.createdAt|date('H:i') }}
-                                            </small>
-                                        {% else %}
-                                            <small class="text-muted m-0">
-                                                {{ offer.createdAt|date('d-m-Y, H:i') }}
-                                            </small>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                        {% include 'offers/_partials/offer.html.twig' %}
                     {% else %}
                         <div class="col-12">
                             <p class="alert alert-primary">
