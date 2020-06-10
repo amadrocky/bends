@@ -189,6 +189,8 @@ class OffersController extends AbstractController
      *
      * @param Request $request
      * @param OffersRepository $offersRepository
+     * @param PaginatorInterface $paginator
+     * @param CategoriesRepository $categoriesRepository
      * @return Response
      */
     public function research(Request $request, OffersRepository $offersRepository, PaginatorInterface $paginator, CategoriesRepository $categoriesRepository): Response
