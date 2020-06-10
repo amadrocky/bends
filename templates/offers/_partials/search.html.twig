@@ -1,14 +1,18 @@
-<div class="row justify-content-center filtersZone p-3 w-100 m-0 d-block d-md-flex">
+<form 
+	action="{{ path('offers_research') }}" 
+	class="row justify-content-center filtersZone p-3 w-100 m-0 d-block d-md-flex"
+	method="get"
+>
 	<div class="col-md-1">
 		<a href="{{ path('offers_new') }}" class="btn btn-primary btn-block" style="box-shadow: -1px 5px 5px -4px black;">
 			<i class="fas fa-plus-circle"></i>
 		</a>
 	</div>
 	<div class="col my-1">
-		<input type="search" class="form-control" placeholder="Rechercher">
+		<input type="search" name="search" class="form-control" placeholder="Rechercher">
 	</div>
 	<div class="col my-1">
-		<select name="categories" id="categories" class="form-control">
+		<select name="category" class="form-control">
 			<option value="allCat" selected>Catégories</option>
 			{% for categorie in categories %}
 				<option value="{{ categorie.id }}">{{ categorie.name }}</option>
@@ -16,16 +20,16 @@
 		</select>
 	</div>
 	<div class="col my-1">
-		<select name="categories" id="categories" class="form-control">
+		<select name="location" class="form-control">
 			<option value="allReg" selected>Régions</option>
 			{% for region in regions %}
-				<option value="{{ region.code }}">{{ region.nom }}</option>
+				<option value="{{ region.nom }}">{{ region.nom }}</option>
 			{% endfor %}
 		</select>
 	</div>
 	<div class="col-md-1">
-		<button class="btn btn-primary btn-block" style="box-shadow: -1px 5px 5px -4px black;">
+		<button type="submit" class="btn btn-primary btn-block" style="box-shadow: -1px 5px 5px -4px black;">
 			<i class="fas fa-search"></i>
 		</button>
 	</div>
-</div>
+</form>

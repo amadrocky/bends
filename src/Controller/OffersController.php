@@ -2,18 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\Offers;
 use App\Entity\Message;
-use App\Form\OffersType;
+use App\Entity\Offers;
+use App\Entity\Research;
 use App\Form\MessageType;
+use App\Form\OffersType;
 use App\Repository\CategoriesRepository;
 use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploader;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,7 +38,7 @@ class OffersController extends AbstractController
         $offers = $paginator->paginate(
             $datas, //on passe les données
             $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
-            20 // nombre d'éléments
+            20// nombre d'éléments
         );
 
         $regions = file_get_contents("https://geo.api.gouv.fr/regions");
@@ -51,19 +50,19 @@ class OffersController extends AbstractController
             'categories' => $categoriesRepository->findAll(),
             'regions' => json_decode($regions),
             'today' => new \DateTime(),
-            'yesterday' => (new \DateTime())->modify('-1 day')
+            'yesterday' => (new \DateTime())->modify('-1 day'),
         ]);
     }
 
     /**
      * @Route("/new", name="offers_new", methods={"GET","POST"})
-     * 
+     *
      * @param Request $request
      * @param FileUploader $fileUploader
      * @return Response
      * @throws \Exception
      */
-    public function new(Request $request, FileUploader $fileUploader): Response
+    function new (Request $request, FileUploader $fileUploader): Response 
     {
         $session = $request->getSession();
         $offer = new Offers();
@@ -95,7 +94,7 @@ class OffersController extends AbstractController
                         $uploadFile = $uploadDir . basename($_FILES['img' . $i]['name']);
                         move_uploaded_file($_FILES['img' . $i]['tmp_name'], $uploadFile);
                         $files[] = basename($uploadFile);
-                    }   
+                    }
                 }
             }
 
@@ -133,12 +132,12 @@ class OffersController extends AbstractController
             'offer' => $offer,
             'form' => $form->createView(),
             'user' => $this->getUser(),
-            'cities' => $cities
+            'cities' => $cities,
         ]);
     }
 
     /**
-     * @Route("/{id}", name="offers_show", methods={"GET","POST"})
+     * @Route("/{id}", name="offers_show", requirements={"id":"\d+"})
      *
      * @param Request $request
      * @param Offers $offer
@@ -181,7 +180,62 @@ class OffersController extends AbstractController
             'coordinates' => $coordinates,
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/research", name="offers_research", methods={"GET"})
+     *
+     * @param Request $request
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function research(Request $request, OffersRepository $offersRepository, PaginatorInterface $paginator, CategoriesRepository $categoriesRepository): Response
+    {
+        $search = $_GET['search'];
+        $category = $_GET['category'];
+        $location = $_GET['location'];
+
+        if ($this->getUser()) {
+            $research = new Research();
+            $em = $this->getDoctrine()->getManager();
+            $research->setUser($this->getUser());
+            if ($category === 'allCat') {
+                $research->setCategory(null);
+            } else {
+                $research->setCategory($categoriesRepository->find($category));
+            }
+            $research->setSearch($search);
+            if ($location === 'allReg') {
+                $research->setLocation(null);
+            } else {
+                $research->setLocation($location);
+            }
+            $research->setCreatedAt(new \DateTime());
+            $research->setWorkflowState('created');
+            $em->persist($research);
+            $em->flush();
+        }
+
+        $datas = $offersRepository->getSearchResults($search, $category, $location);
+
+        $results = $paginator->paginate(
+            $datas, //on passe les données
+            $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
+            20// nombre d'éléments
+        );
+
+        $regions = file_get_contents("https://geo.api.gouv.fr/regions");
+
+        return $this->render('offers/research.html.twig', [
+            'categories' => $categoriesRepository->findAll(),
+            'regions' => json_decode($regions),
+            'user' => $this->getUser(),
+            'messages' => $request->getSession()->get('messages'),
+            'results' => $results,
+            'today' => new \DateTime(),
+            'yesterday' => (new \DateTime())->modify('-1 day'),
         ]);
     }
 

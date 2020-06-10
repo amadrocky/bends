@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Résultats de la recherche{% endblock %}
+
+{% block body %}
+    <div class="homeSection">
+        <div class="row justify-content-center p-3 w-100 m-0">
+            <div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
+                <h2 class="loginTitle mb-5 text-center">Résultats de la recherche</h2>
+                    {% include 'offers/_partials/search.html.twig' %}
+                <div class="row p-3 w-100 m-0">
+                    {% for offer in results %}
+                        {% include 'offers/_partials/offer.html.twig' %}
+                    {% else %}
+                        <div class="col-12">
+                            <p class="alert alert-primary">
+                                Aucun résultat ne correspond aux critères recherchés. <a href="{{ path('offers_index') }}">Consultez les annonces</a>.
+                            </p>
+                        </div>
+                    {% endfor %}
+                    <div class="col-12 mt-2 d-flex justify-content-center">
+                        <div>
+                            {{ knp_pagination_render(results) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

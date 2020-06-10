@@ -80,9 +80,15 @@ class User implements UserInterface
      */
     private $pseudonym;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Research", mappedBy="user")
+     */
+    private $researches;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
+        $this->researches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -276,6 +282,37 @@ class User implements UserInterface
     public function setPseudonym(string $pseudonym): self
     {
         $this->pseudonym = $pseudonym;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Research[]
+     */
+    public function getResearches(): Collection
+    {
+        return $this->researches;
+    }
+
+    public function addResearch(Research $research): self
+    {
+        if (!$this->researches->contains($research)) {
+            $this->researches[] = $research;
+            $research->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResearch(Research $research): self
+    {
+        if ($this->researches->contains($research)) {
+            $this->researches->removeElement($research);
+            // set the owning side to null (unless already changed)
+            if ($research->getUser() === $this) {
+                $research->setUser(null);
+            }
+        }
 
         return $this;
     }
