@@ -3,15 +3,13 @@
 {% block header %}
     <script type="text/javascript">
         {% for label, messages in app.flashes %}
-        {% for message in messages %}
-
-        swal({
-            title: "{{ message }}",
-            icon: "{{ label }}",
-            button: "Fermer"
-        });
-
-        {% endfor %}
+            {% for message in messages %}
+                swal({
+                    title: "{{ message }}",
+                    icon: "{{ label }}",
+                    button: "Fermer"
+                });
+            {% endfor %}
         {% endfor %}
     </script>
 
@@ -47,8 +45,10 @@
         <input type="checkbox" name="" id="side-menu-switch" checked>
         <div class="side-menu shadow-menu">
             <div class="image-menu-top mb-3"></div>
-            <form action="">
-                <input type="text" placeholder="Rechercher">
+            <form action="{{ path('offers_research') }}" method="get">
+                <input type="text" name="search" placeholder="Rechercher">
+                <input type="text" name="category" value="allCat" hidden>
+                <input type="text" name="location" value="allReg" hidden>
                 <button>
                     <i class="fas fa-search"></i>
                 </button>
