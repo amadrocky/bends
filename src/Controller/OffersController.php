@@ -218,6 +218,12 @@ class OffersController extends AbstractController
             $research->setWorkflowState('created');
             $em->persist($research);
             $em->flush();
+
+            /* Limite des 5 dernières recherches par utilisateur */
+            if (count($this->getUser()->getResearches()->getValues()) > 5) {
+                $em->remove($this->getUser()->getResearches()->getValues()[0]);
+                $em->flush();
+            }
         }
 
         $datas = $offersRepository->getSearchResults($search, $category, $location);
@@ -237,7 +243,30 @@ class OffersController extends AbstractController
             'messages' => $request->getSession()->get('messages'),
             'results' => $results,
             'today' => new \DateTime(),
-            'yesterday' => (new \DateTime())->modify('-1 day'),
+            'yesterday' => (new \DateTime())->modify('-1 day')
+        ]);
+    }
+
+    /**
+     * @Route("/research/last", name="offers_lastResearches", methods={"GET"})
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function lastResearches(Request $request) :Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $researches = array_reverse($this->getUser()->getResearches()->getValues());
+
+        return $this->render('offers/lastResearches.html.twig', [
+            'user' => $this->getUser(),
+            'messages' => $request->getSession()->get('messages'),
+            'researches' => $researches,
+            'today' => new \DateTime(),
+            'yesterday' => (new \DateTime())->modify('-1 day')
         ]);
     }
 
