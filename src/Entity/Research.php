@@ -28,11 +28,6 @@ class Research
     private $search;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Categories", cascade={"persist", "remove"})
-     */
-    private $category;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $location;
@@ -46,6 +41,11 @@ class Research
      * @ORM\Column(type="string", length=255)
      */
     private $workflowState;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Categories", inversedBy="researches")
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -72,18 +72,6 @@ class Research
     public function setSearch(?string $search): self
     {
         $this->search = $search;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Categories
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Categories $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }
@@ -120,6 +108,18 @@ class Research
     public function setWorkflowState(string $workflowState): self
     {
         $this->workflowState = $workflowState;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Categories
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Categories $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

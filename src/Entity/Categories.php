@@ -33,9 +33,15 @@ class Categories
      */
     private $offers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Research", mappedBy="category")
+     */
+    private $researches;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
+        $this->researches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,6 +98,37 @@ class Categories
             // set the owning side to null (unless already changed)
             if ($offer->getCategory() === $this) {
                 $offer->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Research[]
+     */
+    public function getResearches(): Collection
+    {
+        return $this->researches;
+    }
+
+    public function addResearch(Research $research): self
+    {
+        if (!$this->researches->contains($research)) {
+            $this->researches[] = $research;
+            $research->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResearch(Research $research): self
+    {
+        if ($this->researches->contains($research)) {
+            $this->researches->removeElement($research);
+            // set the owning side to null (unless already changed)
+            if ($research->getCategory() === $this) {
+                $research->setCategory(null);
             }
         }
 

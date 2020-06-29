@@ -9,8 +9,19 @@
                 <h2 class="loginTitle mb-3 text-center">Dernières recherches</h2>
                 <div class="row p-3 w-100 m-0">
                     {% for research in researches %}
-                        <div class="col-12 my-2 bg-white">
-                            {{ research.id }}
+                        <div class="col-12 my-2 p-2 bg-white" style="border-radius: 5px">
+                            {% if research.search %}
+                                <p>{{ research.search }}</p>
+                            {% endif %}
+                            {% if research.category %}
+                                <p>{{ research.category.name }}</p>
+                            {% endif %}
+                            {% if research.location %}
+                                <p>{{ research.location }}</p>
+                            {% endif %}
+                            <div class="text-right">
+                                <small class="text-secondary" style="font-style: italic">{{ research.createdAt|date('d-m-Y à H:i') }}</small>
+                            </div>
                         </div>
                     {% else %}
                         <div class="col-12">
