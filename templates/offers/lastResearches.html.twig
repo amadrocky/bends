@@ -5,24 +5,54 @@
 {% block body %}
     <div class="homeSection">
         <div class="row justify-content-center p-3 w-100 m-0">
-            <div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
+            <div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
                 <h2 class="loginTitle mb-3 text-center">Dernières recherches</h2>
-                <div class="row p-3 w-100 m-0">
-                    {% for research in researches %}
-                        <div class="col-12 my-2 p-2 bg-white" style="border-radius: 5px">
+                <div class="row justify-content-around p-3 w-100 m-0">
+                    {% for index, research in researches %}
+                        <form 
+                            id="searchForm{{ index }}"
+                            action="{{ path('offers_research') }}" 
+                            class="col-sm-12 col-md-8 my-2 p-2 bg-white research"
+                            method="get"
+                            onclick="submit()"
+                            key="{{ index }}"
+                        >
                             {% if research.search %}
+                                <input type="text" id="search{{ index }}"name="search" value="{{ research.search }}" hidden>
                                 <p>{{ research.search }}</p>
+                            {% else %}
+                                <input type="text" id="search{{ index }}"name="search" hidden>
                             {% endif %}
                             {% if research.category %}
+                                <input type="text" id="category{{ index }}" name="category" value="{{ research.category.id }}" hidden>
                                 <p>{{ research.category.name }}</p>
+                            {% else %}
+                                <input type="text" id="category{{ index }}" name="category" value="allCat" hidden>
                             {% endif %}
                             {% if research.location %}
+                                <input type="text" id="location{{ index }}" name="location" value="{{ research.location }}" hidden>
                                 <p>{{ research.location }}</p>
+                            {% else %}
+                                <input type="text" id="location{{ index }}" name="location" value="allReg" hidden>
                             {% endif %}
                             <div class="text-right">
-                                <small class="text-secondary" style="font-style: italic">{{ research.createdAt|date('d-m-Y à H:i') }}</small>
+                                {% if research.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
+                                    <small class="text-muted" style="font-style: italic">
+                                        Aujourd'hui,
+                                        {{ research.createdAt|date('H:i') }}
+                                    </small>
+                                {% elseif research.createdAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
+                                    <small class="text-muted" style="font-style: italic">
+                                        Hier,
+                                        {{ research.createdAt|date('H:i') }}
+                                    </small>
+                                {% else %}
+                                    <small class="text-muted" style="font-style: italic">
+                                        {{ research.createdAt|date('d-m-Y, H:i') }}
+                                    </small>
+                                {% endif %}
                             </div>
-                        </div>
+                        </form>
                     {% else %}
                         <div class="col-12">
                             <p class="alert alert-primary">
@@ -34,4 +64,10 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function submit() {
+            $("#searchForm").submit()
+        }
+    </script>
 {% endblock %}
