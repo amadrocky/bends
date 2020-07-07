@@ -64,9 +64,9 @@
                 <a href="{{ path('offers_lastResearches') }}" class="lightLink"><p><i class="fas fa-search"></i> Recherches</p></a>
                 <a href="#" class="lightLink"><p><i class="far fa-star"></i> Favoris</p></a>
                 {% if messages > 0 %}
-                    <a href="#" class="lightLink"><p><i class="far fa-envelope"></i> Messages <span class="notification-number">{{ messages }}</span></p></a>
+                    <a href="{{ path('messages_index') }}" class="lightLink"><p><i class="far fa-envelope"></i> Messages <span class="notification-number">{{ messages }}</span></p></a>
                 {% else %}
-                    <a href="#" class="lightLink"><p><i class="far fa-envelope"></i> Messages</p></a>
+                    <a href="{{ path('messages_index') }}" class="lightLink"><p><i class="far fa-envelope"></i> Messages</p></a>
                 {% endif %}
                 {% if app.user %}
                     <h4 class="text-right noDecorationLink cursorPointer mx-2" onclick="confirm()">Se déconnecter</h4>
