@@ -153,8 +153,8 @@
 									<div class="offer-contact text-center p-2 mt-2">
 										<p class="m-0"><b><i class="fas fa-comments"></i> Message direct</b></p>
 										{{ form_start(form) }}
-										{{ form_row(form.pseudonym) }}
-										{{ form_row(form.createdBy) }}
+										{{ form_row(form.pseudonym, {'attr': {'value': user.firstname}}) }}
+										{{ form_row(form.createdBy, {'attr': {'value': user.email}}) }}
 										{{ form_row(form.text) }}
 										<button class="btn btn-success btn-block my-3">{{ button_label|default('Envoyer') }}</button>
 										{{ form_end(form) }}

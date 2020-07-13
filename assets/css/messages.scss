@@ -1,0 +1,17 @@
+.message-card {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0px 2px 5px gray;
+}
+
+.message-offer-title {
+    background-color: $violet;
+    color: white;
+    box-shadow: 0px 2px 5px gray;
+}
+
+.message-author {
+    color: $violet;
+    font-weight: bold;
+}

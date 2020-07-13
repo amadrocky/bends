@@ -1,46 +1,61 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Messages{% endblock %}
+{% block title %}Messages
+{% endblock %}
 
 {% block body %}
-    <div class="homeSection">
-        <div class="row justify-content-center p-3 w-100 m-0">
-            <div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
-                <h2 class="loginTitle mb-3 text-center">Messages</h2>
-                <div class="row justify-content-around p-3 w-100 m-0">
-                    {% for message in newMessages %}
-                        <div class="col-sm-12 col-md-8 my-2 p-2 bg-white">
-                            <div>
-                                <h6>{{ message.pseudonym }}<a href="mailto:{{ message.createdBy }}"> ({{ message.createdBy }})</a></h6>
-                                <p>{{ message.text }}</p>
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
+				<h2 class="loginTitle mb-3 text-center">Messages</h2>
+				<div class="row justify-content-around p-3 w-100 m-0">
+					{% for message in newMessages %}
+						<div class="col-sm-12 col-md-8 my-2 p-2 bg-white message-card">
+							{% if message.offer.title %}
+								<a href="{{ path('offers_show', {'id': message.offer.id}) }}">
+									<div class="message-offer-title text-center py-1 mb-2">
+										<h5 class="m-0">{{ message.offer.title }}</h5>
+									</div>
+								</a>
+							{% endif %}
+							<div>
+								<h6 class="message-author">{{ message.pseudonym }} (<a href="mailto:{{ message.createdBy }}">{{ message.createdBy }}</a>)</h6>
+								<p>{{ message.text }}</p>
+							</div>
+                            <hr />
+                            <div class="d-flex">
+                                <div class="flex-fill">
+                                    <i class="fas fa-eye mx-1 text-primary"></i><i class="fas fa-exclamation-triangle mx-1 text-warning"></i><i class="far fa-trash-alt mx-1 text-danger"></i>
+                                </div>
+                                <div class="flex-fill text-right">
+                                    {% if message.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
+                                        <small class="text-muted" style="font-style: italic">
+                                            Aujourd'hui,
+                                            {{ message.createdAt|date('H:i') }}
+                                        </small>
+                                    {% elseif message.createdAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
+                                        <small class="text-muted" style="font-style: italic">
+                                            Hier,
+                                            {{ message.createdAt|date('H:i') }}
+                                        </small>
+                                    {% else %}
+                                        <small class="text-muted" style="font-style: italic">
+                                            {{ message.createdAt|date('d-m-Y, H:i') }}
+                                        </small>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <div class="text-right">
-                                {% if message.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
-                                    <small class="text-muted" style="font-style: italic">
-                                        Aujourd'hui,
-                                        {{ message.createdAt|date('H:i') }}
-                                    </small>
-                                {% elseif message.createdAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
-                                    <small class="text-muted" style="font-style: italic">
-                                        Hier,
-                                        {{ message.createdAt|date('H:i') }}
-                                    </small>
-                                {% else %}
-                                    <small class="text-muted" style="font-style: italic">
-                                        {{ message.createdAt|date('d-m-Y, H:i') }}
-                                    </small>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="col-12">
-                            <p class="alert alert-primary">
-                                Aucun nouveau message. <a href="{{ path('offers_index') }}">Consultez les annonces</a>.
-                            </p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
+						</div>
+					{% else %}
+						<div class="col-12">
+							<p class="alert alert-primary">
+								Aucun nouveau message.
+								<a href="{{ path('offers_index') }}">Consultez les annonces</a>.
+							</p>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
