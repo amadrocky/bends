@@ -9,8 +9,11 @@
 			<div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
 				<h2 class="loginTitle mb-3 text-center">Messages</h2>
 				<div class="row justify-content-around p-3 w-100 m-0">
+					{% if newMessages %}
+						{% include 'messages/_partials/actions.html.twig' %}
+					{% endif %}
 					{% for message in newMessages %}
-						<div class="col-sm-12 col-md-8 my-2 p-2 bg-white message-card">
+						<div class="col-12 my-2 p-2 bg-white message-card">
 							{% if message.offer.title %}
 								<a href="{{ path('offers_show', {'id': message.offer.id}) }}">
 									<div class="message-offer-title text-center py-1 mb-2">
@@ -25,7 +28,7 @@
                             <hr />
                             <div class="d-flex">
                                 <div class="flex-fill">
-                                    <i class="fas fa-eye mx-1 text-primary"></i><i class="fas fa-exclamation-triangle mx-1 text-warning"></i><i class="far fa-trash-alt mx-1 text-danger"></i>
+                                    <input type="checkbox" class="mx-1"><i class="fas fa-eye mx-1 text-primary"></i><i class="fas fa-exclamation-triangle mx-1 text-warning"></i><i class="far fa-trash-alt mx-1 text-danger"></i>
                                 </div>
                                 <div class="flex-fill text-right">
                                     {% if message.createdAt|date('d-m-Y') == today|date('d-m-Y') %}

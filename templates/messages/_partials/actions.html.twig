@@ -1,0 +1,16 @@
+<form action="{{ path('offers_research') }}" class="row justify-content-center filtersZone p-3 w-100 mb-2 d-block d-md-flex" method="get">
+	<div class="col mt-1">
+		<input type="checkbox" id="selectAll">
+		<label for="selectAll" class="text-white">Séléctionner tout</label>
+	</div>
+	<div class="col my-1">
+		<button class="btn btn-primary btn-block" style="box-shadow: -1px 5px 5px -4px black" title="Marquer comme lu(s)">
+			<i class="fas fa-eye"></i>
+		</button>
+	</div>
+	<div class="col my-1">
+		<button class="btn btn-danger btn-block" style="box-shadow: -1px 5px 5px -4px black   " title="Marquer comme non lu(s)">
+			<i class="fas fa-eye-slash"></i>
+		</button>
+	</div>
+</form>
