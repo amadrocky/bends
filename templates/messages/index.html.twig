@@ -28,7 +28,7 @@
                             <hr />
                             <div class="d-flex">
                                 <div class="flex-fill">
-                                    <input type="checkbox" class="mx-1"><i class="fas fa-eye mx-1 text-primary"></i><i class="fas fa-exclamation-triangle mx-1 text-warning"></i><i class="far fa-trash-alt mx-1 text-danger"></i>
+                                    <input type="checkbox" class="check mx-1"><i class="fas fa-eye mx-1 text-primary"></i><i class="fas fa-exclamation-triangle mx-1 text-warning"></i><i class="far fa-trash-alt mx-1 text-danger"></i>
                                 </div>
                                 <div class="flex-fill text-right">
                                     {% if message.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
@@ -61,4 +61,12 @@
 			</div>
 		</div>
 	</div>
+
+	<script>
+		function selectAll() {
+			$("#checkAll").click(function () {
+				$(".check").prop('checked', $(this).prop('checked'));
+			});
+		}
+	</script>
 {% endblock %}

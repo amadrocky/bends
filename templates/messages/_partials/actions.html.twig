@@ -1,7 +1,9 @@
 <form action="{{ path('offers_research') }}" class="row justify-content-center filtersZone p-3 w-100 mb-2 d-block d-md-flex" method="get">
 	<div class="col mt-1">
-		<input type="checkbox" id="selectAll">
-		<label for="selectAll" class="text-white">Séléctionner tout</label>
+		<div class="btn btn-outline-secondary btn-block">
+			<input type="checkbox" class="check" id="checkAll" onclick="selectAll()">
+		<label for="checkAll" class="text-white m-0">Séléctionner tout</label>
+		</div>
 	</div>
 	<div class="col my-1">
 		<button class="btn btn-primary btn-block" style="box-shadow: -1px 5px 5px -4px black" title="Marquer comme lu(s)">
