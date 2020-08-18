@@ -200,29 +200,33 @@ class OffersController extends AbstractController
         $location = $_GET['location'];
 
         if ($this->getUser()) {
-            $research = new Research();
-            $em = $this->getDoctrine()->getManager();
-            $research->setUser($this->getUser());
-            if ($category === 'allCat') {
-                $research->setCategory(null);
+            if ($search === '' && $category === 'allCat' && $location === 'allReg') {
+                
             } else {
-                $research->setCategory($categoriesRepository->find($category));
-            }
-            $research->setSearch($search);
-            if ($location === 'allReg') {
-                $research->setLocation(null);
-            } else {
-                $research->setLocation($location);
-            }
-            $research->setCreatedAt(new \DateTime());
-            $research->setWorkflowState('created');
-            $em->persist($research);
-            $em->flush();
-
-            /* Limite des 5 dernières recherches par utilisateur */
-            if (count($this->getUser()->getResearches()->getValues()) > 5) {
-                $em->remove($this->getUser()->getResearches()->getValues()[0]);
+                $research = new Research();
+                $em = $this->getDoctrine()->getManager();
+                $research->setUser($this->getUser());
+                if ($category === 'allCat') {
+                    $research->setCategory(null);
+                } else {
+                    $research->setCategory($categoriesRepository->find($category));
+                }
+                $research->setSearch($search);
+                if ($location === 'allReg') {
+                    $research->setLocation(null);
+                } else {
+                    $research->setLocation($location);
+                }
+                $research->setCreatedAt(new \DateTime());
+                $research->setWorkflowState('created');
+                $em->persist($research);
                 $em->flush();
+
+                /* Limite des 5 dernières recherches par utilisateur */
+                if (count($this->getUser()->getResearches()->getValues()) > 5) {
+                    $em->remove($this->getUser()->getResearches()->getValues()[0]);
+                    $em->flush();
+                }
             }
         }
 
