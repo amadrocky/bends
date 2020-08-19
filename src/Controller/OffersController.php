@@ -64,6 +64,10 @@ class OffersController extends AbstractController
      */
     function new (Request $request, FileUploader $fileUploader): Response 
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $session = $request->getSession();
         $offer = new Offers();
         $form = $this->createForm(OffersType::class, $offer);
