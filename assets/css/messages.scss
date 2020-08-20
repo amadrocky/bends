@@ -1,6 +1,4 @@
 .message-card {
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
     box-shadow: 0px 2px 5px gray;
 }
 
@@ -13,4 +11,9 @@
 .message-author {
     color: $violet;
     font-weight: bold;
+}
+
+.miniature {
+    max-height: 50px;
+    width: auto;
 }

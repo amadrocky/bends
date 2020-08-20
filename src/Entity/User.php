@@ -85,10 +85,16 @@ class User implements UserInterface
      */
     private $researches;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Discussions", mappedBy="createdBy")
+     */
+    private $discussions;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
         $this->researches = new ArrayCollection();
+        $this->discussions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -311,6 +317,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($research->getUser() === $this) {
                 $research->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Discussions[]
+     */
+    public function getDiscussions(): Collection
+    {
+        return $this->discussions;
+    }
+
+    public function addDiscussion(Discussions $discussion): self
+    {
+        if (!$this->discussions->contains($discussion)) {
+            $this->discussions[] = $discussion;
+            $discussion->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiscussion(Discussions $discussion): self
+    {
+        if ($this->discussions->contains($discussion)) {
+            $this->discussions->removeElement($discussion);
+            // set the owning side to null (unless already changed)
+            if ($discussion->getCreatedBy() === $this) {
+                $discussion->setCreatedBy(null);
             }
         }
 

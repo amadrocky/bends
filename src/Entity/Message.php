@@ -19,11 +19,6 @@ class Message
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $pseudonym;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $text;
 
     /**
@@ -42,26 +37,14 @@ class Message
     private $workflowState;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Offers", inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Discussions", inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $offer;
+    private $Discussion;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPseudonym(): ?string
-    {
-        return $this->pseudonym;
-    }
-
-    public function setPseudonym(string $pseudonym): self
-    {
-        $this->pseudonym = $pseudonym;
-
-        return $this;
     }
 
     public function getText(): ?string
@@ -112,14 +95,14 @@ class Message
         return $this;
     }
 
-    public function getOffer(): ?Offers
+    public function getDiscussion(): ?Discussions
     {
-        return $this->offer;
+        return $this->Discussion;
     }
 
-    public function setOffer(?Offers $offer): self
+    public function setDiscussion(?Discussions $Discussion): self
     {
-        $this->offer = $offer;
+        $this->Discussion = $Discussion;
 
         return $this;
     }

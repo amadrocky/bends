@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\MessageRepository;
+use App\Repository\DiscussionsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
@@ -22,19 +23,22 @@ class MessagesController extends AbstractController
      * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function index(Request $request, MessageRepository $messageRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request, DiscussionsRepository $discussionsRepository, PaginatorInterface $paginator): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $newMessages = $messageRepository->findUnreads($this->getUser());
+        $discussions = $discussionsRepository->findAll();
+
+        //$newMessages = $messageRepository->findUnreads($this->getUser());
 
         return $this->render('messages/index.html.twig', [
+            'discussions' => $discussions,
             'controller_name' => 'MessagesController',
             'user' => $this->getUser(),
             'messages' => $request->getSession()->get('messages'),
-            'newMessages' => $newMessages,
+            //'newMessages' => $newMessages,
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day')
         ]);

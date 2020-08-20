@@ -15,26 +15,12 @@ class MessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pseudonym', TextType::class, [
-                'label' => false,
-                'attr' => [
-                    'placeholder' => 'Nom (ou pseudo)'
-                ]
-            ])
             ->add('text', TextareaType::class, [
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'Votre message ici ...'
                 ]
             ])
-            ->add('createdBy', EmailType::class, [
-                'label' => false,
-                'attr' => [
-                    'placeholder' => 'Email'
-                ]
-            ])
-            // ->add('createdAt')
-            // ->add('workflowState')
         ;
     }
 

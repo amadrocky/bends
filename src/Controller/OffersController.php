@@ -156,8 +156,8 @@ class OffersController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $message->setOffer($offer);
             $message->setCreatedAt(new \DateTime());
+            $message->setCreatedBy($this->getUser());
             $message->setWorkflowState('created');
             $entityManager->persist($message);
             $entityManager->flush();

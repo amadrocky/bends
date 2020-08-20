@@ -131,8 +131,13 @@
 							<div class="collapse w-75 mx-auto" id="collapseAuthor">
 								{% if author %}
 									<div class="offer-contact text-center p-2 mt-2">
-										<h4 class="mb-0"><i class="fas fa-user"></i> {{ author.pseudonym }}</h4>
-										<p class="m-0"><em class="bnds">Bends</em> <em class="cmnty">community</em></p>
+										<h4 class="mb-0">
+											<i class="fas fa-user"></i>
+											{{ author.pseudonym }}</h4>
+										<p class="m-0">
+											<em class="bnds">Bends</em>
+											<em class="cmnty">community</em>
+										</p>
 									</div>
 								{% endif %}
 								<div class="offer-contact m-3 p-3 mx-auto text-center">
@@ -140,22 +145,28 @@
 										<i class="fas fa-envelope"></i>
 										<b>Adresse email</b>
 									</p>
-									<p><a href="mailto:{{ offer.createdBy }}">{{ offer.createdBy }}</a></p>
+									<p>
+										<a href="mailto:{{ offer.createdBy }}">{{ offer.createdBy }}</a>
+									</p>
 									{% if not offer.phoneVisible %}
 										<p>
 											<i class="fas fa-phone"></i>
 											<b>Numéro de téléphone</b>
 										</p>
-										<p><a href="tel:{{ offer.phoneNumber }}">{{ offer.phoneNumber }}</a></p>
+										<p>
+											<a href="tel:{{ offer.phoneNumber }}">{{ offer.phoneNumber }}</a>
+										</p>
 									{% endif %}
 								</div>
 								{% if user %}
 									{% if author %}
 										<div class="offer-contact text-center p-2 mt-2">
-											<p class="m-0"><b><i class="fas fa-comments"></i> Message direct</b></p>
+											<p class="m-0">
+												<b>
+													<i class="fas fa-paper-plane"></i>
+													Message direct</b>
+											</p>
 											{{ form_start(form) }}
-											{{ form_row(form.pseudonym, {'attr': {'value': user.pseudonym}}) }}
-											{{ form_row(form.createdBy, {'attr': {'value': user.email}}) }}
 											{{ form_row(form.text) }}
 											<button class="btn btn-success btn-block my-3">{{ button_label|default('Envoyer') }}</button>
 											{{ form_end(form) }}

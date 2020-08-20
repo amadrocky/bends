@@ -95,9 +95,15 @@ class Offers
      */
     private $messages;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Discussions", mappedBy="offer")
+     */
+    private $discussions;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->discussions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -298,6 +304,37 @@ class Offers
             // set the owning side to null (unless already changed)
             if ($message->getOffer() === $this) {
                 $message->setOffer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Discussions[]
+     */
+    public function getDiscussions(): Collection
+    {
+        return $this->discussions;
+    }
+
+    public function addDiscussion(Discussions $discussion): self
+    {
+        if (!$this->discussions->contains($discussion)) {
+            $this->discussions[] = $discussion;
+            $discussion->setOffer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiscussion(Discussions $discussion): self
+    {
+        if ($this->discussions->contains($discussion)) {
+            $this->discussions->removeElement($discussion);
+            // set the owning side to null (unless already changed)
+            if ($discussion->getOffer() === $this) {
+                $discussion->setOffer(null);
             }
         }
 
