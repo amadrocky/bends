@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Discussions;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -17,6 +18,28 @@ class DiscussionsRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Discussions::class);
+    }
+
+    /**
+     * User discussions
+     *
+     * @param User $user
+     * @return void
+     */
+    public function findByUser(User $user)
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.createdBy = :user')
+            ->orWhere('d.user = :user')
+            ->andWhere('d.workflowState = :workflow_state')
+            ->setParameters([
+                'user' => $user,
+                'workflow_state' => 'created'
+                ])
+            ->orderBy('d.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     // /**

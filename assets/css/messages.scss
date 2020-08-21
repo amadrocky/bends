@@ -1,5 +1,7 @@
 .message-card {
     box-shadow: 0px 2px 5px gray;
+    max-height: 90px;
+    overflow: hidden;
 }
 
 .message-offer-title {
@@ -8,12 +10,31 @@
     box-shadow: 0px 2px 5px gray;
 }
 
+.message-preview {
+    text-overflow: ellipsis;
+}
+
 .message-author {
     color: $violet;
     font-weight: bold;
 }
 
 .miniature {
-    max-height: 50px;
+    max-height: 70px;
     width: auto;
+}
+
+.message-user {
+    font-family: Oswald, "sans-serif";
+    color: $violet;
+    font-size: 18px;
+}
+
+.discussion-link {
+    color: black;
+}
+
+.discussion-link:hover {
+    color: black;
+    text-decoration: none;
 }
