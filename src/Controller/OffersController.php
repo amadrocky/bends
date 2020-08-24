@@ -174,13 +174,13 @@ class OffersController extends AbstractController
 
         $coordinates = $apiRequest['features'][0]['geometry']['coordinates'];
 
-        $author = $userRepository->findByEmail($offer->getCreatedBy());
+        //$author = $userRepository->findByEmail($offer->getCreatedBy());
 
         return $this->render('offers/show.html.twig', [
             'offer' => $offer,
             'user' => $this->getUser(),
             'messages' => $request->getSession()->get('messages'),
-            'author' => $author,
+            //'author' => $author,
             'coordinates' => $coordinates,
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),

@@ -90,6 +90,11 @@ class User implements UserInterface
      */
     private $discussions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Offers", mappedBy="createdBy")
+     */
+    private $offers;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -348,6 +353,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($discussion->getCreatedBy() === $this) {
                 $discussion->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Offers[]
+     */
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    public function addOffer(Offers $offer): self
+    {
+        if (!$this->offers->contains($offer)) {
+            $this->offers[] = $offer;
+            $offer->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(Offers $offer): self
+    {
+        if ($this->offers->contains($offer)) {
+            $this->offers->removeElement($offer);
+            // set the owning side to null (unless already changed)
+            if ($offer->getCreatedBy() === $this) {
+                $offer->setCreatedBy(null);
             }
         }
 

@@ -67,11 +67,6 @@ class Offers
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $createdBy;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $context;
 
     /**
@@ -99,6 +94,11 @@ class Offers
      * @ORM\OneToMany(targetEntity="App\Entity\Discussions", mappedBy="offer")
      */
     private $discussions;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="offers")
+     */
+    private $createdBy;
 
     public function __construct()
     {
@@ -219,18 +219,6 @@ class Offers
         return $this;
     }
 
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(?string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
     public function getContext(): ?string
     {
         return $this->context;
@@ -337,6 +325,18 @@ class Offers
                 $discussion->setOffer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }
