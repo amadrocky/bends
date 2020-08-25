@@ -3,4 +3,29 @@
 {% block title %}Discussion
 {% endblock %}
 
-{% block body %}{% endblock %}
+{% block body %}
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col col-md-4 col-lg-8 loginBlock h-100 p-2">
+				<div class="d-flex justify-content-between h-100 chat-title-bar p-2 mb-1">
+					<div>
+						<h2 class="loginTitle mb-1">{{ discussion.offer.createdBy.pseudonym }}</h2>
+						<h5>{{ discussion.offer.title }}</h5>
+					</div>
+					<a href="{{ path('offers_show', {'id': discussion.offer.id}) }}" class="discussion-link">
+						{% if discussion.offer.pictures is not empty %}
+							<img src="{{ asset('build/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
+						{% else %}
+							<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
+						{% endif %}
+					</a>
+				</div>
+				<div class="p-2 chat-section">
+					{% for message in discussion.messages %}
+						{{ message.text }}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
