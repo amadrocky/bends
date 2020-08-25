@@ -1,149 +1,146 @@
+.giver {
+    font-family: 'Oswald', sans-serif;
+}
+
 .subtitleZone {
-  background-color: $violet;
-  box-shadow: -1px 5px 5px -4px gray;
+    background-color: $violet;
+    box-shadow: -1px 5px 5px -4px gray;
 }
 
 .filtersZone {
-  background-color: $violet;
-  box-shadow: -1px 5px 5px -4px gray;
+    background-color: $violet;
+    box-shadow: -1px 5px 5px -4px gray;
 }
 
 .position-icon {
-  font-size: 50px;
-  color: $violet;
+    font-size: 50px;
+    color: $violet;
 }
 
 .photo-indicator {
-  position: absolute;
-  bottom: 0;
-  left: 115px;
-  display: block;
-  background-color: rgba(#3f51b5, 0.5);
-  color: White;
-  font-size: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 115px;
+    display: block;
+    background-color: rgba(#3f51b5, 0.5);
+    color: White;
+    font-size: 10px;
 }
 
 .input-photo {
-  max-height: 200px;
-  max-width: 300px;
+    max-height: 200px;
+    max-width: 300px;
 }
 
 .img-offers {
-  padding: 10px;
-  border: 1px dashed $violet;
-  border-radius: 5px;
+    padding: 10px;
+    border: 1px dashed $violet;
+    border-radius: 5px;
 }
 
 .offer-pictures {
-  max-width: 200px;
-  max-height: 200px;
+    max-width: 200px;
+    max-height: 200px;
 }
 
 .pswp img {
-  max-width: none;
-  object-fit: contain;
+    max-width: none;
+    object-fit: contain;
 }
 
 .demo-gallery {
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
 }
 
 .demo-gallery a:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .offer-card {
-  border: none;
-  box-shadow: 2px 2px 20px darkgrey;
+    border: none;
+    box-shadow: 2px 2px 20px darkgrey;
 }
 
 .offer-link:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .card-image {
-  border-radius: 0px !important;
-
-  img {
-    width: 150px;
-    height: 150px;
-    object-fit: contain;
-  }
+    border-radius: 0px !important;
+    img {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+    }
 }
 
 .card-title {
-  font-family: "Oswald", sans-serif;
-  color: $violet;
+    font-family: "Oswald", sans-serif;
+    color: $violet;
 }
 
 .card-badge {
-  box-shadow: -1px 5px 5px -4px gray;
+    box-shadow: -1px 5px 5px -4px gray;
 }
 
 .offer-title {
-  font-family: Oswald, "sans-serif";
+    font-family: Oswald, "sans-serif";
 }
 
 .h_iframe iframe {
-  width: 100%;
+    width: 100%;
 }
 
 .h_iframe i {
-  color: $violet;
+    color: $violet;
 }
 
 .offer-contact {
-  border: 1px solid $violet !important;
-  border-radius: 5px !important;
-
-  p {
-    margin-bottom: 5px !important;
-  }
-
-  i {
-    color: $violet;
-  }
+    border: 1px solid $violet !important;
+    border-radius: 5px !important;
+    p {
+        margin-bottom: 5px !important;
+    }
+    i {
+        color: $violet;
+    }
 }
 
 .CGU {
-  border: 1px dashed $violet;
-  border-radius: 5px;
+    border: 1px dashed $violet;
+    border-radius: 5px;
 }
 
 .page-link {
-  color: $violet!important;
-  background-color: white!important;
+    color: $violet!important;
+    background-color: white!important;
 }
 
 .page-item.active .page-link {
-  color: white!important;
-  background-color: $violet!important;
-  border-color: $violet!important;
+    color: white!important;
+    background-color: $violet!important;
+    border-color: $violet!important;
 }
 
 @media screen and (max-width: 667px) {
-  .card-image {
-    padding-top: 20px!important;
-  
-    img {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
+    .card-image {
+        padding-top: 20px!important;
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
     }
-  }
-  
-  .h_iframe {
-    width: auto;
-  }
-
-  .offer-pictures-zone {
-    width: auto;
-  }
-
-  .photo-indicator {
-    position: absolute;
-    bottom: 0;
-    left: 65px;
-  }
+    .h_iframe {
+        width: auto;
+    }
+    .offer-pictures-zone {
+        width: auto;
+    }
+    .photo-indicator {
+        position: absolute;
+        bottom: 0;
+        left: 65px;
+    }
 }

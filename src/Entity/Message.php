@@ -22,11 +22,6 @@ class Message
     private $text;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $createdBy;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -42,6 +37,12 @@ class Message
      */
     private $Discussion;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $createdBy;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,18 +56,6 @@ class Message
     public function setText(string $text): self
     {
         $this->text = $text;
-
-        return $this;
-    }
-
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
 
         return $this;
     }
@@ -103,6 +92,18 @@ class Message
     public function setDiscussion(?Discussions $Discussion): self
     {
         $this->Discussion = $Discussion;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Entity\Discussions;
 use App\Entity\Offers;
 use App\Entity\Research;
 use App\Form\MessageType;
@@ -145,20 +146,32 @@ class OffersController extends AbstractController
      *
      * @param Request $request
      * @param Offers $offer
-     * @param UserRepository $userRepository
      * @return Response
      */
-    public function show(Request $request, Offers $offer, UserRepository $userRepository): Response
+    public function show(Request $request, Offers $offer): Response
     {
+        $discussion = new Discussions();
         $message = new Message();
+        $now = new \DateTime();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $message->setCreatedAt(new \DateTime());
+
+            $discussion->setCreatedBy($this->getUser());
+            $discussion->setCreatedAt($now);
+            $discussion->setModifiedAt($now);
+            $discussion->setWorkflowState('created');
+            $discussion->setOffer($offer);
+            $discussion->setUser($offer->getCreatedBy());
+            $entityManager->persist($discussion);
+            $entityManager->flush();
+
+            $message->setCreatedAt($now);
             $message->setCreatedBy($this->getUser());
             $message->setWorkflowState('created');
+            $message->setDiscussion($discussion);
             $entityManager->persist($message);
             $entityManager->flush();
 
@@ -174,13 +187,10 @@ class OffersController extends AbstractController
 
         $coordinates = $apiRequest['features'][0]['geometry']['coordinates'];
 
-        //$author = $userRepository->findByEmail($offer->getCreatedBy());
-
         return $this->render('offers/show.html.twig', [
             'offer' => $offer,
             'user' => $this->getUser(),
             'messages' => $request->getSession()->get('messages'),
-            //'author' => $author,
             'coordinates' => $coordinates,
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),

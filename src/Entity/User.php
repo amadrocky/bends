@@ -95,11 +95,17 @@ class User implements UserInterface
      */
     private $offers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="createdBy")
+     */
+    private $messages;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
         $this->researches = new ArrayCollection();
         $this->discussions = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -384,6 +390,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($offer->getCreatedBy() === $this) {
                 $offer->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getCreatedBy() === $this) {
+                $message->setCreatedBy(null);
             }
         }
 
