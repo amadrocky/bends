@@ -85,3 +85,9 @@
         font-size: 40px;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .chat-section::-webkit-scrollbar {
+        display: none;
+    }
+}
