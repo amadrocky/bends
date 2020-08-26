@@ -23,19 +23,24 @@
 				<div class="p-2 chat-section">
 					{% for message in discussion.messages %}
 						{% if message.createdBy == app.user %}
-							<div class="chat-text-user p-2 mb-2">
-								{{ message.text }}
+							<div class="d-flex justify-content-end">
+								<div class="chat-text-user p-2 mb-2 w-75">
+									{{ message.text }}
+								</div>
 							</div>
 						{% else %}
-							<div class="chat-text-member p-2 mb-2">
-								{{ message.text }}
+							<div class="d-flex justify-content-start">
+								<div class="chat-text-member p-2 mb-2 w-75">
+									{{ message.text }}
+								</div>
 							</div>
 						{% endif %}
 					{% endfor %}
 				</div>
 				<div class="bg-white d-flex p-2">
 					<div class="file-selector d-flex align-items-center">
-						<i class="far fa-file-image"></i>
+						<i class="far fa-file-image" onClick="addFile()"></i>
+						<input type="file" id="fname" name="fname" accept="image/x-png,image/gif,image/jpeg" hidden>
 					</div>
 					<div class="flex-grow-1 mx-1">
 						<textarea name="message" id="message" placeholder="Votre message ici ..." class="form-control"></textarea>
@@ -54,5 +59,9 @@
 		}
 
 		scrollToBottom();
+
+		function addFile() {
+			document.querySelector("#fname").click()
+		}
 	</script>
 {% endblock %}

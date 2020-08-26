@@ -51,6 +51,19 @@
     overflow-y: auto;
 }
 
+.chat-section::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-section::-webkit-scrollbar-thumb {
+    background-color: $violet;
+    border-radius: 10px !important;
+}
+
+.chat-section::-webkit-scrollbar-track {
+    background-color: whitesmoke;
+}
+
 .chat-text-user {
     background-color: rgba(63, 81, 181, 0.8);
     color: white;
