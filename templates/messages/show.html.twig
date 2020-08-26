@@ -14,18 +14,45 @@
 					</div>
 					<a href="{{ path('offers_show', {'id': discussion.offer.id}) }}" class="discussion-link">
 						{% if discussion.offer.pictures is not empty %}
-							<img src="{{ asset('build/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
+							<img src="{{ asset('build/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="img-thumbnail miniature mx-1" alt="miniature">
 						{% else %}
-							<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
+							<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="img-thumbnail miniature mx-1" alt="photo">
 						{% endif %}
 					</a>
 				</div>
 				<div class="p-2 chat-section">
 					{% for message in discussion.messages %}
-						{{ message.text }}
+						{% if message.createdBy == app.user %}
+							<div class="chat-text-user p-2 mb-2">
+								{{ message.text }}
+							</div>
+						{% else %}
+							<div class="chat-text-member p-2 mb-2">
+								{{ message.text }}
+							</div>
+						{% endif %}
 					{% endfor %}
+				</div>
+				<div class="bg-white d-flex p-2">
+					<div class="file-selector d-flex align-items-center">
+						<i class="far fa-file-image"></i>
+					</div>
+					<div class="flex-grow-1 mx-1">
+						<textarea name="message" id="message" placeholder="Votre message ici ..." class="form-control"></textarea>
+					</div>
+					<div class="d-flex align-items-center">
+						<button class="btn btn-primary">Envoyer</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<script>
+		function scrollToBottom() {
+			document.querySelector(".chat-section").scroll(0, 1000);
+		}
+
+		scrollToBottom();
+	</script>
 {% endblock %}
