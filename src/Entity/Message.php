@@ -17,7 +17,7 @@ class Message
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $text;
 
@@ -44,9 +44,9 @@ class Message
     private $createdBy;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="json", nullable=true)
      */
-    private $file;
+    private $file = [];
 
     public function getId(): ?int
     {
@@ -113,12 +113,12 @@ class Message
         return $this;
     }
 
-    public function getFile(): ?string
+    public function getFile(): ?array
     {
         return $this->file;
     }
 
-    public function setFile(?string $file): self
+    public function setFile(?array $file): self
     {
         $this->file = $file;
 

@@ -86,6 +86,11 @@
     }
 }
 
+.image-sent {
+    max-width: 200px;
+    height: auto;
+}
+
 @media screen and (max-width: 768px) {
     .chat-section::-webkit-scrollbar {
         display: none;

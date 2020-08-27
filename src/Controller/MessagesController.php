@@ -10,6 +10,7 @@ use App\Repository\MessageRepository;
 use App\Repository\DiscussionsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Discussions;
+use App\Entity\Message;
 
 /**
  * @Route("/messages", name="messages_")
@@ -56,9 +57,40 @@ class MessagesController extends AbstractController
         }
 
         if ($discussion->getCreatedBy() != $this->getUser() && $discussion->getUser() != $this->getUser()) {
-
-            $this->addFlash('error', 'Accès refusé');
             return $this->redirectToRoute('home');
+        }
+
+        if (isset($_FILES['fname']['name']) || isset($_POST['message'])) {
+            $files = [];
+
+            if ($_FILES['fname']['name'] !== "" || $_POST['message'] !== "") {
+                $message = new Message();
+                $entityManager = $this->getDoctrine()->getManager();
+
+                if ($_FILES['fname']['name'] !== "") {
+                    $uploadDir = $_SERVER['PWD'] . '/assets/static/images/messages/';
+                    $uploadFile = $uploadDir . basename($_FILES['fname']['name']);
+                    move_uploaded_file($_FILES['fname']['tmp_name'], $uploadFile);
+                    $files[] = basename($uploadFile);
+
+                    $message->setfile($files);
+                }
+
+                if ($_POST['message'] !== "") {
+                    $message->setText($_POST['message']);
+                }
+
+                $message->setCreatedAt(new \DateTime());
+                $message->setCreatedBy($this->getUser());
+                $message->setDiscussion($discussion);
+                $message->setWorkflowState('created');
+                $entityManager->persist($message);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Message envoyé');
+            } else {
+                $this->addFlash('error', 'Aucune donnée saisie');
+            }
         }
         
         return $this->render('messages/show.html.twig', [
