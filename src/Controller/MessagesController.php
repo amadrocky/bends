@@ -60,6 +60,18 @@ class MessagesController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        $discussionMessages = $discussion->getMessages();
+        
+        /** Marque les messages lus en accédant à la discussion. */
+        foreach ($discussionMessages as $message) {
+            if ($message->getCreatedBy() !== $this->getUser() && $message->getWorkflowstate() === "created") {
+                $entityManager = $this->getDoctrine()->getManager();
+                $message->setWorkflowstate("read");
+                $entityManager->persist($message);
+                $entityManager->flush();
+            }
+        }
+
         if (isset($_FILES['fname']['name']) || isset($_POST['message'])) {
             $files = [];
 

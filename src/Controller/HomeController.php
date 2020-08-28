@@ -20,9 +20,10 @@ class HomeController extends AbstractController
     public function index(Request $request, MessageRepository $message): Response
     {
         $messages = 0;
-        // if ($this->getUser()) {
-        //     $messages = count($message->findUnreads($this->getUser()));
-        // }
+        
+        if ($this->getUser()) {
+            $messages = count($message->findUnreads($this->getUser()));
+        }
 
         $request->getSession()->set('messages', $messages);
 

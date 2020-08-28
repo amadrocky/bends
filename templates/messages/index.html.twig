@@ -11,9 +11,18 @@
 				<div class="row justify-content-around p-3 w-100 m-0">
 					{% include 'messages/_partials/actions.html.twig' %}
 					{% for discussion in discussions %}
+						{% set newMessages = false %}
+						{% for message in discussion.messages %}
+							{% if message.workflowstate == "created" %}
+								{% set newMessages = true %}
+							{% endif %}
+						{% endfor %}
 						<div class="col-12 my-2 p-2 bg-white message-card">
 							<a href="{{ path('messages_discussion', {'id': discussion.id}) }}" class="discussion-link">
 								<div class="d-flex">
+									<div class="d-flex flex-columns align-items-center">
+										<input type="checkbox" class="check">
+									</div>
 									{% if discussion.offer.pictures is not empty %}
 										<img src="{{ asset('build/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
 									{% else %}
@@ -36,10 +45,12 @@
 										</div>
 										<div class="message-preview">
 											<span class="text-muted">{{ discussion.messages[discussion.messages|length -1].createdAt|date('d/m') }}</span>
-											-
-											{{ discussion.messages[discussion.messages|length -1].text }}</div>
+											{% if newMessages %}
+												<i class="fas fa-circle text-danger"></i>
+											{% endif %}
+										</div>
 									</div>
-									<div>
+									<div class="d-flex flex-columns align-items-center">
 										<i class="fas fa-ellipsis-v"></i>
 									</div>
 								</div>

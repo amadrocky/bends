@@ -18,6 +18,9 @@
             <div class="col-4 my-auto">
                 <img class="menuButton cursorPointer" src="{{ asset('build/icons/iconmonstr-menu-5.svg') }}"
                      alt="Boutton Menu" onclick="actionMenu()" style="color: #3f51b5">
+                {% if messages > 0 %}
+                    <i class="fas fa-comment-alt text-danger" style="margin-left: -12px;"></i>
+                {% endif %}
             </div>
             <div class="col-4 my-auto">
                 <a href="{{ path('home') }}" class="noDecorationLink">

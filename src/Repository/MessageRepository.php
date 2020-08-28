@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Message;
 use App\Entity\User;
+use App\Entity\Discussions;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -21,7 +22,7 @@ class MessageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get unread messages
+     * Get unreads messages
      *
      * @param User $user
      * @return array
@@ -29,14 +30,14 @@ class MessageRepository extends ServiceEntityRepository
     public function findUnreads(User $user): array
     {
         return $this->createQueryBuilder('m')
-            ->innerJoin('m.offer', 'o')
+            ->join(Discussions::class, 'd')
             ->where('m.workflowState = :workflowState')
-            ->andWhere('o.createdBy = :user')
+            ->andWhere('d.createdBy = :user OR d.user = :user')
+            ->andWhere('m.createdBy != :user')
             ->setParameters([
-                'user' => $user->getEmail(),
+                'user' => $user,
                 'workflowState' => 'created',
             ])
-            ->orderBy('m.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;
