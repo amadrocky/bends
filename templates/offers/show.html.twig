@@ -124,53 +124,59 @@
 							{% endif %}
 							<p>Catégorie :
 								{{ offer.category.name }}</p>
-							<button class="btn btn-primary mx-auto w-75" type="button" data-toggle="collapse" data-target="#collapseAuthor" aria-expanded="false" aria-controls="collapseExample">
-								<i class="fas fa-comments"></i>
-								Contacter l'annonceur
-							</button>
-							<div class="collapse w-75 mx-auto" id="collapseAuthor">
-								<div class="offer-contact text-center p-2 mt-2">
-									<h4 class="giver mb-0">
-										<i class="fas fa-user"></i>
-										{{ offer.createdBy.pseudonym }}</h4>
+							{% if user == offer.createdBy %}
+								<div class="alert alert-info text-center" role="alert">
+									Votre annonce
 								</div>
-								<div class="offer-contact m-3 p-3 mx-auto text-center">
-									<p>
-										<i class="fas fa-envelope"></i>
-										<b>Adresse email</b>
-									</p>
-									<p>
-										<a href="mailto:{{ offer.createdBy.email }}">{{ offer.createdBy.email }}</a>
-									</p>
-									{% if not offer.phoneVisible %}
+							{% else %}
+								<button class="btn btn-primary mx-auto w-75" type="button" data-toggle="collapse" data-target="#collapseAuthor" aria-expanded="false" aria-controls="collapseExample">
+									<i class="fas fa-comments"></i>
+									Contacter l'annonceur
+								</button>
+								<div class="collapse w-75 mx-auto" id="collapseAuthor">
+									<div class="offer-contact text-center p-2 mt-2">
+										<h4 class="giver mb-0">
+											<i class="fas fa-user"></i>
+											{{ offer.createdBy.pseudonym }}</h4>
+									</div>
+									<div class="offer-contact m-3 p-3 mx-auto text-center">
 										<p>
-											<i class="fas fa-phone"></i>
-											<b>Numéro de téléphone</b>
+											<i class="fas fa-envelope"></i>
+											<b>Adresse email</b>
 										</p>
 										<p>
-											<a href="tel:{{ offer.phoneNumber }}">{{ offer.phoneNumber }}</a>
+											<a href="mailto:{{ offer.createdBy.email }}">{{ offer.createdBy.email }}</a>
 										</p>
+										{% if not offer.phoneVisible %}
+											<p>
+												<i class="fas fa-phone"></i>
+												<b>Numéro de téléphone</b>
+											</p>
+											<p>
+												<a href="tel:{{ offer.phoneNumber }}">{{ offer.phoneNumber }}</a>
+											</p>
+										{% endif %}
+									</div>
+									{% if user %}
+										<div class="offer-contact text-center p-2 mt-2">
+											<p class="m-0">
+												<b>
+													<i class="fas fa-paper-plane"></i>
+													Message direct</b>
+											</p>
+											{{ form_start(form) }}
+											{{ form_row(form.text) }}
+											<button class="btn btn-success btn-block my-3">{{ button_label|default('Envoyer') }}</button>
+											{{ form_end(form) }}
+										</div>
+									{% else %}
+										<a href="{{ path('app_login') }}" class="btn btn-success btn-block text-white">
+											<i class="fas fa-envelope"></i>
+											Envoyez un message en vous identifiant ou créez un compte gratuitement
+										</a>
 									{% endif %}
 								</div>
-								{% if user %}
-									<div class="offer-contact text-center p-2 mt-2">
-										<p class="m-0">
-											<b>
-												<i class="fas fa-paper-plane"></i>
-												Message direct</b>
-										</p>
-										{{ form_start(form) }}
-										{{ form_row(form.text) }}
-										<button class="btn btn-success btn-block my-3">{{ button_label|default('Envoyer') }}</button>
-										{{ form_end(form) }}
-									</div>
-								{% else %}
-									<a href="{{ path('app_login') }}" class="btn btn-success btn-block text-white">
-										<i class="fas fa-envelope"></i>
-										Envoyez un message en vous identifiant ou créez un compte gratuitement
-									</a>
-								{% endif %}
-							</div>
+							{% endif %}
 						</div>
 					</div>
 					<div class="card h_iframe m-2 p-2">
