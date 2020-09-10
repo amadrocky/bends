@@ -13,7 +13,7 @@
 					{% for discussion in discussions %}
 						{% set newMessages = false %}
 						{% for message in discussion.messages %}
-							{% if message.workflowstate == "created" %}
+							{% if message.workflowstate == "created" and message.createdBy != app.user %}
 								{% set newMessages = true %}
 							{% endif %}
 						{% endfor %}

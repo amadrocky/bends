@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Discussions;
 use App\Entity\User;
+use App\Entity\Offers;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -39,6 +40,34 @@ class DiscussionsRepository extends ServiceEntityRepository
             ->orderBy('d.id', 'DESC')
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    /**
+     * Users discussion about offer
+     *
+     * @param User $user1
+     * @param User $user2
+     * @param Offers $offer
+     * @return void
+     */
+    public function findByUsersAndOffer(User $user1, User $user2, Offers $offer)
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.createdBy = :user1')
+            ->orWhere('d.createdBy = :user2')
+            ->andWhere('d.user = :user1')
+            ->orWhere('d.user = :user2')
+            ->andWhere('d.offer = :offer')
+            ->andWhere('d.workflowState = :workflow_state')
+            ->setParameters([
+                'user1' => $user1,
+                'user2' => $user2,
+                'offer' => $offer,
+                'workflow_state' => 'created'
+                ])
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 

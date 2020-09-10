@@ -11,6 +11,7 @@ use App\Form\OffersType;
 use App\Repository\CategoriesRepository;
 use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
+use App\Repository\DiscussionsRepository;
 use App\Service\FileUploader;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -148,7 +149,7 @@ class OffersController extends AbstractController
      * @param Offers $offer
      * @return Response
      */
-    public function show(Request $request, Offers $offer): Response
+    public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository): Response
     {
         $discussion = new Discussions();
         $message = new Message();
@@ -159,14 +160,20 @@ class OffersController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
-            $discussion->setCreatedBy($this->getUser());
-            $discussion->setCreatedAt($now);
-            $discussion->setModifiedAt($now);
-            $discussion->setWorkflowState('created');
-            $discussion->setOffer($offer);
-            $discussion->setUser($offer->getCreatedBy());
-            $entityManager->persist($discussion);
-            $entityManager->flush();
+            /** Cas où une discussion existe déja entre les utilisateurs sur l'offre. */
+            $existingDiscussion = $discussionsRepository->findByUsersAndOffer($this->getUser(), $offer->getCreatedBy(), $offer);
+            if ($existingDiscussion === null) {
+                $discussion->setCreatedBy($this->getUser());
+                $discussion->setCreatedAt($now);
+                $discussion->setModifiedAt($now);
+                $discussion->setWorkflowState('created');
+                $discussion->setOffer($offer);
+                $discussion->setUser($offer->getCreatedBy());
+                $entityManager->persist($discussion);
+                $entityManager->flush();
+            } else {
+                $discussion = $existingDiscussion;
+            }
 
             $message->setCreatedAt($now);
             $message->setCreatedBy($this->getUser());
