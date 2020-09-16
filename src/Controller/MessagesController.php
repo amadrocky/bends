@@ -31,7 +31,13 @@ class MessagesController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $discussions = $discussionsRepository->findByUser($this->getUser());
+        $datas = $discussionsRepository->findByUser($this->getUser());
+
+        $discussions = $paginator->paginate(
+            $datas, //on passe les données
+            $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
+            10// nombre d'éléments
+        );
 
         return $this->render('messages/index.html.twig', [
             'discussions' => $discussions,
