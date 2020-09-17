@@ -9,7 +9,19 @@
 			<div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
 				<h2 class="loginTitle mb-3 text-center">Messages</h2>
 				<div class="row justify-content-around p-3 w-100 m-0">
-					{% include 'messages/_partials/actions.html.twig' %}
+					<div class="row justify-content-center filtersZone p-3 w-100 mb-2 d-block d-md-flex">
+						<div class="col mt-1">
+							<div class="text-white text-center py-1" style="border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 5px;">
+								<input type="checkbox" class="check" id="checkAll" onclick="selectAll()">
+								<label for="checkAll" class="text-white m-0">Séléctionner tout</label>
+							</div>
+						</div>
+						<div class="col my-1">
+							<button class="btn btn-danger btn-block" style="box-shadow: -1px 5px 5px -4px black   " title="Marquer comme non lu(s)">
+								<i class="far fa-trash-alt"></i>
+							</button>
+						</div>
+					</div>
 					{% for discussion in discussions %}
 						{% set newMessages = false %}
 						{% for message in discussion.messages %}
@@ -21,7 +33,7 @@
 							<a href="{{ path('messages_discussion', {'id': discussion.id}) }}" class="discussion-link">
 								<div class="d-flex">
 									<div class="d-flex flex-columns align-items-center">
-										<input type="checkbox" class="check">
+										<input type="checkbox" class="check" name="messages[]" value="{{ discussion.id }}">
 									</div>
 									{% if discussion.offer.pictures is not empty %}
 										<img src="{{ asset('build/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
