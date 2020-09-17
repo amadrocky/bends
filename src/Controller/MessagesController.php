@@ -41,7 +41,6 @@ class MessagesController extends AbstractController
 
         return $this->render('messages/index.html.twig', [
             'discussions' => $discussions,
-            'controller_name' => 'MessagesController',
             'user' => $this->getUser(),
             'messages' => $request->getSession()->get('messages'),
             'today' => new \DateTime(),
@@ -118,5 +117,33 @@ class MessagesController extends AbstractController
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),
         ]);
+    }
+
+    /**
+     * @Route("/discussion/deleteSelection", name="deleteSelection")
+     *
+     * @param DiscussionsRepository $discussionsRepository
+     * @return void
+     */
+    public function deleteSelection(DiscussionsRepository $discussionsRepository)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if (empty($_POST['messages'])) {
+            $this->addFlash('error', 'Aucune conversation séléctionnée');
+
+            $this->redirectToRoute('messages_index');
+        } else {
+            foreach ($_POST['messages'] as $messageId) {
+                $message = $discussionsRepository->find($messageId);
+                $message->setWorkflowState('deleted');
+                $entityManager->persist($message);
+            }
+
+            $entityManager->flush();
+            $this->addFlash('success', 'Message(s) supprimé(s)');
+        }
+
+        return $this->redirectToRoute('messages_index');
     }
 }
