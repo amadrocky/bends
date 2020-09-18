@@ -95,21 +95,21 @@
 			});
 		}
 
-function deleteSelection() {
-	swal({
-		title: "Êtes vous sûr(e)?",
-		text: "Veuillez confirmer la suppression",
-		icon: "warning",
-		buttons: ["Annuler", "Supprimer"],
-		dangerMode: true,
-	})
-		.then((willDelete) => {
-			if (willDelete) {
-				document.querySelector("#deleteSelection").submit();
-			} else {
-				swal("Suppression annulée");
-			}
-		});
-}
+		function deleteSelection() {
+			swal({
+				title: "Êtes vous sûr(e)?",
+				text: "Veuillez confirmer la suppression",
+				icon: "warning",
+				buttons: ["Annuler", "Supprimer"],
+				dangerMode: true,
+			})
+				.then((willDelete) => {
+					if (willDelete) {
+						document.querySelector("#deleteSelection").submit();
+					} else {
+						swal("Suppression annulée");
+					}
+				});
+		}
 	</script>
 {% endblock %}

@@ -56,6 +56,11 @@ class Discussions
      */
     private $workflowState;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isSignaled;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -165,6 +170,18 @@ class Discussions
     public function setWorkflowState(string $workflowState): self
     {
         $this->workflowState = $workflowState;
+
+        return $this;
+    }
+
+    public function getIsSignaled(): ?bool
+    {
+        return $this->isSignaled;
+    }
+
+    public function setIsSignaled(?bool $isSignaled): self
+    {
+        $this->isSignaled = $isSignaled;
 
         return $this;
     }

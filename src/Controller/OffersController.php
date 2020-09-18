@@ -105,8 +105,9 @@ class OffersController extends AbstractController
             }
 
             $offer->setPictures($files);
-
+            $offer->setCreatedBy($this->getUser());
             $offer->setWorkflowState('created');
+            $offer->setIsSignaled(false);
             $entityManager->persist($offer);
             $entityManager->flush();
 
@@ -169,6 +170,7 @@ class OffersController extends AbstractController
                 $discussion->setWorkflowState('created');
                 $discussion->setOffer($offer);
                 $discussion->setUser($offer->getCreatedBy());
+                $discussion->setIsSignaled(false);
                 $entityManager->persist($discussion);
                 $entityManager->flush();
             } else {

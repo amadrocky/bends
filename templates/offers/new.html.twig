@@ -102,7 +102,11 @@
                         <h5 class="text-white m-0">Vos informations</h5>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-sm-6">{{ form_row(form.createdBy) }}</div>
+                        <div class="col-12 col-sm-6 text-center mb-2">
+                            <div class="card py-2">
+                                <span class="cmnty">{{ app.user.pseudonym }}</span> ({{ app.user.email }})
+                            </div>
+                        </div>
                         <div class="col-12 col-sm-6">{{ form_row(form.phoneNumber) }}</div>
                     </div>
                     {{ form_row(form.phoneVisible) }}

@@ -48,12 +48,6 @@ class OffersType extends AbstractType
                     'placeholder' => 'Description'
                 ]
             ])
-            ->add('createdBy', EmailType::class, [
-                'label' => false,
-                'attr' => [
-                    'placeholder' => 'Email'
-                ]
-            ])
             ->add('phoneNumber', TextType::class, [
                 'label' => false,
                 'attr' => [
