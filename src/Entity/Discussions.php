@@ -61,6 +61,16 @@ class Discussions
      */
     private $isSignaled;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isDeletedCreator;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isDeletedUser;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -182,6 +192,30 @@ class Discussions
     public function setIsSignaled(?bool $isSignaled): self
     {
         $this->isSignaled = $isSignaled;
+
+        return $this;
+    }
+
+    public function getIsDeletedCreator(): ?bool
+    {
+        return $this->isDeletedCreator;
+    }
+
+    public function setIsDeletedCreator(?bool $isDeletedCreator): self
+    {
+        $this->isDeletedCreator = $isDeletedCreator;
+
+        return $this;
+    }
+
+    public function getIsDeletedUser(): ?bool
+    {
+        return $this->isDeletedUser;
+    }
+
+    public function setIsDeletedUser(?bool $isDeletedUser): self
+    {
+        $this->isDeletedUser = $isDeletedUser;
 
         return $this;
     }

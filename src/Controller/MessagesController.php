@@ -101,6 +101,9 @@ class MessagesController extends AbstractController
                 $message->setCreatedBy($this->getUser());
                 $message->setDiscussion($discussion);
                 $message->setWorkflowState('created');
+                $discussion->setModifiedAt(new \Datetime());
+                $discussion->setIsDeletedCreator(false);
+                $discussion->setIsDeletedUser(false);
                 $entityManager->persist($message);
                 $entityManager->flush();
 
@@ -129,19 +132,24 @@ class MessagesController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
 
-        if (empty($_POST['messages'])) {
+        if (empty($_POST['discussions'])) {
             $this->addFlash('error', 'Aucune conversation séléctionnée');
 
             $this->redirectToRoute('messages_index');
         } else {
-            foreach ($_POST['messages'] as $messageId) {
-                $message = $discussionsRepository->find($messageId);
-                $message->setWorkflowState('deleted');
-                $entityManager->persist($message);
+            foreach ($_POST['discussions'] as $discussionId) {
+                $discussion = $discussionsRepository->find($discussionId);
+                if ($discussion->getCreatedBy() === $this->getUser()) {
+                    $discussion->setIsDeletedCreator(true);
+                } else {
+                    $discussion->setIsDeletedUser(true);
+                }
+                
+                $entityManager->persist($discussion);
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'Message(s) supprimé(s)');
+            $this->addFlash('success', 'Conversation(s) supprimée(s)');
         }
 
         return $this->redirectToRoute('messages_index');

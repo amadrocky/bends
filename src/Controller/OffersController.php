@@ -171,10 +171,15 @@ class OffersController extends AbstractController
                 $discussion->setOffer($offer);
                 $discussion->setUser($offer->getCreatedBy());
                 $discussion->setIsSignaled(false);
+                $discussion->setIsDeletedCreator(false);
+                $discussion->setIsDeletedUser(false);
                 $entityManager->persist($discussion);
                 $entityManager->flush();
             } else {
                 $discussion = $existingDiscussion;
+                $discussion->setModifiedAt($now);
+                $discussion->setIsDeletedCreator(false);
+                $discussion->setIsDeletedUser(false);
             }
 
             $message->setCreatedAt($now);
