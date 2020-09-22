@@ -1,51 +1,60 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Créer un compte{% endblock %}
+{% block title %}Créer un compte
+{% endblock %}
 
 {% block body %}
-    <div class="homeSection">
-        <div class="row justify-content-center p-3 w-100 m-0">
-            <div class="col-xs-12 col-md-8 loginBlock m-2 p-3 form-style">
-                <h2 class="loginTitle mb-3 text-center">Créer un compte</h2>
-                {{ form_start(form) }}
-                <div class="row">
-                    <div class="col-12 col-sm-6">
-                        {{ form_row(form.lastname) }}
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        {{ form_row(form.firstname) }}
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        {{ form_row(form.email) }}
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        {{ form_row(form.gender) }}
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        {{ form_row(form.dateOfBirth) }}
-                    </div>
-                    <div class="col-12 mb-2" style="margin-top: -10px">
-                        <small class="text-muted"><i class="fas fa-info-circle"></i>
-                            Veuillez saisir votre date de naissance.
-                        </small>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        {{ form_row(form.pseudonym) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-sm-6">
-                        {{ form_row(form.password) }}
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-success btn-block mt-3">
-                    Valider
-                </button>
-                {{ form_end(form) }}
-                <small>
-                    <p class="mb-0 mt-2">Vous avez déjà un compte? <a href="{{ path('app_login') }}">Identifiez-vous</a></p>
-                </small>
-            </div>
-        </div>
-    </div>
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col-xs-12 col-md-8 loginBlock m-2 p-3 form-style">
+				<h2 class="loginTitle mb-3 text-center">Créer un compte</h2>
+				{{ form_start(form) }}
+				<div class="row">
+					<div class="col-12 col-sm-6">
+						{{ form_row(form.lastname) }}
+					</div>
+					<div class="col-12 col-sm-6">
+						{{ form_row(form.firstname) }}
+					</div>
+					<div class="col-12 col-sm-6">
+						{{ form_row(form.email) }}
+					</div>
+					<div class="col-12 col-sm-6">
+						{{ form_row(form.gender) }}
+					</div>
+					<div class="col-12 col-sm-6">
+						{{ form_row(form.dateOfBirth) }}
+					</div>
+					<div class="col-12 mb-2" style="margin-top: -10px">
+						<small class="text-muted">
+							<i class="fas fa-info-circle"></i>
+							Veuillez saisir votre date de naissance.
+						</small>
+					</div>
+					<div class="col-12 col-sm-6">
+						{{ form_row(form.pseudonym) }}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 col-sm-6">
+						{{ form_row(form.password) }}
+					</div>
+				</div>
+				<div class="CGU p-2 d-flex">
+					<input id="CGU" type="checkbox" class="mt-1 mr-2" required>
+					<label for="CGU" class="m-0">J'ai lu et j'accepte les
+						<a href="">conditions générales d'utilisation</a>.</label>
+				</div>
+				<button type="submit" class="btn btn-success btn-block mt-3">
+					Valider
+				</button>
+				{{ form_end(form) }}
+				<small>
+					<p class="mb-0 mt-2">Vous avez déjà un compte?
+						<a href="{{ path('app_login') }}">Identifiez-vous</a>
+					</p>
+				</small>
+			</div>
+		</div>
+	</div>
 {% endblock %}
