@@ -20,8 +20,9 @@
 }
 
 .miniature {
-    max-height: 70px;
-    width: auto;
+    height: 70px;
+    width: 70px;
+    object-fit: cover;
 }
 
 .message-user {

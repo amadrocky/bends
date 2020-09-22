@@ -33,7 +33,7 @@
 								{% endfor %}
 								{% include 'messages/_partials/discussion.html.twig' %}
 							{% elseif discussion.createdBy != app.user and discussion.isDeletedUser == false %}
-							{% set newMessages = false %}
+								{% set newMessages = false %}
 								{% for message in discussion.messages %}
 									{% if message.workflowstate == "created" and message.createdBy != app.user %}
 										{% set newMessages = true %}
