@@ -60,7 +60,7 @@
 		</div>
 	</div>
 
-	<script>
+	<script type="text/javascript">
 		function selectAll() {
 $("#checkAll").click(function () {
 $(".check").prop('checked', $(this).prop('checked'));
@@ -84,5 +84,9 @@ swal("Suppression annulée");
 }
 });
 }
+
+window.onload = function () {
+selectAll();
+};
 	</script>
 {% endblock %}
