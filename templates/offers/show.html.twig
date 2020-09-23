@@ -113,13 +113,13 @@
 								</div>
 							{% endif %}
 							{% if offer.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
-								<p>Mis en ligne : Aujourd'hui à
+								<p>Mise en ligne : Aujourd'hui à
 									{{ offer.createdAt|date('H:i') }}</p>
 							{% elseif offer.createdAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
-								<p>Mis en ligne : Hier à
+								<p>Mise en ligne : Hier à
 									{{ offer.createdAt|date('H:i') }}</p>
 							{% else %}
-								<p>Mis en ligne le :
+								<p>Mise en ligne le :
 									{{ offer.createdAt|date('d-m-Y à H:i') }}</p>
 							{% endif %}
 							<p>Catégorie :
