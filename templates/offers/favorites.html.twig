@@ -1,0 +1,76 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Favoris
+{% endblock %}
+
+{% block body %}
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
+				<h2 class="loginTitle mb-3 text-center">Favoris</h2>
+				<div class="row justify-content-around p-3 w-100 m-0">
+					<div class="row justify-content-center filtersZone p-3 w-100 mb-2 d-block d-md-flex">
+						<div class="col mt-1">
+							<div class="text-white text-center py-1" style="border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 5px;">
+								<input type="checkbox" class="check" id="checkAll" onclick="selectAll()">
+								<label for="checkAll" class="text-white m-0">Séléctionner tout</label>
+							</div>
+						</div>
+						<div class="col my-1">
+							<button class="btn btn-danger btn-block" style="box-shadow: -1px 5px 5px -4px black" title="Marquer comme non lu(s)" onclick="deleteSelection()">
+								<i class="far fa-trash-alt"></i>
+							</button>
+						</div>
+					</div>
+					<form action="{{ path('favorites_deleteSelection') }}" id="deleteSelection" class="w-100" method="post">
+						{% for favorite in favorites %}
+							{% include 'offers/_partials/favorite.html.twig' %}
+						{% else %}
+							<div class="col-12">
+								<p class="alert alert-primary">
+									Vous n'avez aucune annonce favorite.
+									<a href="{{ path('offers_index') }}">Consultez les annonces</a>.
+								</p>
+							</div>
+						{% endfor %}
+					</form>
+					<div class="col-12 mt-2 d-flex justify-content-center">
+						<div>
+							{{ knp_pagination_render(favorites) }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function selectAll() {
+$("#checkAll").click(function () {
+$(".check").prop('checked', $(this).prop('checked'));
+});
+}
+
+function deleteSelection() {
+swal({
+title: "Êtes vous sûr(e)?",
+text: "Veuillez confirmer la suppression",
+icon: "warning",
+buttons: [
+"Annuler", "Supprimer"
+],
+dangerMode: true
+}).then((willDelete) => {
+if (willDelete) {
+document.querySelector("#deleteSelection").submit();
+} else {
+swal("Suppression annulée");
+}
+});
+}
+
+window.onload = function () {
+selectAll();
+};
+	</script>
+{% endblock %}

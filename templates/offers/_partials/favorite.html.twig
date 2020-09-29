@@ -1,0 +1,29 @@
+<div class="col-12 my-2 p-2 bg-white message-card">
+	<a href="{{ path('offers_show', {'id': favorite.offer.id}) }}" class="discussion-link">
+		<div class="d-flex">
+			{% if favorite.offer.pictures is not empty %}
+				<img src="{{ asset('build/images/offers/') }}{{ favorite.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
+			{% else %}
+				<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
+			{% endif %}
+			<div class="flex-grow-1">
+				<div>
+					{% if favorite.offer %}
+						<p class="message-user m-0">
+							{{ favorite.offer.title }}
+						</p>
+						<p class="m-0">{{ favorite.offer.createdBy.pseudonym }}</p>
+					{% else %}
+						<p class="m-0">** Annonce supprimée **</p>
+					{% endif %}
+				</div>
+				<div class="message-preview">
+					<span class="text-muted">{{ favorite.createdAt|date('d/m') }}</span>
+				</div>
+			</div>
+			<div class="d-flex flex-columns align-items-center">
+				<input type="checkbox" class="check" name="favorites[]" value="{{ favorite.id }}">
+			</div>
+		</div>
+	</a>
+</div>

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Message;
 use App\Entity\Discussions;
 use App\Entity\Offers;
+use App\Entity\Favorites;
 use App\Entity\Research;
 use App\Form\MessageType;
 use App\Form\OffersType;
@@ -12,6 +13,7 @@ use App\Repository\CategoriesRepository;
 use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
 use App\Repository\DiscussionsRepository;
+use App\Repository\FavoritesRepository;
 use App\Service\FileUploader;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -148,6 +150,7 @@ class OffersController extends AbstractController
      *
      * @param Request $request
      * @param Offers $offer
+     * @param DiscussionsRepository $discussionsRepository
      * @return Response
      */
     public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository): Response
@@ -300,6 +303,90 @@ class OffersController extends AbstractController
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day')
         ]);
+    }
+
+    /**
+     * @Route("/favorites", name="favorites", methods={"GET"})
+     *
+     * @param Request $request
+     * @param FavoritesRepository $messageRepository
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
+    public function favorites(Request $request, FavoritesRepository $favoritesRepository, PaginatorInterface $paginator): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $datas = $favoritesRepository->findByUser($this->getUser());
+
+        $favorites = $paginator->paginate(
+            $datas, //on passe les données
+            $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
+            10// nombre d'éléments
+        );
+
+        return $this->render('offers/favorites.html.twig', [
+            'favorites' => $favorites,
+            'user' => $this->getUser(),
+            'messages' => $request->getSession()->get('messages'),
+            'today' => new \DateTime(),
+            'yesterday' => (new \DateTime())->modify('-1 day')
+        ]);
+    }
+
+    /**
+     * @Route("/favorite/{id}", name="offers_favorite", requirements={"id":"\d+"})
+     *
+     * @param Request $request
+     * @param Offers $offer
+     * @return Response
+     */
+    public function addToFavorites(Request $request, Offers $offer): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $favorite = new Favorites();
+        $entityManager = $this->getDoctrine()->getManager();
+        $favorite->setUser($this->getUser());
+        $favorite->setOffer($offer);
+        $favorite->setCreatedAt(new \DateTime());
+        $favorite->setWorkflowstate('created');
+        $entityManager->persist($favorite);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Ajoutée aux favoris');
+        return $this->redirectToRoute('offers_show', ['id' => $offer->getId()]);
+    }
+
+    /**
+     * @Route("/favorite/deleteSelection", name="favorites_deleteSelection")
+     *
+     * @param DiscussionsRepository $discussionsRepository
+     * @return void
+     */
+    public function deleteSelection(FavoritesRepository $favoritesRepository)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        if (empty($_POST['favorites'])) {
+            $this->addFlash('error', 'Aucun favoris séléctionné');
+
+            $this->redirectToRoute('favorites');
+        } else {
+            foreach ($_POST['favorites'] as $favoriteId) {
+                $favorite = $favoritesRepository->find($favoriteId);
+                $entityManager->remove($favorite);
+            }
+
+            $entityManager->flush();
+            $this->addFlash('success', 'Favori(s) supprimé(s)');
+        }
+
+        return $this->redirectToRoute('favorites');
     }
 
     /**

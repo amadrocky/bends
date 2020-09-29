@@ -100,12 +100,18 @@ class User implements UserInterface
      */
     private $messages;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Favorites", mappedBy="user")
+     */
+    private $favorites;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
         $this->researches = new ArrayCollection();
         $this->discussions = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -421,6 +427,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($message->getCreatedBy() === $this) {
                 $message->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Favorites[]
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Favorites $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+            $favorite->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Favorites $favorite): self
+    {
+        if ($this->favorites->contains($favorite)) {
+            $this->favorites->removeElement($favorite);
+            // set the owning side to null (unless already changed)
+            if ($favorite->getUser() === $this) {
+                $favorite->setUser(null);
             }
         }
 
