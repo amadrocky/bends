@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Favorites;
 use App\Entity\User;
+use App\Entity\Offers;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -36,6 +37,29 @@ class FavoritesRepository extends ServiceEntityRepository
                 'workflow_state' => 'created'
                 ])
             ->orderBy('f.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Search favorite offer by user
+     *
+     * @param User $user
+     * @param Offers $offer
+     * @return void
+     */
+    public function findByUserAndOffer(User $user, Offers $offer)
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.user = :user')
+            ->andWhere('f.offer = :offer')
+            ->andWhere('f.workflowState = :workflow_state')
+            ->setParameters([
+                'user' => $user,
+                'offer' => $offer,
+                'workflow_state' => 'created'
+                ])
             ->getQuery()
             ->getResult()
         ;

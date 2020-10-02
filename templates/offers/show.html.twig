@@ -191,15 +191,21 @@
 							<img src="{{ asset('build/icons/iconPDF.png') }}" alt="ImagePDF" class="cursorPointer" style="height: 70px; width: 70px;" title="Télécharger"/>
 						</div>
 						<div class="d-flex flex-column flex-fill pl-3" style="border-left: 1px solid black;">
-						{% if app.user %}
-							<p class="cursorPointer" onclick="addFaviorites({{ offer.id }})">
-								<i class="fas fa-star"></i>
-								Favoris</p>
-						{% else %}
-							<p class="cursorPointer" onclick="isNotRegistered()">
-								<i class="fas fa-star"></i>
-								Favoris</p>
-						{% endif %}
+							{% if isFavorite %}
+								<p class="cursorPointer" onclick="isFavorite()">
+									<i class="fas fa-star" style="color: orange"></i>
+									Favoris</p>
+							{% else %}
+								{% if app.user %}
+									<p class="cursorPointer" onclick="addFavorites({{ offer.id }})">
+										<i class="fas fa-star"></i>
+										Favoris</p>
+								{% else %}
+									<p class="cursorPointer" onclick="isNotRegistered()">
+										<i class="fas fa-star"></i>
+										Favoris</p>
+								{% endif %}
+							{% endif %}
 							<p class="cursorPointer m-0">
 								<i class="fas fa-flag"></i>
 								Signaler</p>
@@ -540,51 +546,56 @@ window.onload = function () {
 initMap();
 };
 
-function addFaviorites(value) {
-	swal({
-		title: "Ajouter aux annonces favorites?",
-		text: "Veuillez confirmer l'ajout",
-		icon: "info",
-		buttons: ["Annuler", "Confirmer"],
-		dangerMode: false
-	}).then((willDelete) => {
-		if (willDelete) {
-			$.ajax({
-				url: "{{ path('offers_show', {'id': offer.id}) }}",
-				type: 'POST',
-				data: {offerId: value},
-				success: function () {
-					swal({
-						title: "Ajouteé aux favoris",
-						icon: "success",
-					})
-				},
-				error: function () {
-					alert('error')
-				}
-			})
-		} else {
-			swal("Ajout annulé");
-		}
-	});
+function addFavorites(value) {
+swal({
+title: "Ajouter aux annonces favorites?",
+text: "Veuillez confirmer l'ajout",
+icon: "info",
+buttons: [
+"Annuler", "Confirmer"
+],
+dangerMode: false
+}).then((willDelete) => {
+if (willDelete) {
+$.ajax({
+url: "{{ path('offers_show', {'id': offer.id}) }}",
+type: 'POST',
+data: {
+offerId: value
+},
+success: function () {
+swal({title: "Ajouteé aux favoris", icon: "success"})
+},
+error: function () {
+alert('error')
+}
+})
+} else {
+swal("Ajout annulé");
+}
+});
 }
 
 function isNotRegistered() {
-	swal({
-		title: "Ajouter aux annonces favorites?",
-		text: "Veuillez d'abord vous connecter",
-		icon: "warning",
-		buttons: ["Annuler", "Connexion"],
-		dangerMode: false
-	}).then((willDelete) => {
-		if (willDelete) {
-			window.location.href="{{ path('app_login') }}"
-		} else {
-			swal("Annulé");
-		}
-	});
+swal({
+title: "Ajouter aux annonces favorites?",
+text: "Veuillez d'abord vous connecter",
+icon: "warning",
+buttons: [
+"Annuler", "Connexion"
+],
+dangerMode: false
+}).then((willDelete) => {
+if (willDelete) {
+window.location.href ="{{ path('app_login') }}"
+} else {
+swal("Annulé");
+}
+});
+}
+
+function isFavorite() {
+swal({title: "Annonce déjà favorite", text: "Veuillez consulter vos favoris", icon: "info"})
 }
 				</script>
-
-
 			{% endblock %}

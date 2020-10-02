@@ -153,14 +153,18 @@ class OffersController extends AbstractController
      * @param DiscussionsRepository $discussionsRepository
      * @return Response
      */
-    public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository): Response
+    public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, FavoritesRepository $favoritesRepository): Response
     {
         $discussion = new Discussions();
         $message = new Message();
         $now = new \DateTime();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
-
+        $isFavorite = false;
+        if ($this->getUser()){
+            $isFavorite = count($favoritesRepository->findByUserAndOffer($this->getUser(), $offer)) > 0;
+        }
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
@@ -219,6 +223,7 @@ class OffersController extends AbstractController
         return $this->render('offers/show.html.twig', [
             'offer' => $offer,
             'user' => $this->getUser(),
+            'isFavorite' => $isFavorite,
             'messages' => $request->getSession()->get('messages'),
             'coordinates' => $coordinates,
             'today' => new \DateTime(),
