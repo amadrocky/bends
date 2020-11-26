@@ -98,8 +98,14 @@ class OffersController extends AbstractController
 
             for ($i = 1; $i < 6; $i++) {
                 if (isset($_FILES['img' . $i])) {
-                    if ($_FILES['img' . $i]['name'] !== "") {
-                        $uploadFile = $uploadDir . basename($_FILES['img' . $i]['name']);
+                    $fileName = $_FILES['img' . $i]['name'];
+
+                    if ($fileName !== "") {
+                        /* On renomme l'image */
+                        $extention = strrchr($fileName, ".");
+                        $fileName = 'offer_image_' . uniqid() . $extention;
+
+                        $uploadFile = $uploadDir . basename($fileName);
                         move_uploaded_file($_FILES['img' . $i]['tmp_name'], $uploadFile);
                         $files[] = basename($uploadFile);
                     }
