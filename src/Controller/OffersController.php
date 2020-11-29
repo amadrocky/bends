@@ -7,8 +7,10 @@ use App\Entity\Discussions;
 use App\Entity\Offers;
 use App\Entity\Favorites;
 use App\Entity\Research;
+use App\Entity\SignaledOffers;
 use App\Form\MessageType;
 use App\Form\OffersType;
+use App\Form\SignalOfferType;
 use App\Repository\CategoriesRepository;
 use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
@@ -384,6 +386,31 @@ class OffersController extends AbstractController
         }
 
         return $this->redirectToRoute('favorites');
+    }
+
+    /**
+     * @Route("/signalOffer/{id}", name="offers_signal", requirements={"id":"\d+"})
+     *
+     * @param Offer $offer
+     * @param Request $request
+     * @return Response
+     */
+    public function signalOffer(Offers $offer, Request $request) :Response
+    {
+        $signaledOffer = new SignaledOffers();
+        $form = $this->createForm(SignalOfferType::class, $signaledOffer);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+        }
+
+        return $this->render('offers/signalOffer.html.twig', [
+            'offer' => $offer,
+            'user' => $this->getUser(),
+            'messages' => $request->getSession()->get('messages'),
+            'today' => new \DateTime(),
+            'yesterday' => (new \DateTime())->modify('-1 day'),
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

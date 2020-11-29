@@ -206,9 +206,11 @@
 										Favoris</p>
 								{% endif %}
 							{% endif %}
-							<p class="cursorPointer m-0">
-								<i class="fas fa-flag"></i>
-								Signaler</p>
+							<a href="{{ path('offers_signal', {'id': offer.id}) }}" class="noDecorationLink" style="color: black">
+								<p class="cursorPointer m-0">
+									<i class="fas fa-flag"></i>
+									Signaler</p>
+							</a>
 						</div>
 					</div>
 				</div>

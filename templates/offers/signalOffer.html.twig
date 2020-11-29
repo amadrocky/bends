@@ -1,0 +1,85 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	{{ offer.title }}
+{% endblock %}
+
+{% block body %}
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
+				<h1 class="h2 loginTitle mb-3 text-center">Signaler une annonce</h2>
+				<div class="card offer-pictures-zone m-2 p-2">
+					<div class="row px-3">
+						<div class="card col-sm-12 col-md m-2 p-2">
+							<h3 class="offer-title pl-2">{{ offer.title }}</h1>
+							{% if offer.pictures|length > 0 %}
+								<img class="offer-pictures mx-auto" src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}" alt="Photo"/>
+							{% else %}
+								<img class="offer-pictures mx-auto" src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo">
+							{% endif %}
+						</div>
+						<div class="card col-sm-12 col-md m-2 p-2">
+							<h6>
+								<b>Description</b>
+							</h6>
+							<p>{{ offer.description }}</p>
+						</div>
+					</div>
+					<div class="row px-3">
+						<div class="card col-sm-12 col-md m-2 p-2">
+							<h6>
+								<b>Informations</b>
+							</h6>
+							{% if offer.type.id == 2 %}
+								<div class="d-flex">
+									<span class="card-badge badge-pill badge-warning text-center text-white mb-2">
+										<b>Demande</b>
+									</span>
+								</div>
+							{% endif %}
+							{% if offer.isPro %}
+								<div class="d-flex">
+									<span class="card-badge badge-pill badge-primary text-center text-white mb-2">
+										<b>Pro</b>
+									</span>
+								</div>
+							{% endif %}
+							<p class="m-0">Mise en ligne par:</p>
+							<div class="offer-contact text-center p-2 my-1">
+								<h4 class="giver mb-0">
+									<i class="fas fa-user"></i>
+									{{ offer.createdBy.pseudonym }}</h4>
+							</div>
+							{% if offer.createdAt|date('d-m-Y') == today|date('d-m-Y') %}
+								<p class="m-0">Mise en ligne : Aujourd'hui à
+									{{ offer.createdAt|date('H:i') }}</p>
+							{% elseif offer.createdAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
+								<p class="m-0">Mise en ligne : Hier à
+									{{ offer.createdAt|date('H:i') }}</p>
+							{% else %}
+								<p class="m-0">Mise en ligne le :
+									{{ offer.createdAt|date('d-m-Y à H:i') }}</p>
+							{% endif %}
+							<p class="m-0">Catégorie :
+								{{ offer.category.name }}</p>
+
+						</div>
+						<div class="card col-sm-12 col-md m-2 p-2">
+							{{ form_start(form) }}
+							{{ form_row(form.reason) }}
+							{{ form_row(form.comment) }}
+							<div class="signal-infos p-2">
+								{{ form_row(form.name) }}
+								{{ form_row(form.email) }}
+								{{ form_row(form.phoneNumber) }}
+							</div>
+							{{ form_end(form) }}
+						</div>
+					</div>
+					<button class="btn btn-outline-danger">Signaler l'annonce</button>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
