@@ -100,11 +100,6 @@ class Offers
      */
     private $createdBy;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isSignaled;
-
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -342,18 +337,6 @@ class Offers
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    public function getIsSignaled(): ?bool
-    {
-        return $this->isSignaled;
-    }
-
-    public function setIsSignaled(?bool $isSignaled): self
-    {
-        $this->isSignaled = $isSignaled;
 
         return $this;
     }

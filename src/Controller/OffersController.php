@@ -401,6 +401,20 @@ class OffersController extends AbstractController
         $form = $this->createForm(SignalOfferType::class, $signaledOffer);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $signaledOffer->setOffer($offer);
+            $signaledOffer->setCreatedAt(new \DateTime());
+            $signaledOffer->setWorkflowState('created');
+
+            if ($this->getUser()) {
+                $signaledOffer->setCreatedBy($this->getUser());
+            }
+
+            $entityManager->persist($signaledOffer);
+            $entityManager->flush();
+
+            $this->addFlash('info', 'Annonce signalée. Nos équipes prennent le relais et vous souhaite une bonne navigation sur notre site.');
+            return $this->redirectToRoute('offers_index');
         }
 
         return $this->render('offers/signalOffer.html.twig', [

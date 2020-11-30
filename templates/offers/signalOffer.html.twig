@@ -65,7 +65,7 @@
 								{{ offer.category.name }}</p>
 
 						</div>
-						<div class="card col-sm-12 col-md m-2 p-2">
+						<form id="signal_offer" action="{{ path('offers_signal', {'id': offer.id}) }}" method="post" class="card col-sm-12 col-md m-2 p-2">
 							{{ form_start(form) }}
 							{{ form_row(form.reason) }}
 							{{ form_row(form.comment) }}
@@ -74,12 +74,35 @@
 								{{ form_row(form.email) }}
 								{{ form_row(form.phoneNumber) }}
 							</div>
+							<small style="color: #3f51b5">* Informations facultatives</small>
+							<button id="hidden_submit" type="submit" hidden>Submit</button>
 							{{ form_end(form) }}
-						</div>
+						</form>
 					</div>
-					<button class="btn btn-outline-danger">Signaler l'annonce</button>
+					<button onclick="confirm()" class="btn btn-outline-danger">
+                            Signaler l'annonce
+                        </button>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<script type="text/javascript">
+        function confirm() {
+            swal({
+                title: "Êtes vous sûr(e)?",
+                text: "Veuillez confirmer",
+                icon: "warning",
+                buttons: ["Annuler", "Confirmer"],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        document.getElementById("hidden_submit").click();
+                    } else {
+                        swal("Opération annulée");
+                    }
+                });
+        }
+    </script>
 {% endblock %}

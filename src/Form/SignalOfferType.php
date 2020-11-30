@@ -30,25 +30,25 @@ class SignalOfferType extends AbstractType
             ])
             ->add('name', TextType::class, [
                 'label' => false,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Votre nom'
                 ]
             ])
             ->add('email', TextType::class, [
                 'label' => false,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Votre email'
                 ]
             ])
             ->add('phoneNumber', TextType::class, [
                 'label' => false,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Votre numéro de téléphone'
                 ]
             ])
-            //->add('workflowState')
-            //->add('offer')
-            
         ;
     }
 

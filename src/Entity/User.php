@@ -105,6 +105,11 @@ class User implements UserInterface
      */
     private $favorites;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SignaledOffers", mappedBy="createdBy")
+     */
+    private $signaledOffers;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -112,6 +117,7 @@ class User implements UserInterface
         $this->discussions = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->favorites = new ArrayCollection();
+        $this->signaledOffers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -458,6 +464,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($favorite->getUser() === $this) {
                 $favorite->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SignaledOffers[]
+     */
+    public function getSignaledOffers(): Collection
+    {
+        return $this->signaledOffers;
+    }
+
+    public function addSignaledOffer(SignaledOffers $signaledOffer): self
+    {
+        if (!$this->signaledOffers->contains($signaledOffer)) {
+            $this->signaledOffers[] = $signaledOffer;
+            $signaledOffer->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSignaledOffer(SignaledOffers $signaledOffer): self
+    {
+        if ($this->signaledOffers->contains($signaledOffer)) {
+            $this->signaledOffers->removeElement($signaledOffer);
+            // set the owning side to null (unless already changed)
+            if ($signaledOffer->getCreatedBy() === $this) {
+                $signaledOffer->setCreatedBy(null);
             }
         }
 
