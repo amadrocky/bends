@@ -188,7 +188,9 @@
 					</div>
 					<div class="d-flex offer-actions m-2 p-2">
 						<div class="d-flex justify-content-center flex-fill">
-							<img src="{{ asset('build/icons/iconPDF.png') }}" alt="ImagePDF" class="cursorPointer" style="height: 70px; width: 70px;" title="Télécharger"/>
+							<a href="{{ path('offer_export', {'id': offer.id}) }}" target="_blank" class="d-flex justify-content-center flex-fill">
+								<img src="{{ asset('build/icons/iconPDF.png') }}" alt="ImagePDF" class="cursorPointer" style="height: 70px; width: 70px;" title="Télécharger"/>
+							</a>
 						</div>
 						<div class="d-flex flex-column flex-fill pl-3" style="border-left: 1px solid black;">
 							{% if isFavorite %}
