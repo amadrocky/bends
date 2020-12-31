@@ -1,5 +1,124 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Bends | Annonce
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="icon" href="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/icons/favicon.png') }}"/>
+
+	<style type="text/css">
+
+		body {
+			font-family: DejaVu Sans;
+		}
+
+		.type-block {
+			border: 1px solid grey;
+			border-radius: 10px;
+			text-align: center;
+			margin: 10px 0;
+		}
+
+		.zone-block {
+			border: 1px solid grey;
+			border-radius: 10px;
+			margin: 10px 0;
+			padding: 15px;
+			text-align: center;
+		}
+
+		.down-zone {
+			text-align: center;
+			position: absolute;
+			top: 700;
+			right: 200;
+		}
+
+		p {
+			margin: 5px 0;
+		}
+
+		.photo {
+			margin: 15px 0 5px;
+		}
+
+		.justified {
+			text-align: justify;
+		}
+
+		.img-smartphone {
+			position: absolute;
+			top: 650;
+			right: 180;
+		}
+
+		.img-qrCode {
+			position: absolute;
+			top: 680;
+			right: 68;
+		}
+
+		.down-link {
+			font-size: 15px;
+		}
+	</style>
+{% endblock %}
+
 {% block body %}
-{{ title }}
+	<img class="photo" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/images/pdfTopAnnonce.png') }}" alt="image-titre">
+	<div class="type-block">
+		{% if offer.type.id == 1 %}
+			<h2>OFFRE</h2>
+		{% else %}
+			<h2>DEMANDE</h2>
+		{% endif %}
+	</div>
+
+	<div class="zone-block">
+		<h2>{{ offer.title }}</h2>
+		<p>
+			<b>Date:
+			</b>
+			{{ offer.createdAt|date('d-m-Y') }}</p>
+		<p>
+			<b>Catégorie:
+			</b>
+			{{ offer.category.name }}</p>
+		{% if offer.pictures|length > 0 %}
+			<img class="photo" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}" height="200" alt="image">
+		{% endif %}
+		<p class="justified">
+			<b>Description:
+			</b>
+			{{ offer.description }}</p>
+	</div>
+
+	<div class="zone-block">
+		<div id="place">
+			<img src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/images/localisation.png') }}" height="30" alt="localisation">
+			<h3>{{ offer.city }}</h3>
+		</div>
+	</div>
+
+	<div class="zone-block">
+		<div id="contact">
+			<h3>Contact</h3>
+			<p>{{ offer.createdBy.email }}</p>
+			{% if not offer.phoneVisible %}
+				<p>{{ offer.phoneNumber }}</p>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="down-zone">
+		<p class="down-link">Retrouvez cette annonce et de nombreuses autres sur</p>
+		<p>
+			<b>www.bends.com</b>
+		</p>
+		<img src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/images/pointer.png') }}" height="30" alt="localisation">
+	</div>
+
+	<img class="img-qrCode" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/images/qrCodes/') }}{{ offer.qrCode }}" width="100" alt="image">
+	<img class="img-smartphone" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/images/smartphone.png') }}" height="200" alt="localisation">
+
 {% endblock %}

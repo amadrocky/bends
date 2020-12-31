@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Endroid\QrCode\QrCode;
 
 /**
  * @Route("/offers")
@@ -119,7 +120,27 @@ class OffersController extends AbstractController
             $offer->setPictures($files);
             $offer->setCreatedBy($this->getUser());
             $offer->setWorkflowState('created');
-            $offer->setIsSignaled(false);
+            $entityManager->persist($offer);
+            $entityManager->flush();
+
+            // Create a basic QR code
+            $qrCode = new QrCode('http://127.0.0.1:8000/offers/' . $offer->getId());
+            $qrCode->setSize(300);
+
+            // Set advanced options
+            $qrCode->setWriterByName('png');
+            $qrCode->setEncoding('UTF-8');
+            $qrCode->setForegroundColor(['r' => 0, 'g' => 0, 'b' => 0]);
+            $qrCode->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255]);
+            $qrCode->setValidateResult(false);
+
+            // name qrCode
+            $qrCodeName = uniqId() . '.png';
+
+            // Save it to a file
+            $qrCode->writeFile($_SERVER['PWD'] . '/assets/static/images/qrCodes/'. $qrCodeName);
+
+            $offer->setQrCode($qrCodeName);
             $entityManager->persist($offer);
             $entityManager->flush();
 
@@ -433,24 +454,25 @@ class OffersController extends AbstractController
      * @Route("/export/{id}", name="offer_export", requirements={"id":"\d+"})
      *
      * @param Offers $offer
-     * @return Response
+     * @return void
      */
-    public function exportOffer(Offers $offer): Response
+    public function exportOffer(Offers $offer): void
     {
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('isRemoteEnabled', true);
         
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
         
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('PDF/exportOffer.html.twig', [
-            'title' => $offer->getTitle()
+            'offer' => $offer
         ]);
-        
+
         // Load HTML to Dompdf
-        $dompdf->loadHtml($html);
+        $dompdf->loadHtml(($html));
         
         // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
         $dompdf->setPaper('A4', 'portrait');
@@ -459,7 +481,7 @@ class OffersController extends AbstractController
         $dompdf->render();
 
         // Output the generated PDF to Browser (inline view)
-        $dompdf->stream("mypdf.pdf", [
+        $dompdf->stream($offer->getTitle() . '.pdf', [
             "Attachment" => false
         ]);
     }
