@@ -110,6 +110,11 @@ class User implements UserInterface
      */
     private $signaledOffers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Associations", mappedBy="createdBy")
+     */
+    private $associations;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -118,6 +123,7 @@ class User implements UserInterface
         $this->messages = new ArrayCollection();
         $this->favorites = new ArrayCollection();
         $this->signaledOffers = new ArrayCollection();
+        $this->associations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -495,6 +501,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($signaledOffer->getCreatedBy() === $this) {
                 $signaledOffer->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Associations[]
+     */
+    public function getAssociations(): Collection
+    {
+        return $this->associations;
+    }
+
+    public function addAssociation(Associations $association): self
+    {
+        if (!$this->associations->contains($association)) {
+            $this->associations[] = $association;
+            $association->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssociation(Associations $association): self
+    {
+        if ($this->associations->contains($association)) {
+            $this->associations->removeElement($association);
+            // set the owning side to null (unless already changed)
+            if ($association->getCreatedBy() === $this) {
+                $association->setCreatedBy(null);
             }
         }
 
