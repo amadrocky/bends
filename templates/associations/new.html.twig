@@ -1,0 +1,62 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Ajouter une association
+{% endblock %}
+
+{% block body %}
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3 form-style">
+				<h1 class="h2 loginTitle mb-3 text-center">Ajouter une association</h2>
+				{% if association %}
+					<div class="alert alert-info" role="alert">
+						<i class="fas fa-info-circle"></i>
+						Une association est déjà ratachée à l'utilisateur
+						<b>{{app.user.pseudonym}}</b>
+						({{ app.user.email }}). Pour une modification ou une suppression, rendez-vous sur votre profil afin de procéder aux changements.
+						<hr/>
+                        <i class="fas fa-info-circle"></i>
+						Pour en créer une nouvelle, merci de vous identifier avec un compte dédié ou le créer.
+						<hr/>
+						<div class="text-center">
+							<a href="" class="btn btn-primary">Accéder à mon profil</a>
+							<button class="btn btn-outline-danger" onclick="confirm()">Déconnexion</button>
+						</div>
+					</div>
+				{% else %}
+					<div class="alert alert-info" role="alert">
+						<i class="fas fa-info-circle"></i>
+						L'association sera ratachée à l'utilisateur
+						<b>{{app.user.pseudonym}}</b>
+						({{ app.user.email }}). Si vous souhaitez la créer avec un compte dédié, merci de vous identifier ou le créer.
+						<hr/>
+						<div class="text-center">
+							<button class="btn btn-outline-danger" onclick="confirm()">Déconnexion</button>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function confirm() {
+swal({
+title: "Êtes vous sûr(e)?",
+text: "Veuillez confirmer la déconnexion",
+icon: "warning",
+buttons: [
+"Annuler", "Déconnexion"
+],
+dangerMode: true
+}).then((willDelete) => {
+if (willDelete) {
+document.location.href = '/logout';
+swal("Vous avez bien été déconnecté", {icon: "success"});
+} else {
+swal("Vous êtes toujours connecté");
+}
+});
+}
+	</script>
+{% endblock %}
