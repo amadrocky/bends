@@ -67,11 +67,10 @@ class OffersController extends AbstractController
      * @Route("/new", name="offers_new", methods={"GET","POST"})
      *
      * @param Request $request
-     * @param FileUploader $fileUploader
      * @return Response
      * @throws \Exception
      */
-    function new (Request $request, FileUploader $fileUploader): Response 
+    function new (Request $request): Response 
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
