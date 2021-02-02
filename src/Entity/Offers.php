@@ -105,6 +105,11 @@ class Offers
      */
     private $qrCode;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isAssociation;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -354,6 +359,18 @@ class Offers
     public function setQrCode(?string $qrCode): self
     {
         $this->qrCode = $qrCode;
+
+        return $this;
+    }
+
+    public function getIsAssociation(): ?bool
+    {
+        return $this->isAssociation;
+    }
+
+    public function setIsAssociation(?bool $isAssociation): self
+    {
+        $this->isAssociation = $isAssociation;
 
         return $this;
     }
