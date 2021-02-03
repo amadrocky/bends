@@ -16,6 +16,7 @@ use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
 use App\Repository\DiscussionsRepository;
 use App\Repository\FavoritesRepository;
+use App\Repository\AssociationsRepository;
 use App\Service\FileUploader;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,10 +68,10 @@ class OffersController extends AbstractController
      * @Route("/new", name="offers_new", methods={"GET","POST"})
      *
      * @param Request $request
+     * @param AssociationsRepository $associationsRepository
      * @return Response
-     * @throws \Exception
      */
-    function new (Request $request): Response 
+    function new (Request $request, AssociationsRepository $associationsRepository): Response 
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -81,12 +82,14 @@ class OffersController extends AbstractController
         $form = $this->createForm(OffersType::class, $offer);
         $form->handleRequest($request);
         $cities = [];
+        $userHasAssociation = !empty($associationsRepository->findBy(['createdBy' => $this->getUser()->getId(), 'workflowState' => 'active']));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $offer->setZipCode($_POST['zip']);
             $offer->setCity($_POST['filtered_cities']);
             $offer->setCreatedAt(new \DateTime());
+            $offer->setIsAssociation($userHasAssociation);
 
             /* Récupération du context (dep, region) */
             $cities = $session->get('cities');

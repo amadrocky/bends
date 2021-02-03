@@ -124,7 +124,7 @@ class AssociationsController extends AbstractController
             'form' => $form->createView(),
             'cities' => $cities,
             'waitingValidation' => $waitingValidation,
-            'userAssociation' => $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0]
+            'userAssociation' => $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0] : []
         ]);
     }
 }
