@@ -46,11 +46,8 @@ class AssociationsController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $userHasAsso = false;
-
-        if (!empty($associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']))) {
-            $userHasAsso = true;
-        }
+        $userHasAsso = !empty($associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']));
+        $waitingValidation = !empty($associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'created']));
 
         $session = $request->getSession();
         $association = new Associations();
@@ -125,7 +122,9 @@ class AssociationsController extends AbstractController
             'messages' => $request->getSession()->get('messages'),
             'association' => $userHasAsso,
             'form' => $form->createView(),
-            'cities' => $cities
+            'cities' => $cities,
+            'waitingValidation' => $waitingValidation,
+            'userAssociation' => $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0]
         ]);
     }
 }

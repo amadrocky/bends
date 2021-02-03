@@ -8,12 +8,13 @@
 		<div class="row justify-content-center p-3 w-100 m-0">
 			<div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3 form-style">
 				<h1 class="h2 loginTitle mb-3 text-center">Ajouter une association</h2>
-				{% if association %}
+				{% if waitingValidation %}
 					<div class="alert alert-info" role="alert">
 						<i class="fas fa-info-circle"></i>
-						Une association est déjà ratachée à l'utilisateur
+						Une association en attente de validation est déjà ratachée à l'utilisateur
 						<b>{{app.user.pseudonym}}</b>
-						({{ app.user.email }}). Pour une modification ou une suppression, rendez-vous sur votre profil afin de procéder aux changements.
+						({{ app.user.email }}). Pour une modification ou une suppression, rendez-vous sur votre profil après validation afin de procéder aux changements.
+						<a href="#">Renvoyer l'email de validation</a>
 						<hr/>
 						<i class="fas fa-info-circle"></i>
 						Pour en créer une nouvelle, merci de vous identifier avec un compte dédié ou le créer.
@@ -24,76 +25,93 @@
 						</div>
 					</div>
 				{% else %}
-					<div class="alert alert-info" role="alert">
-						<i class="fas fa-info-circle"></i>
-						L'association sera ratachée à l'utilisateur
-						<b>{{app.user.pseudonym}}</b>
-						({{ app.user.email }}). Si vous souhaitez la créer avec un compte dédié, merci de vous identifier ou le créer.
-						<hr/>
-						<div class="text-center">
-							<button class="btn btn-outline-danger" onclick="confirm()">Déconnexion</button>
+					{% if association %}
+						<div class="alert alert-info" role="alert">
+							<i class="fas fa-info-circle"></i>
+							L'association "<b>{{ userAssociation.name }}</b>" est déjà ratachée à l'utilisateur
+							<b>{{app.user.pseudonym}}</b>
+							({{ app.user.email }}). Pour une modification ou une suppression, rendez-vous sur votre profil afin de procéder aux changements.
+							<hr/>
+							<i class="fas fa-info-circle"></i>
+							Pour en créer une nouvelle, merci de vous identifier avec un compte dédié ou le créer.
+							<hr/>
+							<div class="text-center">
+								<a href="" class="btn btn-primary">Accéder à mon profil</a>
+								<button class="btn btn-outline-danger" onclick="confirm()">Déconnexion</button>
+							</div>
 						</div>
-					</div>
-					<div class="card offer-pictures-zone m-2 p-2">
-						<form action="{{ path('associations_new') }}" method="post" enctype="multipart/form-data">
-							{{ form_start(form) }}
-							<div class="subtitleZone p-1 mb-3">
-								<h5 class="text-white m-0">Votre association</h5>
+					{% else %}
+						<div class="alert alert-info" role="alert">
+							<i class="fas fa-info-circle"></i>
+							L'association sera ratachée à l'utilisateur
+							<b>{{app.user.pseudonym}}</b>
+							({{ app.user.email }}). Si vous souhaitez la créer avec un compte dédié, merci de vous identifier ou le créer.
+							<hr/>
+							<div class="text-center">
+								<button class="btn btn-outline-danger" onclick="confirm()">Déconnexion</button>
 							</div>
-							{{ form_row(form.name) }}
-							{{ form_row(form.description) }}
-							{{ form_row(form.link) }}
-							<div class="subtitleZone p-1 mb-3">
-								<h5 class="text-white m-0">Image</h5>
-							</div>
-							<div class="mb-2">
-								<label for="img" class="cursorPointer m-0 img-offers">
-									<i class="fas fa-camera"></i>
-									Image/Photo/Logo
-								</label>
-								<input id="img" name="img" type="file" accept="image/png, image/jpeg" onchange="loadFile('output1')" hidden/>
-								<img id="output1" class="input-photo my-1"/>
-							</div>
-							<div class="col-12 p-0 mb-2">
-								<small class="text-muted">
-									<i class="fas fa-info-circle"></i>
-									Ciquez sur l'icone pour séléctionner une image.
-								</small>
-							</div>
-							<div class="subtitleZone p-1 mb-3">
-								<h5 class="text-white m-0">Localisation</h5>
-							</div>
-							<div class="row">
-								<div class="col mb-1">
-									<input id="zip" name="zip" type="text" maxlength="5" onchange="setZipCode(this.value)" class="form-control" placeholder="Code postal" pattern="[0-9]{5}" required>
+						</div>
+						<div class="card offer-pictures-zone m-2 p-2">
+							<form action="{{ path('associations_new') }}" method="post" enctype="multipart/form-data">
+								{{ form_start(form) }}
+								<div class="subtitleZone p-1 mb-3">
+									<h5 class="text-white m-0">Votre association</h5>
 								</div>
-								<div class="col">
-									<select name="filtered_cities" id="filteredCities" class="form-control">
-										{% for city in cities %}
-											<option value="{{ city.name }}">{{ city.name }}</option>
-										{% endfor %}
-									</select>
+								{{ form_row(form.name) }}
+								{{ form_row(form.description) }}
+								{{ form_row(form.link) }}
+								<div class="subtitleZone p-1 mb-3">
+									<h5 class="text-white m-0">Image</h5>
 								</div>
-								<div class="col d-none d-sm-block text-center pt-2">
-									<i class="fas fa-map-marker-alt position-icon"></i>
+								<div class="mb-2">
+									<label for="img" class="cursorPointer m-0 img-offers">
+										<i class="fas fa-camera"></i>
+										Image/Photo/Logo
+									</label>
+									<input id="img" name="img" type="file" accept="image/png, image/jpeg" onchange="loadFile('output1')" hidden/>
+									<img id="output1" class="input-photo my-1"/>
 								</div>
-								<div class="col-12 mb-3">
+								<div class="col-12 p-0 mb-2">
 									<small class="text-muted">
 										<i class="fas fa-info-circle"></i>
-										Entrez votre code postal puis sélectionnez la ville parmi la liste proposée.
+										Ciquez sur l'icone pour séléctionner une image.
 									</small>
 								</div>
-							</div>
-							<div class="CGU p-2 d-flex">
-								<input id="CGU" type="checkbox" class="mt-1 mr-2" required>
-								<label for="CGU" class="m-0">J'ai lu et j'accepte les
-									<a href="">conditions générales
-																																																											                                d'utilisation</a>.</label>
-							</div>
-							<button class="btn btn-primary btn-block my-3">{{ button_label|default('Valider') }}</button>
-							{{ form_end(form) }}
-						</form>
-					</div>
+								<div class="subtitleZone p-1 mb-3">
+									<h5 class="text-white m-0">Localisation</h5>
+								</div>
+								<div class="row">
+									<div class="col mb-1">
+										<input id="zip" name="zip" type="text" maxlength="5" onchange="setZipCode(this.value)" class="form-control" placeholder="Code postal" pattern="[0-9]{5}" required>
+									</div>
+									<div class="col">
+										<select name="filtered_cities" id="filteredCities" class="form-control">
+											{% for city in cities %}
+												<option value="{{ city.name }}">{{ city.name }}</option>
+											{% endfor %}
+										</select>
+									</div>
+									<div class="col d-none d-sm-block text-center pt-2">
+										<i class="fas fa-map-marker-alt position-icon"></i>
+									</div>
+									<div class="col-12 mb-3">
+										<small class="text-muted">
+											<i class="fas fa-info-circle"></i>
+											Entrez votre code postal puis sélectionnez la ville parmi la liste proposée.
+										</small>
+									</div>
+								</div>
+								<div class="CGU p-2 d-flex">
+									<input id="CGU" type="checkbox" class="mt-1 mr-2" required>
+									<label for="CGU" class="m-0">J'ai lu et j'accepte les
+										<a href="">conditions générales
+																																																																																																																																							                                d'utilisation</a>.</label>
+								</div>
+								<button class="btn btn-primary btn-block my-3">{{ button_label|default('Valider') }}</button>
+								{{ form_end(form) }}
+							</form>
+						</div>
+					{% endif %}
 				{% endif %}
 			</div>
 		</div>
