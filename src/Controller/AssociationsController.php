@@ -127,4 +127,92 @@ class AssociationsController extends AbstractController
             'userAssociation' => $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0] : []
         ]);
     }
+
+    /**
+     * Edit association
+     * 
+     * @Route("/edit/{id}", name="edit", requirements={"id":"\d+"}, methods={"POST"})
+     *
+     * @param Request $request
+     * @param Associations $association
+     * @return Response
+     */
+    public function edit(Request $request, Associations $association): Response
+    {
+        $session = $request->getSession();
+        $entityManager = $this->getDoctrine()->getManager();
+        $fileName = $_FILES['img']['name'];
+
+        if ($_POST['name'] !== $association->getName()) {
+            $association->setName($_POST['name']);
+        }
+
+        if ($_POST['description'] !== $association->getDescription()) {
+            $association->setDescription($_POST['description']);
+        }
+
+        if ($_POST['link'] !== $association->getLink()) {
+            $association->setLink($_POST['link']);
+        }
+
+        if ($fileName !== "") {
+            /* Récupération de l'image */
+            $uploadDir = $_SERVER['PWD'] . '/assets/static/images/associations/';
+            $file = null;
+
+            if ($fileName !== "") {
+                /* On renomme l'image */
+                $extention = strrchr($fileName, ".");
+                $fileName = 'association_image_' . uniqid() . $extention;
+
+                $uploadFile = $uploadDir . basename($fileName);
+                move_uploaded_file($_FILES['img']['tmp_name'], $uploadFile);
+                $file = basename($uploadFile);
+            }
+            
+            // Supprime l'ancien fichier
+            unlink($uploadDir . $association->getPicture());
+
+            $association->setPicture($fileName);
+        }
+
+        if ($_POST['zip'] !== "") {
+            $association->setZipCode(intval($_POST['zip']));
+            $association->setCity($_POST['filtered_cities']);
+            
+            /* Récupération du context (dep, region) */
+            $cities = $session->get('cities');
+            foreach ($cities as $city) {
+                if ($city['name'] === $_POST['filtered_cities']) {
+                    $association->setContext($city['context']);
+                }
+            }
+        }
+
+        $association->setModifiedAt(new \DateTime());
+
+        $entityManager->persist($association);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Modification(s) enregistrée(s)');
+
+        return $this->redirectToRoute('profil');
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete", methods="DELETE")
+     */
+    public function delete(Request $request, Associations $association): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$association->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $association->setWorkflowState('deleted');
+            $em->flush();
+        } else {
+            return $this->redirectToRoute('home');
+        }
+
+        $this->addFlash('success', 'Modification(s) enregistrée(s)');
+        return $this->redirectToRoute('profil');
+    }
 }

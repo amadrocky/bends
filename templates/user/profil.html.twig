@@ -70,93 +70,99 @@
 									</button>
 								</div>
 							</div>
+
+							<!-- Modal edit association -->
+							<div class="modal fade" id="editAssoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h2 class="loginTitle" id="exampleModalLabel">Mon association</h2>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<form id="editForm" action="{{ path('associations_edit', {'id': userAssociation.id}) }}" method="post" enctype="multipart/form-data">
+												<div class="subtitleZone p-1 mb-3">
+													<h5 class="text-white m-0">Informations</h5>
+												</div>
+												<input type="text" name="name" value="{{ userAssociation.name }}" class="form-control mb-2" required>
+												<textarea name="description" id="" maxlength="255" class="form-control mb-2" required>{{ userAssociation.description }}</textarea>
+												{% if userAssociation.link is null %}
+													<input type="text" name="link" value="Site internet (facultatif)" class="form-control mb-2">
+												{% else %}
+													<input type="text" name="link" value="{{ userAssociation.link }}" class="form-control mb-2">
+												{% endif %}
+												<div class="subtitleZone p-1 mb-3">
+													<h5 class="text-white m-0">Image / Logo</h5>
+												</div>
+												<div class="row p-3">
+													<div class="col-12 col-md mb-2">
+														{% if userAssociation is null %}
+															<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo" style="max-height: 100px">
+														{% else %}
+															<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" style="height: 100px">
+														{% endif %}
+													</div>
+													<div class="col-12 col-md mb-2">
+														<label for="img" class="cursorPointer m-0 img-offers">
+															<i class="fas fa-camera"></i>
+															Nouvelle image</label>
+														<input id="img" name="img" type="file" accept="image/png, image/jpeg" onchange="loadFile('output')" hidden/>
+														<img id="output" class="input-photo my-1"/>
+													</div>
+													<div class="col-12 p-0">
+														<small class="text-muted">
+															<i class="fas fa-info-circle"></i>
+															Ciquez sur l'icone pour séléctionner une nouvelle photo.
+														</small>
+													</div>
+												</div>
+												<div class="subtitleZone p-1 mb-3">
+													<h5 class="text-white m-0">Localisation</h5>
+												</div>
+												<p>
+													<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
+													{{ userAssociation.city }},
+													{{ userAssociation.context }}</p>
+												<div class="row">
+													<div class="col mb-1">
+														<input id="zip" name="zip" type="text" maxlength="5" onchange="setZipCode(this.value)" class="form-control" placeholder="Code postal" pattern="[0-9]{5}">
+													</div>
+													<div class="col">
+														<select name="filtered_cities" id="filteredCities" class="form-control">
+															{% for city in cities %}
+																<option value="{{ city.name }}">{{ city.name }}</option>
+															{% endfor %}
+														</select>
+													</div>
+													<div class="col-12 mb-3">
+														<small class="text-muted">
+															<i class="fas fa-info-circle"></i>
+															Entrez votre code postal pour sélectionner la ville parmi la liste proposée.
+														</small>
+													</div>
+												</div>
+											</form>
+											<form class="d-inline" method="post" action="{{ path('associations_delete', {'id': userAssociation.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer l'association?');">
+												<input type="hidden" name="_method" value="DELETE">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ userAssociation.id) }}">
+												<button class="btn btn-outline-danger btn-sm btn-block"><i class="far fa-trash-alt"></i> Supprimer l'association</button>
+											</form>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+											<button type="button" class="btn btn-primary" onclick="submit()">Enregistrer</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
 						{% endif %}
 						<button onclick="confirm()" class="btn btn-outline-danger btn-block mt-3">
 							Déconnexion
 						</button>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Modal edit association -->
-	<div class="modal fade" id="editAssoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2 class="loginTitle" id="exampleModalLabel">Mon association</h2>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div class="subtitleZone p-1 mb-3">
-						<h5 class="text-white m-0">Informations</h5>
-					</div>
-					<input type="text" value="{{ userAssociation.name }}" class="form-control mb-2">
-					<textarea name="" id="" maxlength="255" class="form-control mb-2">{{ userAssociation.description }}</textarea>
-					{% if userAssociation.link is null %}
-						<input type="text" value="Site internet (facultatif)" class="form-control mb-2">
-					{% else %}
-						<input type="text" value="{{ userAssociation.link }}" class="form-control mb-2">
-					{% endif %}
-					<div class="subtitleZone p-1 mb-3">
-						<h5 class="text-white m-0">Image / Logo</h5>
-					</div>
-					<div class="row p-3">
-						<div class="col-12 col-md mb-2">
-							{% if userAssociation is null %}
-								<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo" style="max-height: 100px">
-							{% else %}
-								<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" style="height: 100px">
-							{% endif %}
-						</div>
-						<div class="col-12 col-md mb-2">
-							<label for="img" class="cursorPointer m-0 img-offers">
-								<i class="fas fa-camera"></i>
-								Nouvelle image</label>
-							<input id="img" name="img" type="file" accept="image/png, image/jpeg" onchange="loadFile('output')" hidden/>
-							<img id="output" class="input-photo my-1"/>
-						</div>
-						<div class="col-12 p-0">
-							<small class="text-muted">
-								<i class="fas fa-info-circle"></i>
-								Ciquez sur l'icone pour séléctionner une nouvelle photo.
-							</small>
-						</div>
-					</div>
-					<div class="subtitleZone p-1 mb-3">
-						<h5 class="text-white m-0">Localisation</h5>
-					</div>
-					<div class="row">
-						<div class="col mb-1">
-							<input id="zip" name="zip" type="text" maxlength="5" onchange="setZipCode(this.value)" class="form-control" placeholder="Code postal" pattern="[0-9]{5}" required>
-						</div>
-						<div class="col">
-							<select name="filtered_cities" id="filteredCities" class="form-control">
-								{% for city in cities %}
-									<option value="{{ city.name }}">{{ city.name }}</option>
-								{% endfor %}
-							</select>
-						</div>
-						<div class="col d-none d-sm-block text-center pt-2">
-							<i class="fas fa-map-marker-alt position-icon"></i>
-						</div>
-						<div class="col-12 mb-3">
-							<small class="text-muted">
-								<i class="fas fa-info-circle"></i>
-								Entrez votre code postal puis sélectionnez la ville parmi la liste proposée.
-							</small>
-						</div>
-					</div>
-					<button class="btn btn-outline-danger btn-sm btn-block">
-						<i class="far fa-trash-alt"></i>
-						Supprimer l'association</button>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-					<button type="button" class="btn btn-primary">Enregistrer</button>
 				</div>
 			</div>
 		</div>
@@ -209,5 +215,9 @@ output.onload = function () {
 URL.revokeObjectURL(output.src)
 }
 };
+
+function submit() {
+$("#editForm").submit()
+}
 	</script>
 {% endblock %}
