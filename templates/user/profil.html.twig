@@ -148,13 +148,13 @@
 													</div>
 												</div>
 											</form>
-											<form class="d-inline" method="post" action="{{ path('associations_delete', {'id': userAssociation.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer l'association?');">
+											<form id="deleteForm" class="d-inline" method="post" action="{{ path('associations_delete', {'id': userAssociation.id}) }}">
 												<input type="hidden" name="_method" value="DELETE">
 												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ userAssociation.id) }}">
-												<button class="btn btn-outline-danger btn-sm btn-block">
-													<i class="far fa-trash-alt"></i>
-													Supprimer l'association</button>
 											</form>
+											<button class="btn btn-outline-danger btn-sm btn-block" onclick="confirmDelete()">
+												<i class="far fa-trash-alt"></i>
+												Supprimer l'association</button>
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -190,6 +190,24 @@ document.location.href = '/logout';
 swal("Vous avez bien été déconnecté", {icon: "success"});
 } else {
 swal("Vous êtes toujours connecté");
+}
+});
+}
+
+function confirmDelete() {
+swal({
+title: "Êtes vous sûr(e)?",
+text: "Veuillez confirmer la suppression",
+icon: "warning",
+buttons: [
+"Annuler", "Supprimer"
+],
+dangerMode: true
+}).then((willDelete) => {
+if (willDelete) {
+document.getElementById("deleteForm").submit();
+} else {
+swal("Suppression annulée");
 }
 });
 }
