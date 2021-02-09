@@ -60,9 +60,13 @@
 										<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" style="height: 100px">
 									{% endif %}
 								</div>
-								<div class="col-12 col-md">
+								<div class="col-12 col-md mx-2">
 									<h3>{{ userAssociation.name }}</h3>
 									<p>{{ userAssociation.description }}</p>
+									<p>
+										<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
+										{{ userAssociation.city }},
+										{{ userAssociation.context }}</p>
 								</div>
 								<div class="col-12 col-md-2 d-flex flex-columns align-items-center">
 									<button type="button" class="btn btn-warning m-auto box-shadow" data-toggle="modal" data-target="#editAssoModal">
@@ -147,7 +151,9 @@
 											<form class="d-inline" method="post" action="{{ path('associations_delete', {'id': userAssociation.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer l'association?');">
 												<input type="hidden" name="_method" value="DELETE">
 												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ userAssociation.id) }}">
-												<button class="btn btn-outline-danger btn-sm btn-block"><i class="far fa-trash-alt"></i> Supprimer l'association</button>
+												<button class="btn btn-outline-danger btn-sm btn-block">
+													<i class="far fa-trash-alt"></i>
+													Supprimer l'association</button>
 											</form>
 										</div>
 										<div class="modal-footer">
