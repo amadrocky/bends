@@ -19,6 +19,31 @@ class AssociationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Associations::class);
     }
 
+    /**
+     * Filter by location
+     *
+     * @param [type] $location
+     * @return Array
+     */
+    public function findByLocation($location): Array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->where('a.workflowState = :workflow_state')
+            ->setParameter('workflow_state', 'active');
+
+        if ($location != "allReg") {
+            $qb
+                ->andWhere('a.context LIKE :location')
+                ->setParameter('location' , '%' .$location. '%');
+        }
+    
+        return $qb
+            ->orderBy('a.modifiedAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Associations[] Returns an array of Associations objects
     //  */

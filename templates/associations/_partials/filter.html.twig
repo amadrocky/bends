@@ -1,0 +1,20 @@
+<form action="{{ path('associations_index') }}" class="row justify-content-center filtersZone p-3 w-100 m-0 d-block d-md-flex" method="get">
+	<div class="col-md-1 mt-1">
+		<a href="{{ path('associations_new') }}" class="btn btn-primary btn-block" style="box-shadow: -1px 5px 5px -4px black;">
+			<i class="fas fa-plus-circle"></i>
+		</a>
+	</div>
+	<div class="col my-1">
+		<select name="location" class="form-control">
+			<option value="allReg">Toutes les régions</option>
+			{% for region in regions %}
+				<option value="{{ region.nom }}" {{ app.request.get('location') == region.nom ? 'selected' : '' }}>{{ region.nom }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="col-md-1 mt-1">
+		<button type="submit" class="btn btn-primary btn-block" style="box-shadow: -1px 5px 5px -4px black;">
+			<i class="fas fa-search"></i>
+		</button>
+	</div>
+</form>

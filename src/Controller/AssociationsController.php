@@ -40,7 +40,11 @@ class AssociationsController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator, AssociationsRepository $associationsRepository): Response
     {
-        $datas = $associationsRepository->findBy([], ['modifiedAt' => 'desc'], ['workflowState' => 'active']);
+        if (isset($_GET['location'])) {
+            $datas = $associationsRepository->findByLocation($_GET['location']);
+        } else {
+            $datas = $associationsRepository->findBy([], ['modifiedAt' => 'desc'], ['workflowState' => 'active']);
+        }
 
         $associations = $paginator->paginate(
             $datas, //on passe les données
