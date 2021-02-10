@@ -1,17 +1,41 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Espace associations{% endblock %}
+{% block title %}Associations
+{% endblock %}
 
 {% block body %}
-    <div class="row homeSection homeAssociations h-100 p-3 m-0">
-        <div class="row homeAssoCardOne shiny-btn cursorPointer mx-auto my-2" onclick="window.location.href='/associations/new'">
-            <h2 class="text-white text-center m-auto">Ajouter une association</h2>
-        </div>
-        <div class="row homeAssoCardTwo shiny-btn cursorPointer mx-auto my-2">
-            <h2 class="text-white text-center m-auto">Les associations</h2>
-        </div>
-        <div class="row homeAssoCardThree shiny-btn cursorPointer mx-auto my-2">
-            <h2 class="text-white text-center m-auto">Consulter les annonces</h2>
-        </div>
-    </div>
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
+				<h1 class="h2 loginTitle mb-3 text-center">Associations</h2>
+				{# {% include 'offers/_partials/search.html.twig' %} #}
+				<div class="row justify-content-around p-3 w-100 m-0">
+					{% for association in associations %}
+						{% include 'associations/_partials/association.html.twig' %}
+                        {% include 'associations/_partials/association.html.twig' %}
+                        {% include 'associations/_partials/association.html.twig' %}
+                        {% include 'associations/_partials/association.html.twig' %}
+                        {% include 'associations/_partials/association.html.twig' %}
+                        {% include 'associations/_partials/association.html.twig' %}
+					{% else %}
+						<div class="col-12">
+							<p class="alert alert-primary">
+								Aucune association disponible. Déposez la votre
+								<a href="{{ path('associations_new') }}">ici</a>.
+							</p>
+						</div>
+					{% endfor %}
+					<div class="col-12 mt-2 d-flex justify-content-center">
+						<div>
+							{{ knp_pagination_render(associations) }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		document.getElementById("body").classList.add('homeAssociations');
+	</script>
 {% endblock %}

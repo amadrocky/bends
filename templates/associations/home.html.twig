@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Espace associations{% endblock %}
+
+{% block body %}
+    <div class="row homeSection homeAssociations h-100 p-3 m-0">
+        <div class="row homeAssoCardOne shiny-btn cursorPointer mx-auto my-2" onclick="window.location.href='/associations/new'">
+            <h2 class="text-white text-center m-auto">Ajouter une association</h2>
+        </div>
+        <div class="row homeAssoCardTwo shiny-btn cursorPointer mx-auto my-2" onclick="window.location.href='/associations/all'">
+            <h2 class="text-white text-center m-auto">Les associations</h2>
+        </div>
+        <div class="row homeAssoCardThree shiny-btn cursorPointer mx-auto my-2">
+            <h2 class="text-white text-center m-auto">Consulter les annonces</h2>
+        </div>
+    </div>
+{% endblock %}

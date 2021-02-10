@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Repository\AssociationsRepository;
 use App\Entity\Associations;
 use App\Form\AssociationType;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/associations", name="associations_")
@@ -16,16 +17,44 @@ use App\Form\AssociationType;
 class AssociationsController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/", name="home")
      *
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request): Response
+    public function home(Request $request): Response
     {
-        return $this->render('associations/index.html.twig', [
+        return $this->render('associations/home.html.twig', [
             'user' => $this->getUser(),
             'messages' => $request->getSession()->get('messages')
+        ]);
+    }
+
+    /**
+     * @Route("/all", name="index", methods={"GET"})
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @param AssociationsRepository $associationsRepository
+     * @return Response
+     */
+    public function index(Request $request, PaginatorInterface $paginator, AssociationsRepository $associationsRepository): Response
+    {
+        $datas = $associationsRepository->findBy([], ['modifiedAt' => 'desc'], ['workflowState' => 'active']);
+
+        $associations = $paginator->paginate(
+            $datas, //on passe les données
+            $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
+            10// nombre d'éléments
+        );
+
+        $regions = file_get_contents("https://geo.api.gouv.fr/regions");
+
+        return $this->render('associations/index.html.twig', [
+            'associations' => $associations,
+            'user' => $this->getUser(),
+            'messages' => $request->getSession()->get('messages'),
+            'regions' => json_decode($regions),
         ]);
     }
 

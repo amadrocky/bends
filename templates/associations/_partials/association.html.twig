@@ -1,0 +1,23 @@
+<div class="card col-12 col-md-5 p-0 m-2 bloc-association">
+	<div class="card-header text-center">
+		{% if association.picture is null %}
+			<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo" class="rounded-circle" style="width: 150px; height: 150px">
+		{% else %}
+			<img src="{{ asset('build/images/associations/') }}{{ association.picture }}" alt="image" class="rounded-circle" style="width: 150px; height: 150px">
+		{% endif %}
+	</div>
+	<div class="card-body">
+		<h3 classs="test">{{ association.name }}</h3>
+
+		<p>{{ association.description }}</p>
+		<p>
+			<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
+			{{ association.city }},
+			{{ association.context }}</p>
+	</div>
+	<div class="card-footer text-center">
+		<button type="button" class="btn btn-primary btn-sm btn-block box-shadow">
+			Voir la fiche
+		</button>
+	</div>
+</div>
