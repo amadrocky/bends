@@ -20,7 +20,7 @@
 						</div>
 					{% else %}
 						<div>
-							<p class="alert alert-primary m-0">
+							<p class="alert alert-primary m-0 box-shadow">
 								<i class="far fa-eye-slash"></i>
 								Aucune photo disponible.
 							</p>
@@ -125,7 +125,7 @@
 							<p>Catégorie :
 								{{ offer.category.name }}</p>
 							{% if user == offer.createdBy %}
-								<div class="alert alert-info text-center" role="alert">
+								<div class="alert alert-info text-center box-shadow" role="alert">
 									Votre annonce
 								</div>
 							{% else %}

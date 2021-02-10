@@ -8,7 +8,7 @@
             <div class="col col-md-4 offset-md-4 loginBlock m-2 p-3 form-style">
                 <form method="post">
                     {% if error %}
-                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        <div class="alert alert-danger box-shadow">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
 
                     <h2 class="loginTitle mb-3 text-center">Connexion</h2>
