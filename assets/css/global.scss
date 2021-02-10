@@ -32,7 +32,9 @@ html::-webkit-scrollbar-track {
 
 body {
     height: 100%;
-    background-color: $blue;
+    background: linear-gradient(130deg, rgba(96, 125, 139, 1) 0%, rgba(63, 81, 181, 1) 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     margin: 0;
     padding: 0;
 }
