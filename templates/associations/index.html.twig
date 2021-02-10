@@ -5,18 +5,22 @@
 
 {% block body %}
 	<div class="homeSection">
-		<div class="row justify-content-center p-3 w-100 m-0">
+		<div class="row justify-content-around p-3 w-100 m-0">
 			<div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
 				<h1 class="h2 loginTitle mb-3 text-center">Associations</h2>
 				{# {% include 'offers/_partials/search.html.twig' %} #}
 				<div class="row justify-content-around p-3 w-100 m-0">
-				<div class="alert alert-warning alert-dismissible fade show box-shadow" role="alert">
-					<i class="fas fa-info-circle"></i>
-					Merci de consulter les <a href="">conditions générales d'utilisation</a> concernant les associations.
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
+					<div class="col-12">
+						<div class="alert alert-warning alert-dismissible fade show box-shadow" role="alert">
+							<i class="fas fa-info-circle"></i>
+							Merci de consulter les
+							<a href="">conditions générales d'utilisation</a>
+							concernant les associations.
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					</div>
 					{% for association in associations %}
 						{% include 'associations/_partials/association.html.twig' %}
 					{% else %}
