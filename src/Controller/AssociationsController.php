@@ -162,7 +162,25 @@ class AssociationsController extends AbstractController
     }
 
     /**
-     * Edit association
+     *@Route("/{id}", name="show", requirements={"id":"\d+"})
+     * 
+     * @param Request $request
+     * @param Associations $association
+     * @return Response
+     */
+    public function show(Request $request, Associations $association): Response
+    {
+        return $this->render('associations/show.html.twig', [
+            $user = $this->getUser(),
+            'association' => $association,
+            'user' => $user,
+            'messages' => $request->getSession()->get('messages'),
+            'today' => new \DateTime(),
+            'yesterday' => (new \DateTime())->modify('-1 day')
+        ]);
+    }
+
+    /**
      * 
      * @Route("/edit/{id}", name="edit", requirements={"id":"\d+"}, methods={"POST"})
      *

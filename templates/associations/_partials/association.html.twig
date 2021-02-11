@@ -1,21 +1,21 @@
-<div class="d-flex col-12 col-md-5 py-4 m-2 associationCard cursorPointer">
+<a href="{{ path('associations_show', {'id': association.id}) }}" class="d-flex col-12 col-md-5 py-4 m-2 associationCard noDecorationLink">
 	<div class="blocImageAssociation">
-		{% if association.picture is null %}
-			<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo" class="associationImage box-shadow">
-		{% else %}
+		{% if association.picture %}
 			<img src="{{ asset('build/images/associations/') }}{{ association.picture }}" alt="image" class="associationImage box-shadow">
+		{% else %}
+			<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo" class="associationImage box-shadow">
 		{% endif %}
 	</div>
 	<div class="descriptionZone p-3">
 		<h3 class="cmnty">{{ association.name }}</h3>
 		{% if association.description|length > 60 %}
-			<p class="associationDescription">{{ association.description ~ '...'|slice(0, 60) }}</p>
+			<p class="associationDescription text-dark">{{ association.description|slice(0, 60) ~ '...' }}</p>
 		{% else %}
-			<p class="associationDescription">{{ association.description }}</p>
+			<p class="associationDescription text-dark">{{ association.description }}</p>
 		{% endif %}
 		<p class="text-muted m-0">
 			<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
 			{{ association.city }}
 		</p>
 	</div>
-</div>
+</a>

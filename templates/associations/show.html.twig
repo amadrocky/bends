@@ -1,0 +1,100 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Association
+	{{ association.name }}
+{% endblock %}
+
+{% block body %}
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
+				<h1 class="h2 offer-title pl-2">{{ association.name }}</h1>
+				<div class="card offer-pictures-zone m-2 p-2">
+					<div class="row px-3">
+						<div class="col-sm-12 col-md m-2 p-2">
+							{% if association.picture %}
+								<img src="{{ asset('build/images/associations/') }}{{ association.picture }}" alt="image" class="associationImage box-shadow">
+							{% else %}
+								<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo" class="associationImage box-shadow">
+							{% endif %}
+						</div>
+						<div class="col-sm-12 col-md-8 m-2 p-2">
+							<h6>
+								<b>Description</b>
+							</h6>
+							<p>{{ association.description }}</p>
+						</div>
+						<div class="col-sm-12 col-md-6 p-2">
+							<div class="card p-2 h-100">
+								<h6>
+									<b>Informations</b>
+								</h6>
+								<p>
+									<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
+									{{ association.city }}
+								</p>
+								{% if association.link %}
+									<p>
+										<i class="fas fa-at" style="color: #3f51b5"></i>
+										<a href="{{ association.link }}" target="_blank">{{ association.link }}</a>
+									</p>
+
+								{% endif %}
+								{% if association.modifiedAt|date('d-m-Y') == today|date('d-m-Y') %}
+									<small class="text-muted">Dernière mise à jour : Aujourd'hui à
+										{{ association.modifiedAt|date('H:i') }}</small>
+								{% elseif association.modifiedAt|date('d-m-Y') == yesterday|date('d-m-Y') %}
+									<small class="text-muted">Dernière mise à jour : Hier à
+										{{ association.modifiedAt|date('H:i') }}</small>
+								{% else %}
+									<small class="text-muted">Dernière mise à jour le :
+										{{ association.modifiedAt|date('d-m-Y') }}</small>
+								{% endif %}
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6 p-2">
+							<div class="card p-2 h-100">
+								<h6>
+									<b>Contact</b>
+								</h6>
+								<p>
+									<i class="far fa-envelope" style="color: #3f51b5"></i>
+									<a href="mailto:{{ association.createdBy.email }}">{{ association.createdBy.email }}</a>
+								</p>
+								<p>
+									<i class="fas fa-phone" style="color: #3f51b5"></i>
+									<a href="tel:{{ association.phoneNumber }}">{{ association.phoneNumber }}</a>
+								</p>
+								<p>
+									{% if association.facebookLink %}
+										<span class="cursorPointer">
+											<i class="fab fa-facebook-square iconSocialAsso" onclick="redirect('{{ association.facebookLink }}')"></i>
+										</span>
+									{% endif %}
+									{% if association.twitterLink %}
+										<span class="cursorPointer">
+											<i class="fab fa-twitter-square iconSocialAsso" onclick="redirect('{{ association.twitterLink }}')"></i>
+										</span>
+									{% endif %}
+									{% if association.instagramLink %}
+										<span class="cursorPointer">
+											<i class="fab fa-instagram iconSocialAsso" onclick="redirect('{{ association.InstagramLink }}')"></i>
+										</span>
+									{% endif %}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		document.getElementById("body").classList.add('homeAssociations');
+
+        function redirect(url) {
+            window.open(url, '_blank');
+        }
+	</script>
+{% endblock %}
