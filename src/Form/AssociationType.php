@@ -29,8 +29,37 @@ class AssociationType extends AbstractType
             ])
             ->add('link', TextType::class, [
                 'label' => false,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Site internet (facultatif)'
+                ]
+            ])
+            ->add('phoneNumber', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Téléphone (Facultatif)',
+                ]
+            ])
+            ->add('facebookLink', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'http://www.facebook.com',
+                ]
+            ])
+            ->add('twitterLink', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'http://www.twitter.com',
+                ]
+            ])
+            ->add('instagramLink', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'http://www.instagram.com',
                 ]
             ])
         ;
