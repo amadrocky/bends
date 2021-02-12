@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\AssociationsRepository;
+use App\Repository\OffersRepository;
 use App\Entity\Associations;
 use App\Form\AssociationType;
 use Knp\Component\Pager\PaginatorInterface;
@@ -168,7 +169,7 @@ class AssociationsController extends AbstractController
      * @param Associations $association
      * @return Response
      */
-    public function show(Request $request, Associations $association): Response
+    public function show(Request $request, Associations $association, OffersRepository $offersRepository): Response
     {
         return $this->render('associations/show.html.twig', [
             $user = $this->getUser(),
@@ -176,7 +177,8 @@ class AssociationsController extends AbstractController
             'user' => $user,
             'messages' => $request->getSession()->get('messages'),
             'today' => new \DateTime(),
-            'yesterday' => (new \DateTime())->modify('-1 day')
+            'yesterday' => (new \DateTime())->modify('-1 day'),
+            'associationOffers' => $offersRepository->findByAssociation($association)
         ]);
     }
 

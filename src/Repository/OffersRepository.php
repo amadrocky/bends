@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Offers;
+use App\Entity\Associations;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -20,14 +21,13 @@ class OffersRepository extends ServiceEntityRepository
     }
 
     /**
-     * Research
      *
      * @param [type] $search
      * @param [type] $category
      * @param [type] $location
-     * @return Array
+     * @return array
      */
-    public function getSearchResults($search, $category, $location) :Array
+    public function getSearchResults($search, $category, $location): array
     {
         $qb = $this->createQueryBuilder('o')
             ->where('o.workflowState = :workflow_state')
@@ -53,6 +53,28 @@ class OffersRepository extends ServiceEntityRepository
     
         return $qb
             ->orderBy('o.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Three last offers by association
+     *
+     * @param Associations $association
+     * @return array
+     */
+    public function findByAssociation(Associations $association): array
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.createdBy', 'user')
+            ->innerJoin(Associations::class, 'a')
+            ->where('user = a.createdBy')
+            ->andWhere('o.workflowState = :workflow_state')
+            ->setParameter('workflow_state', 'created')
+            ->distinct()
+            ->orderBy('o.createdAt', 'DESC')
+            ->setMaxResults(3)
             ->getQuery()
             ->getResult()
         ;
