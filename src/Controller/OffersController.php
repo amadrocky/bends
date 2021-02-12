@@ -45,6 +45,45 @@ class OffersController extends AbstractController
     {
         $datas = $offersRepository->findBy([], ['createdAt' => 'desc']);
 
+        if(isset($_GET['search'])) {
+            $search = $_GET['search'];
+            $category = $_GET['category'];
+            $location = $_GET['location'];
+
+            if ($this->getUser()) {
+                if ($search === '' && $category === 'allCat' && $location === 'allReg') {
+                    
+                } else {
+                    $research = new Research();
+                    $em = $this->getDoctrine()->getManager();
+                    $research->setUser($this->getUser());
+                    if ($category === 'allCat') {
+                        $research->setCategory(null);
+                    } else {
+                        $research->setCategory($categoriesRepository->find($category));
+                    }
+                    $research->setSearch($search);
+                    if ($location === 'allReg') {
+                        $research->setLocation(null);
+                    } else {
+                        $research->setLocation($location);
+                    }
+                    $research->setCreatedAt(new \DateTime());
+                    $research->setWorkflowState('created');
+                    $em->persist($research);
+                    $em->flush();
+    
+                    /* Limite des 5 dernières recherches par utilisateur */
+                    if (count($this->getUser()->getResearches()->getValues()) > 5) {
+                        $em->remove($this->getUser()->getResearches()->getValues()[0]);
+                        $em->flush();
+                    }
+                }
+            }
+
+            $datas = $offersRepository->getSearchResults($search, $category, $location);
+        }
+
         $offers = $paginator->paginate(
             $datas, //on passe les données
             $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
@@ -262,73 +301,6 @@ class OffersController extends AbstractController
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),
             'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/research", name="offers_research", methods={"GET"})
-     *
-     * @param Request $request
-     * @param OffersRepository $offersRepository
-     * @param PaginatorInterface $paginator
-     * @param CategoriesRepository $categoriesRepository
-     * @return Response
-     */
-    public function research(Request $request, OffersRepository $offersRepository, PaginatorInterface $paginator, CategoriesRepository $categoriesRepository): Response
-    {
-        $search = $_GET['search'];
-        $category = $_GET['category'];
-        $location = $_GET['location'];
-
-        if ($this->getUser()) {
-            if ($search === '' && $category === 'allCat' && $location === 'allReg') {
-                
-            } else {
-                $research = new Research();
-                $em = $this->getDoctrine()->getManager();
-                $research->setUser($this->getUser());
-                if ($category === 'allCat') {
-                    $research->setCategory(null);
-                } else {
-                    $research->setCategory($categoriesRepository->find($category));
-                }
-                $research->setSearch($search);
-                if ($location === 'allReg') {
-                    $research->setLocation(null);
-                } else {
-                    $research->setLocation($location);
-                }
-                $research->setCreatedAt(new \DateTime());
-                $research->setWorkflowState('created');
-                $em->persist($research);
-                $em->flush();
-
-                /* Limite des 5 dernières recherches par utilisateur */
-                if (count($this->getUser()->getResearches()->getValues()) > 5) {
-                    $em->remove($this->getUser()->getResearches()->getValues()[0]);
-                    $em->flush();
-                }
-            }
-        }
-
-        $datas = $offersRepository->getSearchResults($search, $category, $location);
-
-        $results = $paginator->paginate(
-            $datas, //on passe les données
-            $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
-            20// nombre d'éléments
-        );
-
-        $regions = file_get_contents("https://geo.api.gouv.fr/regions");
-
-        return $this->render('offers/research.html.twig', [
-            'categories' => $categoriesRepository->findAll(),
-            'regions' => json_decode($regions),
-            'user' => $this->getUser(),
-            'messages' => $request->getSession()->get('messages'),
-            'results' => $results,
-            'today' => new \DateTime(),
-            'yesterday' => (new \DateTime())->modify('-1 day')
         ]);
     }
 
