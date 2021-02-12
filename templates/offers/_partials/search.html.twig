@@ -9,21 +9,21 @@
 		</a>
 	</div>
 	<div class="col my-1">
-		<input type="search" name="search" class="form-control" placeholder="Rechercher">
+		<input type="search" name="search" class="form-control" placeholder="Rechercher" value="{{ app.request.get('search') ? app.request.get('search') : '' }}">
 	</div>
 	<div class="col my-1">
 		<select name="category" class="form-control">
-			<option value="allCat" selected>Catégories</option>
+			<option value="allCat" selected>Toutes catégories</option>
 			{% for categorie in categories %}
-				<option value="{{ categorie.id }}">{{ categorie.name }}</option>
+				<option value="{{ categorie.id }}" {{ app.request.get('category') == categorie.id ? 'selected' : '' }}>{{ categorie.name }}</option>
 			{% endfor %}
 		</select>
 	</div>
 	<div class="col my-1">
 		<select name="location" class="form-control">
-			<option value="allReg" selected>Régions</option>
+			<option value="allReg" selected>Toutes régions</option>
 			{% for region in regions %}
-				<option value="{{ region.nom }}">{{ region.nom }}</option>
+				<option value="{{ region.nom }}" {{ app.request.get('location') == region.nom ? 'selected' : '' }}>{{ region.nom }}</option>
 			{% endfor %}
 		</select>
 	</div>
