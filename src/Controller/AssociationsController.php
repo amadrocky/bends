@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\AssociationsRepository;
 use App\Repository\OffersRepository;
+use App\Repository\CategoriesRepository;
 use App\Entity\Associations;
 use App\Form\AssociationType;
 use Knp\Component\Pager\PaginatorInterface;
@@ -61,6 +62,11 @@ class AssociationsController extends AbstractController
             'messages' => $request->getSession()->get('messages'),
             'regions' => json_decode($regions),
         ]);
+    }
+
+    public function offers(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository): Response
+    {
+
     }
 
     /**

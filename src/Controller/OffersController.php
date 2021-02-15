@@ -121,14 +121,12 @@ class OffersController extends AbstractController
         $form = $this->createForm(OffersType::class, $offer);
         $form->handleRequest($request);
         $cities = [];
-        $userHasAssociation = !empty($associationsRepository->findBy(['createdBy' => $this->getUser()->getId(), 'workflowState' => 'active']));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $offer->setZipCode($_POST['zip']);
             $offer->setCity($_POST['filtered_cities']);
             $offer->setCreatedAt(new \DateTime());
-            $offer->setIsAssociation($userHasAssociation);
 
             /* Récupération du context (dep, region) */
             $cities = $session->get('cities');
