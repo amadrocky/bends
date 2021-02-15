@@ -271,7 +271,7 @@ class AssociationsController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $this->addFlash('success', 'Modification(s) enregistrée(s)');
+        $this->addFlash('success', 'Association supprimée');
         return $this->redirectToRoute('profil');
     }
 }
