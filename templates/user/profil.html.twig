@@ -75,6 +75,43 @@
 								</div>
 							</div>
 
+							{% if userOffers > 0 %}
+								<div class="subtitleZone p-1 my-3">
+									<h5 class="text-white m-0">Vos annonces</h5>
+								</div>
+
+								{% for offer in userOffers %}
+									<div class="col-12 my-2 p-2 bg-white message-card">
+										<div class="d-flex">
+											<a href="{{ path('offers_show', {'id': offer.id}) }}" class="discussion-link d-flex w-100">
+												{% if offer.pictures is not empty %}
+													<img src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
+												{% else %}
+													<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
+												{% endif %}
+												<div class="pl-2">
+													<p class="message-user m-0">
+														{{ offer.title }}
+													</p>
+													<div class="message-preview">
+														<span class="text-muted">{{ offer.createdAt|date('d/m') }}</span>
+													</div>
+												</div>
+											</a>
+											<div class="d-flex flex-columns align-items-center">
+												<form id="deleteOfferForm{{ offer.id }}" class="d-inline" method="post" action="{{ path('offers_delete', {'id': offer.id}) }}">
+													<input type="hidden" name="_method" value="DELETE">
+													<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
+												</form>
+												<button class="btn btn-outline-danger" onclick="confirmDeleteOffer({{ offer.id }})">
+													<i class="far fa-trash-alt"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							{% endif %}
+
 							<!-- Modal edit association -->
 							<div class="modal fade" id="editAssoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog" role="document">
@@ -236,6 +273,24 @@ dangerMode: true
 }).then((willDelete) => {
 if (willDelete) {
 document.getElementById("deleteForm").submit();
+} else {
+swal("Suppression annulée");
+}
+});
+}
+
+function confirmDeleteOffer(id) {
+swal({
+title: "Êtes vous sûr(e)?",
+text: "Veuillez confirmer la suppression",
+icon: "warning",
+buttons: [
+"Annuler", "Supprimer"
+],
+dangerMode: true
+}).then((willDelete) => {
+if (willDelete) {
+document.getElementById('deleteOfferForm' + id).submit();
 } else {
 swal("Suppression annulée");
 }

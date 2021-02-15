@@ -482,7 +482,7 @@ class OffersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="offers_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="offers_delete", requirements={"id":"\d+"}, methods={"DELETE"})
      * @param Request $request
      * @param Offers $offer
      * @return Response
@@ -491,10 +491,13 @@ class OffersController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete' . $offer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($offer);
+            $offer->setWorkflowState('deleted');
             $entityManager->flush();
+        } else {
+            return $this->redirectToRoute('home');
         }
 
-        return $this->redirectToRoute('offers_index');
+        $this->addFlash('success', 'Annonce supprimée');
+        return $this->redirectToRoute('profil');
     }
 }

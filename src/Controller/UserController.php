@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AssociationsRepository;
+use App\Repository\OffersRepository;
 
 class UserController extends AbstractController
 {
@@ -19,7 +20,7 @@ class UserController extends AbstractController
      * @return Response
      * @Route("/profil", name="profil")
      */
-    public function index(Request $request, FileUploader $fileUploader, AssociationsRepository $associationsRepository) :Response
+    public function index(Request $request, FileUploader $fileUploader, AssociationsRepository $associationsRepository, OffersRepository $offersRepository) :Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -74,6 +75,7 @@ class UserController extends AbstractController
             'form' => $form->createView(),
             'userAssociation' => $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0] : [],
             'cities' => $cities,
+            'userOffers' => $offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'created'], ['createdAt' => 'DESC'])
         ]);
     }
 }
