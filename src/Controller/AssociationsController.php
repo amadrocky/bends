@@ -45,7 +45,7 @@ class AssociationsController extends AbstractController
         if (isset($_GET['location'])) {
             $datas = $associationsRepository->findByLocation($_GET['location']);
         } else {
-            $datas = $associationsRepository->findBy([], ['modifiedAt' => 'desc'], ['workflowState' => 'active']);
+            $datas = $associationsRepository->findBy(['workflowState' => 'active'], ['modifiedAt' => 'DESC']);
         }
 
         $associations = $paginator->paginate(

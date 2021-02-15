@@ -43,7 +43,7 @@ class OffersController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository): Response
     {
-        $datas = $offersRepository->findBy([], ['createdAt' => 'desc']);
+        $datas = $offersRepository->findBy(['workflowState' => 'created'], ['createdAt' => 'DESC']);
 
         if(isset($_GET['search'])) {
             $search = $_GET['search'];
@@ -110,7 +110,7 @@ class OffersController extends AbstractController
      * @param AssociationsRepository $associationsRepository
      * @return Response
      */
-    function new (Request $request, AssociationsRepository $associationsRepository): Response 
+    function new(Request $request, AssociationsRepository $associationsRepository): Response 
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
