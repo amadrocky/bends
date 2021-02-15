@@ -1,13 +1,13 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Consulter les annonces{% endblock %}
+{% block title %}Annonces associations{% endblock %}
 
 {% block body %}
     <div class="homeSection">
         <div class="row justify-content-center p-3 w-100 m-0">
             <div class="col col-md-4 col-lg-10 loginBlock h-100 p-2">
-                <h1 class="h2 loginTitle mb-3 text-center">Annonces</h2>
-                    {% include 'offers/_partials/search.html.twig' with {path: 'offers_index'} %}
+                <h1 class="h2 loginTitle mb-3 text-center">Annonces associations</h2>
+                    {% include 'offers/_partials/search.html.twig' with {path: 'associations_offers'} %}
                 <div class="row p-3 w-100 m-0">
                     {% for offer in offers %}
                         {% include 'offers/_partials/offer.html.twig' %}
@@ -27,4 +27,8 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+		document.getElementById("body").classList.add('homeAssociations');
+    </script>
 {% endblock %}

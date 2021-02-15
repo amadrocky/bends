@@ -21,13 +21,15 @@ class OffersRepository extends ServiceEntityRepository
     }
 
     /**
+     * Undocumented function
      *
-     * @param [type] $search
+     * @param string $search
      * @param [type] $category
-     * @param [type] $location
+     * @param string $location
+     * @param boolean $isAsso
      * @return array
      */
-    public function getSearchResults($search, $category, $location): array
+    public function getSearchResults(string $search, $category, string $location, bool $isAsso = false): array
     {
         $qb = $this->createQueryBuilder('o')
             ->where('o.workflowState = :workflow_state')
@@ -50,8 +52,32 @@ class OffersRepository extends ServiceEntityRepository
                 ->andWhere('o.context LIKE :location')
                 ->setParameter('location' , '%' .$location. '%');
         }
+
+        if ($isAsso) {
+            $qb
+                ->innerJoin(Associations::class, 'a')
+                ->andWhere('o.createdBy = a.createdBy');
+        }
     
         return $qb
+            ->orderBy('o.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Associations offers
+     *
+     * @return array
+     */
+    public function findByAssociations(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin(Associations::class, 'a')
+            ->where('o.createdBy = a.createdBy')
+            ->andWhere('o.workflowState = :workflow_state')
+            ->setParameter('workflow_state', 'created')
             ->orderBy('o.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
@@ -98,14 +124,14 @@ class OffersRepository extends ServiceEntityRepository
      */
 
     /*
-public function findOneBySomeField($value): ?Offers
-{
-return $this->createQueryBuilder('o')
-->andWhere('o.exampleField = :val')
-->setParameter('val', $value)
-->getQuery()
-->getOneOrNullResult()
-;
-}
+    public function findOneBySomeField($value): ?Offers
+    {
+    return $this->createQueryBuilder('o')
+    ->andWhere('o.exampleField = :val')
+    ->setParameter('val', $value)
+    ->getQuery()
+    ->getOneOrNullResult()
+    ;
+    }
  */
 }

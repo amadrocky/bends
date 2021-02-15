@@ -64,9 +64,75 @@ class AssociationsController extends AbstractController
         ]);
     }
 
+    /**
+     * * @Route("/offers", name="offers", methods={"GET"})
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @param OffersRepository $offersRepository
+     * @param CategoriesRepository $categoriesRepository
+     * @return Response
+     */
     public function offers(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository): Response
     {
+        $datas = $offersRepository->findByAssociations();
+        
+        if(isset($_GET['search'])) {
+            $search = $_GET['search'];
+            $category = $_GET['category'];
+            $location = $_GET['location'];
 
+            if ($this->getUser()) {
+                if ($search === '' && $category === 'allCat' && $location === 'allReg') {
+                    
+                } else {
+                    $research = new Research();
+                    $em = $this->getDoctrine()->getManager();
+                    $research->setUser($this->getUser());
+                    if ($category === 'allCat') {
+                        $research->setCategory(null);
+                    } else {
+                        $research->setCategory($categoriesRepository->find($category));
+                    }
+                    $research->setSearch($search);
+                    if ($location === 'allReg') {
+                        $research->setLocation(null);
+                    } else {
+                        $research->setLocation($location);
+                    }
+                    $research->setCreatedAt(new \DateTime());
+                    $research->setWorkflowState('created');
+                    $em->persist($research);
+                    $em->flush();
+    
+                    /* Limite des 5 dernières recherches par utilisateur */
+                    if (count($this->getUser()->getResearches()->getValues()) > 5) {
+                        $em->remove($this->getUser()->getResearches()->getValues()[0]);
+                        $em->flush();
+                    }
+                }
+            }
+
+            $datas = $offersRepository->getSearchResults($search, $category, $location, true);
+        }
+
+        $offers = $paginator->paginate(
+            $datas, //on passe les données
+            $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
+            20// nombre d'éléments
+        );
+
+        $regions = file_get_contents("https://geo.api.gouv.fr/regions");
+
+        return $this->render('associations/offers.html.twig', [
+            'offers' => $offers,
+            'user' => $this->getUser(),
+            'messages' => $request->getSession()->get('messages'),
+            'categories' => $categoriesRepository->findAll(),
+            'regions' => json_decode($regions),
+            'today' => new \DateTime(),
+            'yesterday' => (new \DateTime())->modify('-1 day'),
+        ]);
     }
 
     /**
