@@ -94,10 +94,9 @@ class OffersRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.createdBy', 'user')
-            ->innerJoin(Associations::class, 'a')
-            ->where('user = a.createdBy')
+            ->where('user = :association')
             ->andWhere('o.workflowState = :workflow_state')
-            ->setParameter('workflow_state', 'created')
+            ->setParameters(['workflow_state' => 'created', 'association' => $association->getCreatedBy()])
             ->distinct()
             ->orderBy('o.createdAt', 'DESC')
             ->setMaxResults(3)

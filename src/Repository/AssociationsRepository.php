@@ -39,10 +39,10 @@ class AssociationsRepository extends ServiceEntityRepository
     /**
      * Filter by location
      *
-     * @param [type] $location
+     * @param string $location
      * @return array
      */
-    public function findByLocation($location): array
+    public function findByLocation(string $location): array
     {
         $qb = $this->createQueryBuilder('a')
             ->where('a.workflowState = :workflow_state')

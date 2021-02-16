@@ -25,9 +25,9 @@ class DiscussionsRepository extends ServiceEntityRepository
      * User discussions
      *
      * @param User $user
-     * @return void
+     * @return array
      */
-    public function findByUser(User $user)
+    public function findByUser(User $user): array
     {
         return $this->createQueryBuilder('d')
             ->where('d.createdBy = :user')
@@ -49,9 +49,9 @@ class DiscussionsRepository extends ServiceEntityRepository
      * @param User $user1
      * @param User $user2
      * @param Offers $offer
-     * @return void
+     * @return array
      */
-    public function findByUsersAndOffer(User $user1, User $user2, Offers $offer)
+    public function findByUsersAndOffer(User $user1, User $user2, Offers $offer): array
     {
         return $this->createQueryBuilder('d')
             ->where('d.createdBy = :user1')

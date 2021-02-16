@@ -25,9 +25,9 @@ class FavoritesRepository extends ServiceEntityRepository
      * User favorites
      *
      * @param User $user
-     * @return void
+     * @return array
      */
-    public function findByUser(User $user)
+    public function findByUser(User $user): array
     {
         return $this->createQueryBuilder('f')
             ->where('f.user = :user')
@@ -47,9 +47,9 @@ class FavoritesRepository extends ServiceEntityRepository
      *
      * @param User $user
      * @param Offers $offer
-     * @return void
+     * @return array
      */
-    public function findByUserAndOffer(User $user, Offers $offer)
+    public function findByUserAndOffer(User $user, Offers $offer): array
     {
         return $this->createQueryBuilder('f')
             ->where('f.user = :user')
