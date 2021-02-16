@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Associations;
+use App\Entity\Offers;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -20,12 +21,28 @@ class AssociationsRepository extends ServiceEntityRepository
     }
 
     /**
+     *
+     * @param Offers $offer
+     * @return array
+     */
+    public function findByOffer(Offers $offer): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.createdBy = :created_by')
+            ->andWhere('a.workflowState = :workflow_state')
+            ->setParameters(['workflow_state' => 'active', 'created_by' => $offer->getCreatedBy()])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * Filter by location
      *
      * @param [type] $location
-     * @return Array
+     * @return array
      */
-    public function findByLocation($location): Array
+    public function findByLocation($location): array
     {
         $qb = $this->createQueryBuilder('a')
             ->where('a.workflowState = :workflow_state')

@@ -223,7 +223,7 @@ class OffersController extends AbstractController
      * @param DiscussionsRepository $discussionsRepository
      * @return Response
      */
-    public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, FavoritesRepository $favoritesRepository): Response
+    public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, AssociationsRepository $associationsRepository, FavoritesRepository $favoritesRepository): Response
     {
         $discussion = new Discussions();
         $message = new Message();
@@ -299,6 +299,7 @@ class OffersController extends AbstractController
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),
             'form' => $form->createView(),
+            'offerAssociation' => $associationsRepository->findByOffer($offer)
         ]);
     }
 

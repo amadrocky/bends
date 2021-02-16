@@ -81,12 +81,10 @@
 								<div class="pswp__caption">
 									<div class="pswp__caption__center"></div>
 								</div>
-
 							</div>
-
 						</div>
-
 					</div>
+
 					<div class="row px-3">
 						<div class="card col-sm-12 col-md m-2 p-2">
 							<h6>
@@ -98,6 +96,31 @@
 							<h6>
 								<b>Informations</b>
 							</h6>
+							{% if offerAssociation|length > 0 %}
+								<div class="my-2 p-2 bg-white message-card">
+									<a href="{{ path('associations_show', {'id': offerAssociation[0].id}) }}" class="discussion-link">
+										<div class="d-flex">
+											<div class="d-flex flex-columns align-items-center">
+												{% if offerAssociation[0].picture is not empty %}
+													<img src="{{ asset('build/images/associations/') }}{{ offerAssociation[0].picture }}" class="miniature mx-1" alt="miniature">
+												{% else %}
+													<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
+												{% endif %}
+											</div>
+											<div class="flex-fill">
+												<h4 class="cmnty">
+													{{ offerAssociation[0].name }}
+												</h4>
+												<p class="text-muted">
+													<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
+													{{ offerAssociation[0].city }}
+												</p>
+											</div>
+										</div>
+									</a>
+								</div>
+							{% endif %}
+
 							{% if offer.type.id == 2 %}
 								<div class="d-flex">
 									<span class="card-badge badge-pill badge-warning text-center text-white mb-2">
