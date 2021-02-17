@@ -28,7 +28,7 @@
                 </a>
             </div>
             <div class="col-4 my-auto text-right">
-                <a href="{{ path('profil') }}">
+                <a href="{{ path('profil_index') }}">
                     {% if user %}
                         {% if user.profilImage %}
                             <img class="menuButton rounded-circle"
@@ -63,7 +63,7 @@
                         annonces</p></a>
                 <a href="{{ path('associations_home') }}" class="lightLink"><p><i class="fas fa-hands-helping"></i> Espace associations</p></a>
                 <h4 class="mx-2">Mon éspace</h4>
-                <a href="{{ path('profil') }}" class="lightLink"><p><i class="fas fa-user-circle"></i> Profil</p></a>
+                <a href="{{ path('profil_index') }}" class="lightLink"><p><i class="fas fa-user-circle"></i> Profil</p></a>
                 <a href="{{ path('offers_lastResearches') }}" class="lightLink"><p><i class="fas fa-search"></i> Recherches</p></a>
                 <a href="{{ path('favorites') }}" class="lightLink"><p><i class="far fa-star"></i> Favoris</p></a>
                 {% if messages > 0 %}

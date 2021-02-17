@@ -285,15 +285,13 @@ class AssociationsController extends AbstractController
             $uploadDir = $_SERVER['PWD'] . '/assets/static/images/associations/';
             $file = null;
 
-            if ($fileName !== "") {
-                /* On renomme l'image */
-                $extention = strrchr($fileName, ".");
-                $fileName = 'association_image_' . uniqid() . $extention;
+            /* On renomme l'image */
+            $extention = strrchr($fileName, ".");
+            $fileName = 'association_image_' . uniqid() . $extention;
 
-                $uploadFile = $uploadDir . basename($fileName);
-                move_uploaded_file($_FILES['img']['tmp_name'], $uploadFile);
-                $file = basename($uploadFile);
-            }
+            $uploadFile = $uploadDir . basename($fileName);
+            move_uploaded_file($_FILES['img']['tmp_name'], $uploadFile);
+            $file = basename($uploadFile);
             
             // Supprime l'ancien fichier
             unlink($uploadDir . $association->getPicture());
@@ -321,7 +319,7 @@ class AssociationsController extends AbstractController
 
         $this->addFlash('success', 'Modification(s) enregistrée(s)');
 
-        return $this->redirectToRoute('profil');
+        return $this->redirectToRoute('profil_index');
     }
 
     /**
@@ -338,6 +336,6 @@ class AssociationsController extends AbstractController
         }
 
         $this->addFlash('success', 'Association supprimée');
-        return $this->redirectToRoute('profil');
+        return $this->redirectToRoute('profil_index');
     }
 }

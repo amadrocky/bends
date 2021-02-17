@@ -17,37 +17,117 @@
 								<img class="profilImage rounded-circle img-thumbnail" src="{{ asset('build/icons/Avatar.png') }}" alt="Avatar">
 							{% endif %}
 						</div>
-						<h2 class="loginTitle my-3 text-center">{{ user.firstname }}
+						<h2 class="loginTitle mt-3 text-center">{{ user.firstname }}
 							{{ user.lastname }}</h2>
-						{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-						{{ form_widget(form) }}
-						<button type="submit" class="btn btn-primary mx-auto my-2">Valider</button>
-						{{ form_end(form) }}
-
+						<h5 class="cmnty mb-3 text-center">{{ user.pseudonym }}</h5>
 						<div class="subtitleZone p-1 mb-3">
 							<h5 class="text-white m-0">Informations</h5>
 						</div>
+						<div class="row d-flex">
+							<div class="col">
+								<table class="table">
+									<tbody>
+										<tr>
+											<th>Adresse email</th>
+											<td>{{ user.email }}</td>
+										</tr>
+										<tr>
+											<th>Sexe</th>
+											<td>{{ user.gender }}</td>
+										</tr>
+										<tr>
+											<th>Age</th>
+											<td>{{ user.age }}</td>
+										</tr>
+										<tr>
+											<th>Membre depuis le</th>
+											<td>{{ user.createdAt|date('d/m/Y') }}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col col-md-2 p-2 d-flex flex-columns align-items-center">
+								<button type="button" class="btn btn-warning m-auto box-shadow" data-toggle="modal" data-target="#editProfilModal">
+									<i class="fas fa-user-edit"></i>
+								</button>
+							</div>
+						</div>
 
-						<table class="table">
-							<tbody>
-								<tr>
-									<th>Adresse email</th>
-									<td>{{ user.email }}</td>
-								</tr>
-								<tr>
-									<th>Sexe</th>
-									<td>{{ user.gender }}</td>
-								</tr>
-								<tr>
-									<th>Age</th>
-									<td>{{ user.age }}</td>
-								</tr>
-								<tr>
-									<th>Membre depuis le</th>
-									<td>{{ user.createdAt|date('d/m/Y') }}</td>
-								</tr>
-							</tbody>
-						</table>
+						<!-- Modal edit profil -->
+						<div class="modal fade" id="editProfilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h2 class="loginTitle" id="exampleModalLabel">Mes informations</h2>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form id="editProfilForm" action="{{ path('profil_edit', {'id': user.id}) }}" method="post" enctype="multipart/form-data">
+											<div class="subtitleZone p-1 mb-3">
+												<h5 class="text-white m-0">Informations</h5>
+											</div>
+											<input type="text" name="lastname" value="{{ user.lastname }}" class="form-control mb-2" placeholder="Nom" required>
+											<input type="text" name="firstname" value="{{ user.firstname }}" class="form-control mb-2" placeholder="Prénom" required>
+											<input type="text" name="pseudonym" value="{{ user.pseudonym }}" class="form-control mb-2" placeholder="Pseudonyme" required>
+											<input type="date" name="birthDate" value="{{ user.dateOfBirth|date('Y-m-d') }}" class="form-control" required>
+											<div class="mb-2">
+												<small class="text-muted">
+													<i class="fas fa-info-circle"></i>
+													Veuillez saisir votre date de naissance.
+												</small>
+											</div>
+											<input type="text" name="email" value="{{ user.email }}" class="form-control mb-2" placeholder="Email" required>
+											<select name="gender" id="gender" class="form-control mb-3">
+												<option value="M" {{ user.gender == 'M' ? 'selected' : '' }}>Homme</option>
+												<option value="F" {{ user.gender == 'F' ? 'selected' : '' }}>Femme</option>
+											</select>
+											<div class="subtitleZone p-1 mb-3">
+												<h5 class="text-white m-0">Image de profil</h5>
+											</div>
+											{% if user.profilImage %}
+												<img src="/build/images/profil/{{ user.profilImage }}" style="max-height: 150px" alt="Avatar">
+											{% endif %}
+											<label for="imgProfile" class="cursorPointer m-0 img-offers">
+												<i class="fas fa-camera"></i>
+												Nouvelle image</label>
+											<input id="imgProfile" name="imgProfile" type="file" accept="image/png, image/jpeg" onchange="loadFile('profileOutput')" hidden/>
+											<img id="profileOutput" class="input-photo my-1"/>
+											<div class="mb-2">
+												<small class="text-muted">
+													<i class="fas fa-info-circle"></i>
+													Ciquez sur l'icone pour séléctionner une nouvelle photo.
+												</small>
+											</div>
+											{% if user.profilImage %}
+												<input type="checkbox" id="deleteFile" name="deleteFile">
+												<label for="deleteFile" class="text-danger m-0">
+													<small>Supprimer l'image</small>
+												</label>
+												<div>
+													<small class="text-muted">
+														<i class="fas fa-info-circle"></i>
+														Cochez la case pour supprimer l'image.
+													</small>
+												</div>
+											{% endif %}
+											<div class="subtitleZone p-1 my-3">
+												<h5 class="text-white m-0">Mon compte</h5>
+											</div>
+											<button class="btn btn-outline-danger btn-sm btn-block my-2">
+												<i class="fas fa-user-slash"></i>
+												Supprimer le compte</button>
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+										<button type="button" class="btn btn-primary" onclick="submit('editProfilForm')">Enregistrer</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End modal edit profil -->
 
 						{% if userAssociation is not empty %}
 							<div class="subtitleZone p-1 mb-3">
@@ -91,12 +171,12 @@
 												<div class="subtitleZone p-1 mb-3">
 													<h5 class="text-white m-0">Informations</h5>
 												</div>
-												<input type="text" name="name" value="{{ userAssociation.name }}" class="form-control mb-2" required>
-												<textarea name="description" id="" maxlength="255" class="form-control mb-2" required>{{ userAssociation.description }}</textarea>
+												<input type="text" name="name" value="{{ userAssociation.name }}" class="form-control mb-2" placeholder="Nom" required>
+												<textarea name="description" id="" maxlength="255" class="form-control mb-2" placeholder="Description" required>{{ userAssociation.description }}</textarea>
 												{% if userAssociation.link is null %}
-													<input type="text" name="link" value="Site internet (facultatif)" class="form-control mb-2">
+													<input type="text" name="link" placeholder="Site internet (facultatif)" class="form-control mb-2">
 												{% else %}
-													<input type="text" name="link" value="{{ userAssociation.link }}" class="form-control mb-2">
+													<input type="text" name="link" value="{{ userAssociation.link }}" class="form-control mb-2" placeholder="Site internet (facultatif)">
 												{% endif %}
 												<div class="mb-3">
 													<small class="text-muted">
@@ -112,7 +192,7 @@
 														{% if userAssociation is null %}
 															<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo" style="max-height: 100px">
 														{% else %}
-															<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" style="height: 100px">
+															<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" style="max-height: 100px">
 														{% endif %}
 													</div>
 													<div class="col-12 col-md mb-2">
@@ -189,12 +269,12 @@
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-											<button type="button" class="btn btn-primary" onclick="submit()">Enregistrer</button>
+											<button type="button" class="btn btn-primary" onclick="submit('editForm')">Enregistrer</button>
 										</div>
 									</div>
 								</div>
 							</div>
-
+							<!-- End modal edit association -->
 						{% endif %}
 
 						{% if userOffers|length > 0 %}
@@ -327,8 +407,8 @@ URL.revokeObjectURL(output.src)
 }
 };
 
-function submit() {
-$("#editForm").submit()
+function submit(id) {
+$('#' + id).submit()
 }
 	</script>
 {% endblock %}

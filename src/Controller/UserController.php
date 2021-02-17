@@ -11,14 +11,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AssociationsRepository;
 use App\Repository\OffersRepository;
+use App\Entity\User;
 
+/**
+ * @Route("/profil", name="profil_")
+ */
 class UserController extends AbstractController
 {
     /**
      * @param Request $request
      * @param FileUploader $fileUploader
      * @return Response
-     * @Route("/profil", name="profil")
+     * @Route("/", name="index")
      */
     public function index(Request $request, FileUploader $fileUploader, AssociationsRepository $associationsRepository, OffersRepository $offersRepository) :Response
     {
@@ -27,29 +31,7 @@ class UserController extends AbstractController
         }
 
         $user = $this->getUser();
-        $form = $this->createForm(ProfilImageType::class);
-        $form->handleRequest($request);
         $cities = [];
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $imageProfil */
-            $imageProfil = $form['profilImage']->getData();
-
-            $profilFileName = $fileUploader->upload($imageProfil);
-
-            // suppression de l'ancienne image
-            /*if ($user->getProfilImage()){
-                unlink('assets/static/images/profil/' . $user->getProfilImage());
-            }*/
-
-            $em = $this->getDoctrine()->getManager();
-            $user->setProfilImage($profilFileName);
-            $user->setModifiedAt(new \DateTime());
-            $em->flush();
-
-            $this->addFlash('success', 'Image de profil mise à jour');
-            return $this->redirect($this->generateUrl('profil'));
-        }
 
         if ($request->IsMethod('POST')) {
             $apiRequest = json_decode(
@@ -67,15 +49,92 @@ class UserController extends AbstractController
             }
 
             $session->set('cities', $cities);
+
+            if(isset($_POST['deleteFile'])) {
+                dd($_POST['deleteFile']);
+            }
         }
 
         return $this->render('user/profil.html.twig', [
             'user' => $user,
             'messages' => $request->getSession()->get('messages'),
-            'form' => $form->createView(),
             'userAssociation' => $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0] : [],
             'cities' => $cities,
             'userOffers' => $offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'created'], ['createdAt' => 'DESC'])
         ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="edit", requirements={"id":"\d+"}, methods={"POST"})
+     *
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function edit(Request $request, User $user): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $cities = [];
+        $entityManager = $this->getDoctrine()->getManager();
+        $fileName = $_FILES['imgProfile']['name'];
+        $uploadDir = $_SERVER['PWD'] . '/assets/static/images/profil/';
+
+        if ($_POST['lastname'] !== $user->getLastname()) {
+            $user->setLastname($_POST['lastname']);
+        }
+
+        if ($_POST['firstname'] !== $user->getFirstname()) {
+            $user->setLastname($_POST['firstname']);
+        }
+
+        if ($_POST['pseudonym'] !== $user->getPseudonym()) {
+            $user->setPseudonym($_POST['pseudonym']);
+        }
+
+        if (new \DateTime($_POST['birthDate']) !== $user->getDateOfBirth()) {
+            $user->setDateOfBirth(new \DateTime($_POST['birthDate']));
+        }
+
+        if ($_POST['gender'] !== $user->getGender()) {
+            $user->setGender($_POST['gender']);
+        }
+
+        if (isset($_POST['deleteFile'])) {
+            // Supprime l'ancien fichier
+            unlink($uploadDir . $user->getProfilImage());
+            $user->setProfilImage(null);
+        }
+
+        if ($fileName !== "") {
+            $file = null;
+
+            if ($fileName !== "") {
+                /* On renomme l'image */
+                $extention = strrchr($fileName, ".");
+                $fileName = 'profil_image_' . uniqid() . $extention;
+
+                $uploadFile = $uploadDir . basename($fileName);
+                move_uploaded_file($_FILES['imgProfile']['tmp_name'], $uploadFile);
+                $file = basename($uploadFile);
+            }
+            
+            if ($user->getProfilImage() !== null) {
+                // Supprime l'ancien fichier
+                unlink($uploadDir . $user->getProfilImage());
+            }
+
+            $user->setProfilImage($fileName);
+        }
+
+        $user->setModifiedAt(new \DateTime());
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Modification(s) enregistrée(s)');
+
+        return $this->redirectToRoute('profil_index');
     }
 }
