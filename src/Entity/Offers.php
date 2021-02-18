@@ -97,6 +97,7 @@ class Offers
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="offers")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $createdBy;
 

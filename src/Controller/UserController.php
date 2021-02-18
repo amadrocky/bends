@@ -111,15 +111,13 @@ class UserController extends AbstractController
         if ($fileName !== "") {
             $file = null;
 
-            if ($fileName !== "") {
-                /* On renomme l'image */
-                $extention = strrchr($fileName, ".");
-                $fileName = 'profil_image_' . uniqid() . $extention;
+            /* On renomme l'image */
+            $extention = strrchr($fileName, ".");
+            $fileName = 'profil_image_' . uniqid() . $extention;
 
-                $uploadFile = $uploadDir . basename($fileName);
-                move_uploaded_file($_FILES['imgProfile']['tmp_name'], $uploadFile);
-                $file = basename($uploadFile);
-            }
+            $uploadFile = $uploadDir . basename($fileName);
+            move_uploaded_file($_FILES['imgProfile']['tmp_name'], $uploadFile);
+            $file = basename($uploadFile);
             
             if ($user->getProfilImage() !== null) {
                 // Supprime l'ancien fichier
@@ -140,23 +138,28 @@ class UserController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", requirements={"id":"\d+"}, methods="DELETE")
+     *
+     * @param Request $request
+     * @param User $user
+     * @return Response
      */
-    public function delete(Request $request, User $user, OffersRepository $offersRepository, AssociationsRepository $associationsRepository): Response
+    public function delete(Request $request, User $user): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
-
-            $userOffers = $offersRepository->findBy(['createdBy' => $user, 'workflowState' => 'created']);
-            $userAssociation = $associationsRepository->findByUser($user);
+            $uploadDir = $_SERVER['PWD'] . '/assets/static/images/profil/';
             
-            foreach ($userOffers as $offer) {
-                $offer->setWorkflowState('deleted');
-                $em->persist($offer);
+            foreach ($user->getOffers() as $offer) {
+                $user->removeOffer($offer);
             }
 
-            if ($userAssociation !== null) {
-                $userAssociation->setWorkflowState('deleted');
-                $em->persist($userAssociation);
+            foreach ($user->getAssociations() as $association) {
+                $user->removeAssociation($association);
+            }
+
+            if ($user->getProfilImage() !== null) {
+                // Supprime le fichier image stocké
+                unlink($uploadDir . $user->getProfilImage());
             }
 
             $em->remove($user);
@@ -165,7 +168,9 @@ class UserController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $this->addFlash('success', 'Compte supprimée');
+        $this->container->get('security.token_storage')->setToken(null);
+
+        $this->addFlash('success', 'Votre compte utilisateur a bien été supprimé');
         return $this->redirectToRoute('home');
     }
 }

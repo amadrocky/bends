@@ -53,7 +53,7 @@ class Associations
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="associations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $createdBy;
 

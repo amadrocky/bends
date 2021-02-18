@@ -484,6 +484,7 @@ class OffersController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="offers_delete", requirements={"id":"\d+"}, methods={"DELETE"})
+     * 
      * @param Request $request
      * @param Offers $offer
      * @return Response

@@ -293,8 +293,10 @@ class AssociationsController extends AbstractController
             move_uploaded_file($_FILES['img']['tmp_name'], $uploadFile);
             $file = basename($uploadFile);
             
-            // Supprime l'ancien fichier
-            unlink($uploadDir . $association->getPicture());
+            if ($association->getPicture() !== null) {
+                // Supprime l'ancien fichier
+                unlink($uploadDir . $association->getPicture());
+            }
 
             $association->setPicture($fileName);
         }
@@ -324,6 +326,10 @@ class AssociationsController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete", requirements={"id":"\d+"}, methods="DELETE")
+     *
+     * @param Request $request
+     * @param Associations $association
+     * @return Response
      */
     public function delete(Request $request, Associations $association): Response
     {

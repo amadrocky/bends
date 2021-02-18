@@ -408,6 +408,7 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($offer->getCreatedBy() === $this) {
                 $offer->setCreatedBy(null);
+                $offer->setWorkflowState('deleted');
             }
         }
 
@@ -532,6 +533,7 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($association->getCreatedBy() === $this) {
                 $association->setCreatedBy(null);
+                $association->setWorkflowState('deleted');
             }
         }
 

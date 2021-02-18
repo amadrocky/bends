@@ -58,10 +58,10 @@ class SecurityController extends AbstractController
             ));
             $user->setCreatedAt(new \DateTime());
             $user->setModifiedAt(new \DateTime());
-            $user->setWorkflowState('Created');
+            $user->setWorkflowState('created');
             $em->persist($user);
             $em->flush();
-            $this->addFlash('success', 'Compte créé !');
+            $this->addFlash('success', 'Votre compte utilisateur a bien été créé');
 
             return $this->redirectToRoute('app_login');
         }
