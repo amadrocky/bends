@@ -196,7 +196,7 @@ class AssociationsController extends AbstractController
             $association->setPicture($file);
             $association->setCreatedBy($this->getUser());
             $association->setModifiedAt(new \Datetime());
-            $association->setWorkflowState('created');
+            $association->setWorkflowState('active');
             $entityManager->persist($association);
             $entityManager->flush();
 
