@@ -115,10 +115,14 @@
 											<div class="subtitleZone p-1 my-3">
 												<h5 class="text-white m-0">Mon compte</h5>
 											</div>
-											<button class="btn btn-outline-danger btn-sm btn-block my-2">
-												<i class="fas fa-user-slash"></i>
-												Supprimer le compte</button>
 										</form>
+										<form id="deleteUserForm" class="d-inline" action="{{ path('profil_delete', {'id': user.id}) }}" method="post">
+											<input type="hidden" name="_method" value="DELETE">
+											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+										</form>
+										<button class="btn btn-outline-danger btn-sm btn-block my-2" onclick="confirmDeleteUser()">
+											<i class="fas fa-user-slash"></i>
+											Supprimer le compte</button>
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -373,6 +377,24 @@ dangerMode: true
 }).then((willDelete) => {
 if (willDelete) {
 document.getElementById('deleteOfferForm' + id).submit();
+} else {
+swal("Suppression annulée");
+}
+});
+}
+
+function confirmDeleteUser() {
+swal({
+title: "Êtes vous sûr(e)?",
+text: "Veuillez confirmer la suppression du compte",
+icon: "warning",
+buttons: [
+"Annuler", "Supprimer"
+],
+dangerMode: true
+}).then((willDelete) => {
+if (willDelete) {
+document.getElementById("deleteUserForm").submit();
 } else {
 swal("Suppression annulée");
 }

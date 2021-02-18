@@ -137,4 +137,35 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('profil_index');
     }
+
+    /**
+     * @Route("/delete/{id}", name="delete", requirements={"id":"\d+"}, methods="DELETE")
+     */
+    public function delete(Request $request, User $user, OffersRepository $offersRepository, AssociationsRepository $associationsRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+
+            $userOffers = $offersRepository->findBy(['createdBy' => $user, 'workflowState' => 'created']);
+            $userAssociation = $associationsRepository->findByUser($user);
+            
+            foreach ($userOffers as $offer) {
+                $offer->setWorkflowState('deleted');
+                $em->persist($offer);
+            }
+
+            if ($userAssociation !== null) {
+                $userAssociation->setWorkflowState('deleted');
+                $em->persist($userAssociation);
+            }
+
+            $em->remove($user);
+            $em->flush();
+        } else {
+            return $this->redirectToRoute('home');
+        }
+
+        $this->addFlash('success', 'Compte supprimée');
+        return $this->redirectToRoute('home');
+    }
 }

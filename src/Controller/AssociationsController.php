@@ -323,7 +323,7 @@ class AssociationsController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="delete", methods="DELETE")
+     * @Route("/delete/{id}", name="delete", requirements={"id":"\d+"}, methods="DELETE")
      */
     public function delete(Request $request, Associations $association): Response
     {

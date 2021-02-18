@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Associations;
 use App\Entity\Offers;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -18,6 +19,22 @@ class AssociationsRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Associations::class);
+    }
+
+    /**
+     *
+     * @param User $user
+     * @return Associations|null
+     */
+    public function findByUser(User $user): ?Associations
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.createdBy = :created_by')
+            ->andWhere('a.workflowState = :workflow_state')
+            ->setParameters(['workflow_state' => 'active', 'created_by' => $user])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     /**
