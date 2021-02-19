@@ -534,6 +534,7 @@ class User implements UserInterface
             if ($association->getCreatedBy() === $this) {
                 $association->setCreatedBy(null);
                 $association->setWorkflowState('deleted');
+                $association->setModifiedAt(new \DateTime());
             }
         }
 
