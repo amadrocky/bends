@@ -12,6 +12,8 @@ use App\Repository\CategoriesRepository;
 use App\Entity\Associations;
 use App\Form\AssociationType;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * @Route("/associations", name="associations_")
@@ -40,7 +42,7 @@ class AssociationsController extends AbstractController
      * @param AssociationsRepository $associationsRepository
      * @return Response
      */
-    public function index(Request $request, PaginatorInterface $paginator, AssociationsRepository $associationsRepository): Response
+    public function index(Request $request, PaginatorInterface $paginator, AssociationsRepository $associationsRepository, CacheInterface $cache): Response
     {
         if (isset($_GET['location'])) {
             $datas = $associationsRepository->findByLocation($_GET['location']);
@@ -54,7 +56,11 @@ class AssociationsController extends AbstractController
             10// nombre d'éléments
         );
 
-        $regions = file_get_contents("https://geo.api.gouv.fr/regions");
+        /* Mise en cache du resultat des régions (écriture si pas de réponse) */
+        $regions = $cache->get('regions', function(ItemInterface $item) {
+            $item->expiresAfter(\DateInterval::createFromDateString('1 day')); // Durée de mise en cache
+            return file_get_contents("https://geo.api.gouv.fr/regions");
+        });
 
         return $this->render('associations/index.html.twig', [
             'associations' => $associations,
@@ -73,7 +79,7 @@ class AssociationsController extends AbstractController
      * @param CategoriesRepository $categoriesRepository
      * @return Response
      */
-    public function offers(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository): Response
+    public function offers(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository, CacheInterface $cache): Response
     {
         $datas = $offersRepository->findByAssociations();
         
@@ -122,7 +128,11 @@ class AssociationsController extends AbstractController
             20// nombre d'éléments
         );
 
-        $regions = file_get_contents("https://geo.api.gouv.fr/regions");
+        /* Mise en cache du resultat des régions (écriture si pas de réponse) */
+        $regions = $cache->get('regions', function(ItemInterface $item) {
+            $item->expiresAfter(\DateInterval::createFromDateString('1 day')); // Durée de mise en cache
+            return file_get_contents("https://geo.api.gouv.fr/regions");
+        });
 
         return $this->render('associations/offers.html.twig', [
             'offers' => $offers,

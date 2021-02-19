@@ -26,6 +26,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Endroid\QrCode\QrCode;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * @Route("/offers")
@@ -41,7 +43,7 @@ class OffersController extends AbstractController
      * @param CategoriesRepository $categoriesRepository
      * @return Response
      */
-    public function index(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository): Response
+    public function index(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository, CacheInterface $cache): Response
     {
         $datas = $offersRepository->findBy(['workflowState' => 'created'], ['createdAt' => 'DESC']);
 
@@ -90,7 +92,11 @@ class OffersController extends AbstractController
             20// nombre d'éléments
         );
 
-        $regions = file_get_contents("https://geo.api.gouv.fr/regions");
+        /* Mise en cache du resultat des régions (écriture si pas de réponse) */
+        $regions = $cache->get('regions', function(ItemInterface $item) {
+            $item->expiresAfter(\DateInterval::createFromDateString('1 day')); // Durée de mise en cache
+            return file_get_contents("https://geo.api.gouv.fr/regions");
+        });
 
         return $this->render('offers/index.html.twig', [
             'offers' => $offers,
