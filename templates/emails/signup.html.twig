@@ -1,0 +1,24 @@
+<p>Bonjour
+	{{ userFirstname }},</p>
+
+<br/>
+
+<p>Votre inscription sur notre site a bien été prise en compte. Pour terminer l'inscription, veuillez comfirmer la création de votre compte en cliquant sur le lien suivant:</p>
+
+<br/>
+
+<p>
+	<a href="{{ url('home', {'token': token}) }}">Valider mon inscription</a>
+</p>
+
+<br/>
+
+<p>L'équipe Bends !</p>
+
+<p>
+	<small>Si cet email ne vous concerne pas, nous vous prions de l'iniorer.</small>
+</p>
+
+<br/>
+
+{% include 'emails/footerEmail.html.twig' %}
