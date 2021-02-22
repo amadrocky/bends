@@ -6,7 +6,7 @@ use App\Entity\Discussions;
 use App\Entity\User;
 use App\Entity\Offers;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Discussions|null find($id, $lockMode = null, $lockVersion = null)

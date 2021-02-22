@@ -6,7 +6,7 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Entity\Discussions;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Message|null find($id, $lockMode = null, $lockVersion = null)

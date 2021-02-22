@@ -6,7 +6,7 @@ use App\Entity\Favorites;
 use App\Entity\User;
 use App\Entity\Offers;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Favorites|null find($id, $lockMode = null, $lockVersion = null)

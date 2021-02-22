@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Offers;
 use App\Entity\Associations;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Offers|null find($id, $lockMode = null, $lockVersion = null)

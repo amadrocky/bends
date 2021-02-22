@@ -6,7 +6,7 @@ use App\Entity\Associations;
 use App\Entity\Offers;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Associations|null find($id, $lockMode = null, $lockVersion = null)
