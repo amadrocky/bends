@@ -163,8 +163,6 @@ class AssociationsController extends AbstractController
         }
 
         $userHasAsso = !empty($associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']));
-        $waitingValidation = !empty($associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'created']));
-
         $session = $request->getSession();
         $association = new Associations();
         $form = $this->createForm(AssociationType::class, $association);
@@ -239,7 +237,6 @@ class AssociationsController extends AbstractController
             'association' => $userHasAsso,
             'form' => $form->createView(),
             'cities' => $cities,
-            'waitingValidation' => $waitingValidation,
             'userAssociation' => $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0] : []
         ]);
     }
@@ -346,6 +343,7 @@ class AssociationsController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$association->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $association->setWorkflowState('deleted');
+            $association->setModifiedAt(new \DateTime());
             $em->flush();
         } else {
             return $this->redirectToRoute('home');

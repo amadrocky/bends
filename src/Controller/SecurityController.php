@@ -108,9 +108,35 @@ class SecurityController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Votre compte utilisateur est actif.');
+
+            return $this->redirectToRoute('app_login');
         }
 
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * Send an activation mail
+     * 
+     * @Route("/activation-mail/{id}", name="activation_mail", requirements={"id":"\d+"}, methods={"GET"})
+     *
+     * @param User $user
+     * @param MailerService $mailer
+     * @return RedirectResponse
+     */
+    public function sendActivationMail(User $user, MailerService $mailer): RedirectResponse
+    {
+        $mailer->sendEmail(
+            $user->getFirstname(), 
+            $user->getEmail(), 
+            'Validation de votre compte',
+            'emails/signup.html.twig',
+            $user->getToken()
+        );
+
+        $this->addFlash('success', 'Un email de validation vous a été envoyé.');
+
+        return $this->redirectToRoute('profil_index');
     }
 
     /**

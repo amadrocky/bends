@@ -20,6 +20,18 @@
 						<h2 class="loginTitle mt-3 text-center">{{ user.firstname }}
 							{{ user.lastname }}</h2>
 						<h5 class="cmnty mb-3 text-center">{{ user.pseudonym }}</h5>
+						{% if user.workflowState == 'created' %}
+							<div class="alert alert-warning box-shadow">
+								<i class="fas fa-info-circle"></i>
+								Votre compte n'est pas activé. Vérifiez votre boîte mail pour l'activer.
+								<hr/>
+								<div class="text-center">
+									<a href="{{ path('activation_mail', {'id': user.id}) }}" class="btn btn-primary">
+										<i class="far fa-envelope"></i>
+										Renvoyer l' email d'activation</a>
+								</div>
+							</div>
+						{% endif %}
 						<div class="subtitleZone p-1 mb-3">
 							<h5 class="text-white m-0">Informations</h5>
 						</div>
