@@ -7,10 +7,12 @@ use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Service\MailerService;
+use App\Repository\UserRepository;
 
 class SecurityController extends AbstractController
 {
@@ -82,6 +84,33 @@ class SecurityController extends AbstractController
             'user' => $this->getUser(),
             'messages' => null
         ]);
+    }
+
+    /**
+     * User account activation
+     *
+     * @Route("/activation/{token}", name="active_account", methods={"GET"})
+     *
+     * @param string $token
+     * @param UserRepository $userRepository
+     * @return RedirectResponse
+     */
+    public function activeAccount(string $token, UserRepository $userRepository): RedirectResponse
+    {
+        $user = $userRepository->findOneBy(['token' => $token]);
+
+        if ($user) {
+            $em = $this->getDoctrine()->getManager();
+            $user->setToken(null);
+            $user->setWorkflowstate('active');
+            $user->setModifiedAt(new \DateTime());
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Votre compte utilisateur est actif.');
+        }
+
+        return $this->redirectToRoute('app_login');
     }
 
     /**
