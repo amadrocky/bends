@@ -140,6 +140,39 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/recover", name="recover", methods={"POST"})
+     *
+     * @param string $email
+     * @param UserRepository $userRepository
+     * @param MailerService $mailer
+     * @return RedirectResponse
+     */
+    public function forgotPassword(Request $request, UserRepository $userRepository, MailerService $mailer): RedirectResponse
+    {
+        $email = $request->request->get('email');
+        $user = $userRepository->findOneBy(['email' => $email]);
+
+        if ($user) {
+            $em = $this->getDoctrine()->getManager();
+            $user->setToken($this->generateToken());
+            $em->persist($user);
+            $em->flush();
+
+            $mailer->sendEmail(
+                $user->getFirstname(), 
+                $user->getEmail(), 
+                'Réinitialisation de votre mot de passe',
+                'emails/recover.html.twig',
+                $user->getToken()
+            );
+        }
+
+        $this->addFlash('success', 'Un email a été envoyé à votre adresse.');
+
+        return $this->redirectToRoute('app_login');
+    }
+
+    /**
      * @Route("/logout", name="app_logout")
      */
     public function logout()

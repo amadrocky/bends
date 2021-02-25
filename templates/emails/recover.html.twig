@@ -1,0 +1,16 @@
+<p>Bonjour
+	{{ userFirstname }},</p>
+
+<br/>
+
+<p>Une demande de réinitialisation de mot de passe à été envoyée. S'il s'agit bien de vous, vous pouvez configurer votre nouveau mot de passe en cliquant sur le lien suivant:</p>
+
+<br/>
+
+<p>
+	<a href="{{ url('active_account', {'token': token}) }}">Réinitialiser mon mot de passe</a>
+</p>
+
+<br/>
+
+{% include 'emails/footerEmail.html.twig' %}
