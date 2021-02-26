@@ -25,12 +25,18 @@
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
 </head>
-<body id="body">
+<body id="body" onload="anim()">
 {% block header %}{% endblock %}
 {% block body %}{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
+
+<script type="text/javascript">
+        function anim() {
+            document.querySelector('#nav').classList.remove('anim');
+        }
+</script>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

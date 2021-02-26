@@ -1,13 +1,19 @@
 .headBar {
-  max-width: 100%;
-  height: 100px;
-  background-color: whitesmoke;
-  box-shadow: -1px 5px 5px -4px black;
+    max-width: 100%;
+    height: 100px;
+    background-color: whitesmoke;
+    box-shadow: -1px 5px 5px -4px black;
+    animation: slide-down 0.5s linear both;
+    transition: transform cubic-bezier(0.68, -0.55, 0.27, 1.55) .5s;
+}
+
+.anim {
+    transform: translateY(-100%);
 }
 
 .menuButton {
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-  box-shadow: -1px 5px 10px -4px gray;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    box-shadow: -1px 5px 10px -4px gray;
 }

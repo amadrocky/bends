@@ -14,7 +14,7 @@
     </script>
 
     <div class="fixed-top">
-        <div class="row headBar m-0">
+        <div id="nav" class="row headBar anim m-0">
             <div class="col-4 my-auto">
                 <img class="menuButton cursorPointer" src="{{ asset('build/icons/iconmonstr-menu-5.svg') }}"
                      alt="Boutton Menu" onclick="actionMenu()" style="color: #3f51b5">
@@ -45,7 +45,7 @@
                 </a>
             </div>
         </div>
-        <input type="checkbox" name="" id="side-menu-switch" checked>
+        <input type="checkbox" id="side-menu-switch" checked>
         <div class="side-menu shadow-menu">
             <div class="image-menu-top mb-3"></div>
             <form action="{{ path('offers_index') }}" method="get">
