@@ -72,7 +72,8 @@ class UserType extends AbstractType
                         'placeholder' => 'Répétez le mot de passe'
                     ]
                 ]
-            ));
+            ))
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

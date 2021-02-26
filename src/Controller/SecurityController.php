@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\ResetPasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -140,6 +141,8 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * Send a mail for modify password
+     * 
      * @Route("/recover", name="recover", methods={"POST"})
      *
      * @param string $email
@@ -170,6 +173,58 @@ class SecurityController extends AbstractController
         $this->addFlash('success', 'Un email a été envoyé à votre adresse.');
 
         return $this->redirectToRoute('app_login');
+    }
+
+    /**
+     * Create a new password
+     * 
+     * @Route("/reset-password/{token}", name="reset_password", methods={"GET","POST"})
+     *
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param MailerService $mailer
+     * @return Response
+     */
+    public function resetPassword(Request $request, string $token, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, MailerService $mailer): Response
+    {
+        $user = $userRepository->findOneBy(['token' => $token]);
+
+        if ($user) {
+            $form = $this->createForm(ResetPasswordType::class, $user);
+            $form->handleRequest($request);
+
+            if($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $user->setPassword($passwordEncoder->encodePassword(
+                    $user,
+                    $user->getPassword()
+                ));
+                $user->setModifiedAt(new \DateTime());
+                $user->setToken(null);
+                $em->persist($user);
+                $em->flush();
+
+                $mailer->sendEmail(
+                    $user->getFirstname(), 
+                    $user->getEmail(), 
+                    'Modification de votre mot de passe',
+                    'emails/passwordModified.html.twig'
+                );
+
+                $this->addFlash('success', 'Votre mot de passe à bien été modifié.');
+
+                return $this->redirectToRoute('home');
+            }
+
+            return $this->render('security/resetPassword.html.twig', [
+                'form' => $form->createView(),
+                'user' => $this->getUser(),
+                'messages' => null
+            ]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
     }
 
     /**
