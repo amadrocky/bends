@@ -122,6 +122,11 @@ class OffersController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        if ($this->getUser()->getWorkflowState() !== 'active') {
+            $this->addFlash('info', 'Veuillez finaliser votre inscription en activant votre compte');
+            return $this->redirectToRoute('profil_index');
+        }
+
         $session = $request->getSession();
         $offer = new Offers();
         $form = $this->createForm(OffersType::class, $offer);
