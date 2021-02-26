@@ -11,6 +11,7 @@ use App\Repository\DiscussionsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Discussions;
 use App\Entity\Message;
+use App\Service\MailerService;
 
 /**
  * @Route("/messages", name="messages_")
@@ -55,7 +56,7 @@ class MessagesController extends AbstractController
      * @param Discussions $discussion
      * @return Response
      */
-    public function show(Request $request, Discussions $discussion): Response
+    public function show(Request $request, Discussions $discussion, MailerService $mailer): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -106,6 +107,13 @@ class MessagesController extends AbstractController
                 $discussion->setIsDeletedUser(false);
                 $entityManager->persist($message);
                 $entityManager->flush();
+
+                $mailer->sendEmail(
+                    $discussion->getCreatedBy() === $this->getUser() ? $discussion->getCreatedBy()->getFirstname() : $discussion->getUser()->getFirstname(), 
+                    $discussion->getCreatedBy() === $this->getUser() ? $discussion->getCreatedBy()->getEmail() : $discussion->getUser()->getEmail(), 
+                    'Nouveau message de '. $this->getUser()->getPseudonym(),
+                    'emails/newMessage.html.twig'
+                );
 
                 $this->addFlash('success', 'Message envoyé');
             } else {

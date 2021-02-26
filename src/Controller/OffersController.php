@@ -28,6 +28,7 @@ use Dompdf\Options;
 use Endroid\QrCode\QrCode;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
+use App\Service\MailerService;
 
 /**
  * @Route("/offers")
@@ -234,7 +235,7 @@ class OffersController extends AbstractController
      * @param DiscussionsRepository $discussionsRepository
      * @return Response
      */
-    public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, AssociationsRepository $associationsRepository, FavoritesRepository $favoritesRepository): Response
+    public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, AssociationsRepository $associationsRepository, FavoritesRepository $favoritesRepository, MailerService $mailer): Response
     {
         $discussion = new Discussions();
         $message = new Message();
@@ -276,6 +277,13 @@ class OffersController extends AbstractController
             $message->setDiscussion($discussion);
             $entityManager->persist($message);
             $entityManager->flush();
+
+            $mailer->sendEmail(
+                $offer->getCreatedBy()->getFirstname(), 
+                $offer->getCreatedBy()->getEmail(), 
+                'Nouveau message de ' . $this->getUser()->getPseudonym(),
+                'emails/newMessage.html.twig'
+            );
 
             $this->addFlash('success', 'Votre message a bien été envoyé');
             return $this->redirectToRoute('offers_show', ['id' => $offer->getId()]);
