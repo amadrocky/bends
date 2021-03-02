@@ -98,6 +98,11 @@ class User implements UserInterface
     private $discussions;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Discussions", mappedBy="user")
+     */
+    private $discussionsUser;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Offers", mappedBy="createdBy")
      */
     private $offers;
@@ -132,6 +137,7 @@ class User implements UserInterface
         $this->offers = new ArrayCollection();
         $this->researches = new ArrayCollection();
         $this->discussions = new ArrayCollection();
+        $this->discussionsUser = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->favorites = new ArrayCollection();
         $this->signaledOffers = new ArrayCollection();
@@ -389,6 +395,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($discussion->getCreatedBy() === $this) {
                 $discussion->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Discussions[]
+     */
+    public function getDiscussionsUser(): Collection
+    {
+        return $this->discussionsUser;
+    }
+
+    public function addDiscussionUser(Discussions $discussionUser): self
+    {
+        if (!$this->discussionsUser->contains($discussionUser)) {
+            $this->discussionsUser[] = $discussionUser;
+            $discussionUser->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiscussionUser(Discussions $discussionUser): self
+    {
+        if ($this->discussionsUser->contains($discussionUser)) {
+            $this->discussionsUser->removeElement($discussionUser);
+            // set the owning side to null (unless already changed)
+            if ($discussionUser->getCreatedBy() === $this) {
+                $discussionUser->setCreatedBy(null);
             }
         }
 

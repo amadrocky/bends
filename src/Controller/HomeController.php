@@ -20,7 +20,7 @@ class HomeController extends AbstractController
     public function index(Request $request, MessageRepository $message): Response
     {
         $messages = 0;
-        
+        //dd($message->findUnreads($this->getUser()));
         if ($this->getUser()) {
             $messages = count($message->findUnreads($this->getUser()));
         }

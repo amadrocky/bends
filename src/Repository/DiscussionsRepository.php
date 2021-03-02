@@ -54,10 +54,7 @@ class DiscussionsRepository extends ServiceEntityRepository
     public function findByUsersAndOffer(User $user1, User $user2, Offers $offer)
     {
         return $this->createQueryBuilder('d')
-            ->where('d.createdBy = :user1')
-            ->orWhere('d.createdBy = :user2')
-            ->andWhere('d.user = :user1')
-            ->orWhere('d.user = :user2')
+            ->where('(d.createdBy = :user1 AND d.user = :user2) OR (d.createdBy = :user2 AND d.user = :user1)')
             ->andWhere('d.offer = :offer')
             ->andWhere('d.workflowState = :workflow_state')
             ->setParameters([

@@ -35,7 +35,7 @@ class Message
      * @ORM\ManyToOne(targetEntity="App\Entity\Discussions", inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Discussion;
+    private $discussion;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
@@ -91,12 +91,12 @@ class Message
 
     public function getDiscussion(): ?Discussions
     {
-        return $this->Discussion;
+        return $this->discussion;
     }
 
-    public function setDiscussion(?Discussions $Discussion): self
+    public function setDiscussion(?Discussions $discussion): self
     {
-        $this->Discussion = $Discussion;
+        $this->discussion = $discussion;
 
         return $this;
     }

@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Message;
 use App\Entity\User;
-use App\Entity\Discussions;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -30,9 +29,9 @@ class MessageRepository extends ServiceEntityRepository
     public function findUnreads(User $user): array
     {
         return $this->createQueryBuilder('m')
-            ->join(Discussions::class, 'd')
-            ->where('m.workflowState = :workflowState')
-            ->andWhere('d.createdBy = :user OR d.user = :user')
+            ->innerJoin('m.discussion', 'd')
+            ->where('d.createdBy = :user OR d.user = :user')
+            ->andWhere('m.workflowState = :workflowState')
             ->andWhere('m.createdBy != :user')
             ->setParameters([
                 'user' => $user,

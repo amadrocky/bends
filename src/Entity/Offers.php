@@ -86,11 +86,6 @@ class Offers
     private $isPro;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="offer")
-     */
-    private $messages;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Discussions", mappedBy="offer")
      */
     private $discussions;
@@ -269,37 +264,6 @@ class Offers
     public function setIsPro(bool $isPro): self
     {
         $this->isPro = $isPro;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Message[]
-     */
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
-
-    public function addMessage(Message $message): self
-    {
-        if (!$this->messages->contains($message)) {
-            $this->messages[] = $message;
-            $message->setOffer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        if ($this->messages->contains($message)) {
-            $this->messages->removeElement($message);
-            // set the owning side to null (unless already changed)
-            if ($message->getOffer() === $this) {
-                $message->setOffer(null);
-            }
-        }
 
         return $this;
     }

@@ -4,7 +4,6 @@
 {% endblock %}
 
 {% block body %}
-
 	<div class="homeSection">
 		<div class="row justify-content-center p-3 w-100 m-0">
 			<div class="col col-md-4 col-lg-8 loginBlock h-100 p-2">
@@ -26,8 +25,10 @@
 						{% if message.createdBy == app.user %}
 							<div id="demo-test-gallery" class="d-flex justify-content-end">
 								<div class="demo-gallery chat-text-user p-2 mb-2 w-75">
+									{% if (message.text is not null) or (message.file is not null) %}
+										<small class="d-block" style="font-style: italic">{{ message.createdAt|date('d-m, h:i') }}</small>
+									{% endif %}
 									{% if message.text is not null %}
-										<small style="font-style: italic">{{ message.createdAt|date('d-m, h:i') }}</small>
 										<div>
 											{{ message.text }}
 										</div>
@@ -42,8 +43,10 @@
 						{% else %}
 							<div class="d-flex justify-content-start">
 								<div class="demo-gallery chat-text-member p-2 mb-2 w-75">
+									{% if (message.text is not null) or (message.file is not null) %}
+										<small class="d-block" style="font-style: italic">{{ message.createdAt|date('d-m, h:i') }}</small>
+									{% endif %}
 									{% if message.text is not null %}
-										<small style="font-style: italic">{{ message.createdAt|date('d-m, h:i') }}</small>
 										<div>
 											{{ message.text }}
 										</div>

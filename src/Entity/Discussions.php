@@ -25,13 +25,13 @@ class Discussions
     private $createdBy;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="discussions")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="discussionsUser")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="Discussion")
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="discussion")
      */
     private $messages;
 
