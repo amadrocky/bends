@@ -109,8 +109,8 @@ class MessagesController extends AbstractController
                 $entityManager->flush();
 
                 $mailer->sendEmail(
-                    $discussion->getCreatedBy() === $this->getUser() ? $discussion->getCreatedBy()->getFirstname() : $discussion->getUser()->getFirstname(), 
-                    $discussion->getCreatedBy() === $this->getUser() ? $discussion->getCreatedBy()->getEmail() : $discussion->getUser()->getEmail(), 
+                    $discussion->getCreatedBy() === $this->getUser() ? $discussion->getUser()->getFirstname() : $discussion->getCreatedBy()->getFirstname(), 
+                    $discussion->getCreatedBy() === $this->getUser() ? $discussion->getUser()->getEmail() : $discussion->getCreatedBy()->getEmail(), 
                     'Nouveau message de '. $this->getUser()->getPseudonym(),
                     'emails/newMessage.html.twig'
                 );
