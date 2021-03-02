@@ -27,14 +27,15 @@
 							<div id="demo-test-gallery" class="d-flex justify-content-end">
 								<div class="demo-gallery chat-text-user p-2 mb-2 w-75">
 									{% if message.text is not null %}
+										<small style="font-style: italic">{{ message.createdAt|date('d-m, h:i') }}</small>
 										<div>
 											{{ message.text }}
 										</div>
 									{% endif %}
 									{% if message.file is not empty %}
-												<a href="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
-													<img src="{{ asset('build/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
-												</a>
+										<a href="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
+											<img src="{{ asset('build/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
+										</a>
 									{% endif %}
 								</div>
 							</div>
@@ -42,14 +43,15 @@
 							<div class="d-flex justify-content-start">
 								<div class="demo-gallery chat-text-member p-2 mb-2 w-75">
 									{% if message.text is not null %}
+										<small style="font-style: italic">{{ message.createdAt|date('d-m, h:i') }}</small>
 										<div>
 											{{ message.text }}
 										</div>
 									{% endif %}
 									{% if message.file is not empty %}
-												<a href="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
-													<img src="{{ asset('build/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
-												</a>
+										<a href="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
+											<img src="{{ asset('build/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
+										</a>
 									{% endif %}
 								</div>
 							</div>
