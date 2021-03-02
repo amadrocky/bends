@@ -85,9 +85,13 @@ class MessagesController extends AbstractController
                 $message = new Message();
                 $entityManager = $this->getDoctrine()->getManager();
 
-                if ($_FILES['fname']['name'] !== "") {
+                $fileName = $_FILES['fname']['name'];
+
+                if ($fileName !== "") {
                     $uploadDir = $_SERVER['PWD'] . '/assets/static/images/messages/';
-                    $uploadFile = $uploadDir . basename($_FILES['fname']['name']);
+                    $extention = strrchr($fileName, ".");
+                    $fileName = 'message_image_' . uniqid() . $extention;
+                    $uploadFile = $uploadDir . basename($fileName);
                     move_uploaded_file($_FILES['fname']['tmp_name'], $uploadFile);
                     $files[] = basename($uploadFile);
 
