@@ -132,6 +132,10 @@
 											<input type="hidden" name="_method" value="DELETE">
 											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
 										</form>
+										<form id="editPassword" action="{{ path('recover') }}" method="post">
+											<input type="email" name="email" value="{{ user.email }}" hidden>
+										</form>
+										<button class="btn btn-primary btn-block" onclick="editPassword()"><i class="fas fa-user-shield"></i> Reinitialiser le mot de passe</button>
 										<button class="btn btn-outline-danger btn-sm btn-block my-2" onclick="confirmDeleteUser()">
 											<i class="fas fa-user-slash"></i>
 											Supprimer le compte</button>
@@ -443,6 +447,24 @@ URL.revokeObjectURL(output.src)
 
 function submit(id) {
 $('#' + id).submit()
+}
+
+function editPassword() {
+swal({
+title: "Reinitialiser le mot de passe",
+text: "Veuillez confirmer la reinitialisation",
+icon: "warning",
+buttons: [
+"Annuler", "Confirmer"
+],
+dangerMode: false
+}).then((willDelete) => {
+if (willDelete) {
+document.getElementById("editPassword").submit();
+} else {
+swal("Annulé");
+}
+});
 }
 	</script>
 {% endblock %}
