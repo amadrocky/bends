@@ -35,28 +35,16 @@
 						<div class="subtitleZone p-1 mb-3">
 							<h5 class="text-white m-0">Informations</h5>
 						</div>
-						<div class="row d-flex">
-							<div class="col">
-								<table class="table">
-									<tbody>
-										<tr>
-											<th>Adresse email</th>
-											<td>{{ user.email }}</td>
-										</tr>
-										<tr>
-											<th>Sexe</th>
-											<td>{{ user.gender }}</td>
-										</tr>
-										<tr>
-											<th>Age</th>
-											<td>{{ user.age }}</td>
-										</tr>
-										<tr>
-											<th>Membre depuis le</th>
-											<td>{{ user.createdAt|date('d/m/Y') }}</td>
-										</tr>
-									</tbody>
-								</table>
+						<div class="row d-flex p-3">
+							<div class="col profil-info">
+								<p><em>Email:</em>
+									{{ user.email }}</p><hr/>
+								<p><em>Sexe:</em>
+									{{ user.gender }}</p><hr/>
+								<p><em>Age:</em>
+									{{ user.age }}</p><hr/>
+								<p>Membre depuis le
+									{{ user.createdAt|date('d/m/Y') }}</p>
 							</div>
 							<div class="col col-md-2 p-2 d-flex flex-columns align-items-center">
 								<button type="button" class="btn btn-warning m-auto box-shadow" data-toggle="modal" data-target="#editProfilModal">
@@ -135,7 +123,9 @@
 										<form id="editPassword" action="{{ path('recover') }}" method="post">
 											<input type="email" name="email" value="{{ user.email }}" hidden>
 										</form>
-										<button class="btn btn-primary btn-block" onclick="editPassword()"><i class="fas fa-user-shield"></i> Reinitialiser le mot de passe</button>
+										<button class="btn btn-primary btn-block" onclick="editPassword()">
+											<i class="fas fa-user-shield"></i>
+											Reinitialiser le mot de passe</button>
 										<button class="btn btn-outline-danger btn-sm btn-block my-2" onclick="confirmDeleteUser()">
 											<i class="fas fa-user-slash"></i>
 											Supprimer le compte</button>

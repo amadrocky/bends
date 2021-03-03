@@ -1,48 +1,50 @@
 .loginBlock {
-  background-color: rgba(245, 245, 245, 0.9);
-  border-radius: 5px;
+    background-color: rgba(245, 245, 245, 0.9);
+    border-radius: 5px;
 }
 
 .loginTitle {
-  font-family: 'Oswald', sans-serif;
-  color: $violet;
+    font-family: 'Oswald', sans-serif;
+    color: $violet;
 }
 
 #accordionLogin {
-  background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .collapse-body {
-  background-color: white;
-  border-radius: 5px;
-
-  h6 {
-    font-family: Oswald, 'sans-serif';
-    font-size: 1.5em;
-    color: $violet;
-  }
-
-  ul {
-    list-style: none; /* Remove default bullets */
-  }
-
-  ul li::before {
-    content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
-    color: $blue;
-    display: inline-block; /* Needed to add space between the bullet and the text */
-    width: 1em; /* Also needed for space (tweak if needed) */
-    margin-left: -1em; /* Also needed for space (tweak if needed) */
-  }
+    background-color: white;
+    border-radius: 5px;
+    h6 {
+        font-family: Oswald, 'sans-serif';
+        font-size: 1.5em;
+        color: $violet;
+    }
+    ul {
+        list-style: none;
+        /* Remove default bullets */
+    }
+    ul li::before {
+        content: "\2022";
+        /* Add content: \2022 is the CSS Code/unicode for a bullet */
+        color: $blue;
+        display: inline-block;
+        /* Needed to add space between the bullet and the text */
+        width: 1em;
+        /* Also needed for space (tweak if needed) */
+        margin-left: -1em;
+        /* Also needed for space (tweak if needed) */
+    }
 }
 
 .bnds {
-  font-family: Pacifico, 'cursive';
-  color: $violet;
-  font-style: normal;
+    font-family: 'Pacifico', 'cursive';
+    color: $violet;
+    font-style: normal;
 }
 
 .cmnty {
-  font-family: Oswald, 'sans-serif';
-  color: $blue;
-  font-style: normal;
+    font-family: 'Oswald', 'sans-serif';
+    color: $blue;
+    font-style: normal;
 }

@@ -1,8 +1,9 @@
 .profil-card {
     .card-header {
         min-height: 150px;
-        background-image: url("/build/images/31799.jpg");
+        background-image: url("/build/images/agapanthus-1465146_640.40d69ad8.jpg");
         background-size: cover;
+        background-position-y: 47%;
     }
     min-width: 300px;
 }
@@ -11,6 +12,12 @@
     width: 150px;
     height: 150px;
     margin-top: -100px;
+}
+
+.profil-info em {
+    font-family: 'Oswald', 'sans-serif';
+    color: $blue;
+    font-style: normal;
 }
 
 .bloc-association {
