@@ -286,7 +286,6 @@ class OffersController extends AbstractController
             );
 
             $this->addFlash('success', 'Votre message a bien été envoyé');
-            return $this->redirectToRoute('offers_show', ['id' => $offer->getId()]);
         }
 
         $apiRequest = json_decode(
