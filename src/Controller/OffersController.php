@@ -237,6 +237,10 @@ class OffersController extends AbstractController
      */
     public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, AssociationsRepository $associationsRepository, FavoritesRepository $favoritesRepository, MailerService $mailer): Response
     {
+        if ($offer->getWorkflowState() === 'deleted') {
+            return $this->redirectToRoute('offers_deleted', ['id' => $offer->getId()]);
+        }
+
         $discussion = new Discussions();
         $message = new Message();
         $now = new \DateTime();
@@ -251,14 +255,13 @@ class OffersController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             /** Cas où une discussion existe déja entre les utilisateurs sur l'offre. */
-            $existingDiscussion = $discussionsRepository->findByUsersAndOffer($this->getUser(), $offer->getCreatedBy(), $offer);
+            $existingDiscussion = $discussionsRepository->findByUserAndOffer($this->getUser(), $offer);
             if ($existingDiscussion === null) {
                 $discussion->setCreatedBy($this->getUser());
                 $discussion->setCreatedAt($now);
                 $discussion->setModifiedAt($now);
                 $discussion->setWorkflowState('created');
                 $discussion->setOffer($offer);
-                $discussion->setUser($offer->getCreatedBy());
                 $discussion->setIsSignaled(false);
                 $discussion->setIsDeletedCreator(false);
                 $discussion->setIsDeletedUser(false);
@@ -497,6 +500,22 @@ class OffersController extends AbstractController
         return $this->render('offers/edit.html.twig', [
             'offer' => $offer,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Redirect if offer is deleted
+     * 
+     * @Route("/{id}/status", name="offers_deleted", methods={"GET"})
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function deletedOffer(Request $request): Response
+    {
+        return $this->render('offers/errorPage.html.twig', [
+            'user' => $this->getUser(),
+            'messages' => $request->getSession()->get('messages')
         ]);
     }
 

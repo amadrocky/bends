@@ -62,7 +62,7 @@ class MessagesController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        if ($discussion->getCreatedBy() != $this->getUser() && $discussion->getUser() != $this->getUser()) {
+        if ($discussion->getCreatedBy() != $this->getUser() && $discussion->getOffer()->getCreatedBy() != $this->getUser()) {
             return $this->redirectToRoute('home');
         }
 

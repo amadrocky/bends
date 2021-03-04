@@ -20,15 +20,9 @@ class Discussions
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="discussions")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $createdBy;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="discussionsUser")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="discussion")
@@ -37,7 +31,7 @@ class Discussions
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Offers", inversedBy="discussions")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $offer;
 
@@ -89,18 +83,6 @@ class Discussions
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }

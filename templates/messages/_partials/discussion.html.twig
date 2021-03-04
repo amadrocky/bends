@@ -1,25 +1,26 @@
 <div class="col-12 my-2 p-2 bg-white message-card">
 	<a href="{{ path('messages_discussion', {'id': discussion.id}) }}" class="discussion-link">
 		<div class="d-flex">
-			{% if discussion.offer.pictures is not empty %}
-				<img src="{{ asset('build/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
+			{% if discussion.offer %}
+				{% if discussion.offer.pictures is not empty %}
+					<img src="{{ asset('build/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
+				{% else %}
+					<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
+				{% endif %}
 			{% else %}
 				<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
 			{% endif %}
+
 			<div class="flex-grow-1">
 				<div>
-					<p class="message-user m-0">
-						{% if discussion.createdBy == app.user %}
-							{{ discussion.user.pseudonym }}
+					{% if discussion.offer.createdBy %}
+						<p class="message-user m-0">
+							{{ discussion.createdBy == app.user ? discussion.offer.createdBy.pseudonym : discussion.createdBy.pseudonym }}
+						</p>
 						{% else %}
-							{{ discussion.createdBy.pseudonym }}
-						{% endif %}
-					</p>
-					{% if discussion.offer %}
-						<p class="m-0">{{ discussion.offer.title }}</p>
-					{% else %}
-						<p class="m-0">** Annonce supprimée **</p>
+						<p>** Utilisateur supprimé **</p>
 					{% endif %}
+					<p class="m-0">{{ discussion.offer ? discussion.offer.title : '** Annonce supprimée **' }}</p>
 				</div>
 				<div class="message-preview">
 					<span class="text-muted">{{ discussion.messages[discussion.messages|length -1].createdAt|date('d/m') }}</span>

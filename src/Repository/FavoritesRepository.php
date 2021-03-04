@@ -30,7 +30,9 @@ class FavoritesRepository extends ServiceEntityRepository
     public function findByUser(User $user): array
     {
         return $this->createQueryBuilder('f')
+            ->innerJoin('f.offer', 'o')
             ->where('f.user = :user')
+            ->andWhere('o.workflowState = :workflow_state')
             ->andWhere('f.workflowState = :workflow_state')
             ->setParameters([
                 'user' => $user,

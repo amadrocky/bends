@@ -402,37 +402,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Discussions[]
-     */
-    public function getDiscussionsUser(): Collection
-    {
-        return $this->discussionsUser;
-    }
-
-    public function addDiscussionUser(Discussions $discussionUser): self
-    {
-        if (!$this->discussionsUser->contains($discussionUser)) {
-            $this->discussionsUser[] = $discussionUser;
-            $discussionUser->setCreatedBy($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDiscussionUser(Discussions $discussionUser): self
-    {
-        if ($this->discussionsUser->contains($discussionUser)) {
-            $this->discussionsUser->removeElement($discussionUser);
-            // set the owning side to null (unless already changed)
-            if ($discussionUser->getCreatedBy() === $this) {
-                $discussionUser->setCreatedBy(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Offers[]
      */
     public function getOffers(): Collection

@@ -157,6 +157,14 @@ class UserController extends AbstractController
                 $user->removeAssociation($association);
             }
 
+            foreach ($user->getMessages() as $message) {
+                $user->removeMessage($message);
+            }
+
+            foreach ($user->getDiscussions() as $discussion) {
+                $user->removeDiscussion($discussion);
+            }
+
             if ($user->getProfilImage() !== null) {
                 // Supprime le fichier image stocké
                 unlink($uploadDir . $user->getProfilImage());

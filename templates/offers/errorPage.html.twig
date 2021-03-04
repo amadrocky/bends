@@ -1,0 +1,18 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Annonce introuvable
+{% endblock %}
+
+{% block body %}
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
+				<div class="alert alert-info box-shadow" role="alert">
+					<i class="fas fa-info-circle"></i>
+					Annonce supprimée<hr/>
+                    Consultez toutes nos <a href="{{ path('offers_index') }}">annonces</a> et nos <a href="{{ path('associations_offers') }}">annonces associations</a>.
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

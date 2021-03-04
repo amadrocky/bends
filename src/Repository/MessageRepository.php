@@ -30,7 +30,8 @@ class MessageRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m')
             ->innerJoin('m.discussion', 'd')
-            ->where('d.createdBy = :user OR d.user = :user')
+            ->innerJoin('d.offer', 'o')
+            ->where('d.createdBy = :user OR o.createdBy = :user')
             ->andWhere('m.workflowState = :workflowState')
             ->andWhere('m.createdBy != :user')
             ->setParameters([

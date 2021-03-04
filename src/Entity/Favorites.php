@@ -24,7 +24,7 @@ class Favorites
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Offers")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $offer;
 
