@@ -187,10 +187,10 @@
 													<i class="fas fa-paper-plane"></i>
 													Message direct</b>
 											</p>
-											{{ form_start(form) }}
-											{{ form_row(form.text) }}
-											<button class="btn btn-success btn-block my-3">{{ button_label|default('Envoyer') }}</button>
-											{{ form_end(form) }}
+											<form id="messageForm" action="" method="post">
+												<textarea name="message" id="message" class="form-control" placeholder="Votre texte ici..." required></textarea>
+											</form>
+											<button class="btn btn-success btn-block my-2" onclick="submitMessage()">Envoyer</button>
 										</div>
 									{% else %}
 										<a href="{{ path('app_login') }}" class="btn btn-success btn-block text-white">
@@ -623,6 +623,30 @@ swal("Annulé");
 
 function isFavorite() {
 swal({title: "Annonce déjà favorite", text: "Veuillez consulter vos favoris", icon: "info"})
+}
+
+function submitMessage() {
+let value = document.querySelector("#messageForm textarea").value
+
+if (value == '') {
+	swal({title: "Message vide",text: "Veuillez entrer votre message", icon: "info"})
+} else {
+	$.ajax({
+		url: "{{ path('messages_new', {'id': offer.id}) }}",
+		type: 'POST',
+		data: {
+			message: value
+		},
+		success: function () {
+			swal({title: "Message envoyé", icon: "success"})
+			document.getElementById("message").value = ''
+		},
+		error: function () {
+			alert('error')
+		}
+	})
+}
+	
 }
 				</script>
 			{% endblock %}

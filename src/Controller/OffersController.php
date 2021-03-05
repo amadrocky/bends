@@ -241,54 +241,9 @@ class OffersController extends AbstractController
             return $this->redirectToRoute('offers_deleted', ['id' => $offer->getId()]);
         }
 
-        $discussion = new Discussions();
-        $message = new Message();
-        $now = new \DateTime();
-        $form = $this->createForm(MessageType::class, $message);
-        $form->handleRequest($request);
         $isFavorite = false;
         if ($this->getUser()){
             $isFavorite = count($favoritesRepository->findByUserAndOffer($this->getUser(), $offer)) > 0;
-        }
-        
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            /** Cas où une discussion existe déja entre les utilisateurs sur l'offre. */
-            $existingDiscussion = $discussionsRepository->findByUserAndOffer($this->getUser(), $offer);
-            if ($existingDiscussion === null) {
-                $discussion->setCreatedBy($this->getUser());
-                $discussion->setCreatedAt($now);
-                $discussion->setModifiedAt($now);
-                $discussion->setWorkflowState('created');
-                $discussion->setOffer($offer);
-                $discussion->setIsSignaled(false);
-                $discussion->setIsDeletedCreator(false);
-                $discussion->setIsDeletedUser(false);
-                $entityManager->persist($discussion);
-                $entityManager->flush();
-            } else {
-                $discussion = $existingDiscussion;
-                $discussion->setModifiedAt($now);
-                $discussion->setIsDeletedCreator(false);
-                $discussion->setIsDeletedUser(false);
-            }
-
-            $message->setCreatedAt($now);
-            $message->setCreatedBy($this->getUser());
-            $message->setWorkflowState('created');
-            $message->setDiscussion($discussion);
-            $entityManager->persist($message);
-            $entityManager->flush();
-
-            $mailer->sendEmail(
-                $offer->getCreatedBy()->getFirstname(), 
-                $offer->getCreatedBy()->getEmail(), 
-                'Nouveau message de ' . $this->getUser()->getPseudonym(),
-                'emails/newMessage.html.twig'
-            );
-
-            $this->addFlash('success', 'Votre message a bien été envoyé');
         }
 
         $apiRequest = json_decode(
@@ -319,7 +274,6 @@ class OffersController extends AbstractController
             'coordinates' => $coordinates,
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),
-            'form' => $form->createView(),
             'offerAssociation' => $associationsRepository->findByOffer($offer)
         ]);
     }

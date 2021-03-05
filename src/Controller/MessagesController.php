@@ -11,6 +11,7 @@ use App\Repository\DiscussionsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Discussions;
 use App\Entity\Message;
+use App\Entity\Offers;
 use App\Service\MailerService;
 
 /**
@@ -47,6 +48,60 @@ class MessagesController extends AbstractController
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day')
         ]);
+    }
+
+    /**
+     * @Route("/new/{id}", name="new", requirements={"id":"\d+"}, methods={"POST"})
+     *
+     * @param Request $request
+     * @param Offers $offer
+     * @param DiscussionsRepository $discussionsRepository
+     * @param MailerService $mailer
+     * @return Response
+     */
+    public function new(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, MailerService $mailer): Response
+    {
+        $discussion = new Discussions();
+        $message = new Message();
+        $now = new \DateTime();
+        $entityManager = $this->getDoctrine()->getManager();
+
+        /** Cas où une discussion existe déja entre les utilisateurs sur l'offre. */
+        $existingDiscussion = $discussionsRepository->findByUserAndOffer($this->getUser(), $offer);
+        if ($existingDiscussion === null) {
+            $discussion->setCreatedBy($this->getUser());
+            $discussion->setCreatedAt($now);
+            $discussion->setModifiedAt($now);
+            $discussion->setWorkflowState('created');
+            $discussion->setOffer($offer);
+            $discussion->setIsSignaled(false);
+            $discussion->setIsDeletedCreator(false);
+            $discussion->setIsDeletedUser(false);
+            $entityManager->persist($discussion);
+            $entityManager->flush();
+        } else {
+            $discussion = $existingDiscussion;
+            $discussion->setModifiedAt($now);
+            $discussion->setIsDeletedCreator(false);
+            $discussion->setIsDeletedUser(false);
+        }
+
+        $message->setText($request->request->get('message'));
+        $message->setCreatedAt($now);
+        $message->setCreatedBy($this->getUser());
+        $message->setWorkflowState('created');
+        $message->setDiscussion($discussion);
+        $entityManager->persist($message);
+        $entityManager->flush();
+
+        $mailer->sendEmail(
+            $offer->getCreatedBy()->getFirstname(), 
+            $offer->getCreatedBy()->getEmail(), 
+            'Nouveau message de ' . $this->getUser()->getPseudonym(),
+            'emails/newMessage.html.twig'
+        );
+
+        return $this->json(['offer' => $offer->getId()]);
     }
 
     /**
