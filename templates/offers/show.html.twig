@@ -585,7 +585,7 @@ dangerMode: false
 }).then((willDelete) => {
 if (willDelete) {
 $.ajax({
-url: "{{ path('offers_show', {'id': offer.id}) }}",
+url: "{{ path('favorites_new', {'id': offer.id}) }}",
 type: 'POST',
 data: {
 offerId: value

@@ -253,18 +253,6 @@ class OffersController extends AbstractController
 
         $coordinates = $apiRequest['features'][0]['geometry']['coordinates'];
 
-        /** Ajout aux favoris */
-        if ($request->IsMethod('POST')) {
-            $favorite = new Favorites();
-            $entityManager = $this->getDoctrine()->getManager();
-            $favorite->setUser($this->getUser());
-            $favorite->setOffer($offer);
-            $favorite->setCreatedAt(new \DateTime());
-            $favorite->setWorkflowstate('created');
-            $entityManager->persist($favorite);
-            $entityManager->flush();
-        }
-
         return $this->render('offers/show.html.twig', [
             'offer' => $offer,
             'user' => $this->getUser(),
@@ -298,6 +286,27 @@ class OffersController extends AbstractController
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day')
         ]);
+    }
+
+    /**
+     * @Route("/favorites/{id}", name="favorites_new", requirements={"id":"\d+"}, methods={"POST"})
+     *
+     * @param Request $request
+     * @param Offers $offer
+     * @return Response
+     */
+    public function addToFavorites(Request $request, Offers $offer): Response
+    {
+        $favorite = new Favorites();
+        $entityManager = $this->getDoctrine()->getManager();
+        $favorite->setUser($this->getUser());
+        $favorite->setOffer($offer);
+        $favorite->setCreatedAt(new \DateTime());
+        $favorite->setWorkflowstate('created');
+        $entityManager->persist($favorite);
+        $entityManager->flush();
+
+        return $this->json(['offer' => $offer->getId()]);
     }
 
     /**
