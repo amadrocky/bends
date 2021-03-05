@@ -8,7 +8,6 @@ use App\Entity\Offers;
 use App\Entity\Favorites;
 use App\Entity\Research;
 use App\Entity\SignaledOffers;
-use App\Form\MessageType;
 use App\Form\OffersType;
 use App\Form\SignalOfferType;
 use App\Repository\CategoriesRepository;
