@@ -222,8 +222,11 @@
 									Favoris</p>
 							{% else %}
 								{% if app.user %}
-									<p class="cursorPointer" onclick="addFavorites({{ offer.id }})">
+									<p id="addFav" class="cursorPointer" onclick="addFavorites({{ offer.id }})">
 										<i class="fas fa-star"></i>
+										Favoris</p>
+									<p id="isFav" class="cursorPointer d-none" onclick="isFavorite()">
+										<i class="fas fa-star" style="color: orange"></i>
 										Favoris</p>
 								{% else %}
 									<p class="cursorPointer" onclick="isNotRegistered()">
@@ -592,6 +595,8 @@ offerId: value
 },
 success: function () {
 swal({title: "Ajouteé aux favoris", icon: "success"})
+document.getElementById("addFav").classList.add('d-none');
+document.getElementById("isFav").classList.remove('d-none');
 },
 error: function () {
 alert('error')
@@ -629,24 +634,24 @@ function submitMessage() {
 let value = document.querySelector("#messageForm textarea").value
 
 if (value == '') {
-	swal({title: "Message vide",text: "Veuillez entrer votre message", icon: "info"})
+swal({title: "Message vide", text: "Veuillez entrer votre message", icon: "info"})
 } else {
-	$.ajax({
-		url: "{{ path('messages_new', {'id': offer.id}) }}",
-		type: 'POST',
-		data: {
-			message: value
-		},
-		success: function () {
-			swal({title: "Message envoyé", icon: "success"})
-			document.getElementById("message").value = ''
-		},
-		error: function () {
-			alert('error')
-		}
-	})
+$.ajax({
+url: "{{ path('messages_new', {'id': offer.id}) }}",
+type: 'POST',
+data: {
+message: value
+},
+success: function () {
+swal({title: "Message envoyé", icon: "success"})
+document.getElementById("message").value = ''
+},
+error: function () {
+alert('error')
 }
-	
+})
+}
+
 }
 				</script>
 			{% endblock %}
