@@ -10,6 +10,7 @@ use App\Repository\MessageRepository;
 use App\Repository\DiscussionsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Discussions;
+use App\Entity\SignaledDiscussions;
 use App\Entity\Message;
 use App\Entity\Offers;
 use App\Service\MailerService;
@@ -105,7 +106,7 @@ class MessagesController extends AbstractController
     }
 
     /**
-     * @Route("/discussion/{id}", name="discussion", requirements={"id":"\d+"})
+     * @Route("/discussion/{id}", name="discussion", requirements={"id":"\d+"}, methods={"GET"})
      *
      * @param Request $request
      * @param Discussions $discussion
@@ -143,7 +144,7 @@ class MessagesController extends AbstractController
     }
 
     /**
-     * @Route("/discussion/{id}/new", name="discussion_message", requirements={"id":"\d+"},  methods={"POST"})
+     * @Route("/discussion/{id}/new", name="discussion_message", requirements={"id":"\d+"}, methods={"POST"})
      *
      * @param Request $request
      * @param Discussions $discussion
@@ -189,6 +190,35 @@ class MessagesController extends AbstractController
         );
 
         return $this->json(['message' => $message->getId()]);
+    }
+
+    /**
+     * @Route("/discussion/{id}/signal", name="discussion_signal", requirements={"id":"\d+"}, methods={"GET"})
+     *
+     * @param Request $request
+     * @param Discussions $discussion
+     * @return Response
+     */
+    public function signalDiscussion(Request $request, Discussions $discussion): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $user = $this->getUser();
+        $signaledDiscussion = new SignaledDiscussions();
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $signaledDiscussion->setDiscussion($discussion);
+        $signaledDiscussion->setCreatedBy($user);
+        $signaledDiscussion->setCreatedAt(new \DateTime());
+        $signaledDiscussion->setWorkflowState('created');
+
+        $entityManager->persist($signaledDiscussion);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Conversation signalée. Nos équipes prennent le relais pour faire le necéssaire.');
+        return $this->redirectToRoute('messages_index');
     }
 
     /**
