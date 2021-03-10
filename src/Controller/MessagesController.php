@@ -132,53 +132,6 @@ class MessagesController extends AbstractController
                 $entityManager->flush();
             }
         }
-
-        if (isset($_FILES['fname']['name']) || isset($_POST['message'])) {
-            $files = [];
-
-            if ($_FILES['fname']['name'] !== "" || $_POST['message'] !== "") {
-                $message = new Message();
-                $entityManager = $this->getDoctrine()->getManager();
-
-                $fileName = $_FILES['fname']['name'];
-
-                if ($fileName !== "") {
-                    $uploadDir = $_SERVER['PWD'] . '/assets/static/images/messages/';
-                    $extention = strrchr($fileName, ".");
-                    $fileName = 'message_image_' . uniqid() . $extention;
-                    $uploadFile = $uploadDir . basename($fileName);
-                    move_uploaded_file($_FILES['fname']['tmp_name'], $uploadFile);
-                    $files[] = basename($uploadFile);
-
-                    $message->setfile($files);
-                }
-
-                if ($_POST['message'] !== "") {
-                    $message->setText($_POST['message']);
-                }
-
-                $message->setCreatedAt(new \DateTime());
-                $message->setCreatedBy($this->getUser());
-                $message->setDiscussion($discussion);
-                $message->setWorkflowState('created');
-                $discussion->setModifiedAt(new \Datetime());
-                $discussion->setIsDeletedCreator(false);
-                $discussion->setIsDeletedUser(false);
-                $entityManager->persist($message);
-                $entityManager->flush();
-
-                $mailer->sendEmail(
-                    $discussion->getCreatedBy() === $this->getUser() ? $discussion->getOffer()->getCreatedBy()->getFirstname() : $discussion->getCreatedBy()->getFirstname(), 
-                    $discussion->getCreatedBy() === $this->getUser() ? $discussion->getOffer()->getCreatedBy()->getEmail() : $discussion->getCreatedBy()->getEmail(), 
-                    'Nouveau message de '. $this->getUser()->getPseudonym(),
-                    'emails/newMessage.html.twig'
-                );
-
-                $this->addFlash('success', 'Message envoyé');
-            } else {
-                $this->addFlash('error', 'Aucune donnée saisie');
-            }
-        }
         
         return $this->render('messages/show.html.twig', [
             'discussion' => $discussion,
@@ -187,6 +140,55 @@ class MessagesController extends AbstractController
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),
         ]);
+    }
+
+    /**
+     * @Route("/discussion/{id}/new", name="discussion_message", requirements={"id":"\d+"},  methods={"POST"})
+     *
+     * @param Request $request
+     * @param Discussions $discussion
+     * @param MailerService $mailer
+     * @return Response
+     */
+    public function newMessage(Request $request, Discussions $discussion, MailerService $mailer): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $message = new Message();
+        $fileName = $_FILES['fname']['name'];
+
+        if ($fileName !== "") {
+            $uploadDir = $_SERVER['PWD'] . '/assets/static/images/messages/';
+            $extention = strrchr($fileName, ".");
+            $fileName = 'message_image_' . uniqid() . $extention;
+            $uploadFile = $uploadDir . basename($fileName);
+            move_uploaded_file($_FILES['fname']['tmp_name'], $uploadFile);
+            $files[] = basename($uploadFile);
+
+            $message->setfile($files);
+        }
+
+        if ($_POST['message'] !== '') {
+            $message->setText($_POST['message']);
+        }
+        
+        $message->setCreatedAt(new \DateTime());
+        $message->setCreatedBy($this->getUser());
+        $message->setDiscussion($discussion);
+        $message->setWorkflowState('created');
+        $discussion->setModifiedAt(new \Datetime());
+        $discussion->setIsDeletedCreator(false);
+        $discussion->setIsDeletedUser(false);
+        $entityManager->persist($message);
+        $entityManager->flush();
+
+        $mailer->sendEmail(
+            $discussion->getCreatedBy() === $this->getUser() ? $discussion->getOffer()->getCreatedBy()->getFirstname() : $discussion->getCreatedBy()->getFirstname(), 
+            $discussion->getCreatedBy() === $this->getUser() ? $discussion->getOffer()->getCreatedBy()->getEmail() : $discussion->getCreatedBy()->getEmail(), 
+            'Nouveau message de '. $this->getUser()->getPseudonym(),
+            'emails/newMessage.html.twig'
+        );
+
+        return $this->json(['message' => $message->getId()]);
     }
 
     /**

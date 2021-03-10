@@ -30,7 +30,7 @@
 						<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="img-thumbnail miniature mx-1" alt="photo">
 					{% endif %}
 				</div>
-				<div class="p-2 chat-section">
+				<div id="chat" class="p-2 chat-section">
 					{% for message in discussion.messages %}
 						{% if message.createdBy == app.user %}
 							<div id="demo-test-gallery" class="d-flex justify-content-end">
@@ -127,7 +127,7 @@
 					</div>
 
 				</div>
-				<form action="{{ path('messages_discussion', {'id': discussion.id}) }}" method="post" enctype="multipart/form-data" class="bg-white d-flex p-2">
+				<form id="messageForm" class="bg-white d-flex p-2">
 					<div class="file-selector d-flex align-items-center">
 						<i class="far fa-file-image cursorPointer" onclick="addFile()"></i>
 						<input type="file" id="fname" name="fname" accept="image/x-png,image/gif,image/jpeg" hidden>
@@ -144,7 +144,64 @@
 	</div>
 
 	<script type="text/javascript">
-		function scrollToBottom() {
+		let id = 1;
+document.getElementById("messageForm").addEventListener('submit', onSubmit);
+
+function onSubmit(event) {
+event.preventDefault();
+
+let messageForm = new FormData(this);
+let message = document.getElementById("message");
+let file = document.getElementById("fname");
+let chat = document.getElementById("chat");
+
+if (message.value === '' && file.value === '') {
+swal({title: "Message vide", icon: "error"});
+} else {
+$.ajax({
+url: "{{ path('messages_discussion_message', {'id': discussion.id}) }}",
+type: 'POST',
+data: messageForm,
+cache: false,
+contentType: false,
+processData: false,
+success: function () {
+let chatDiv = document.createElement('div');
+chatDiv.className = 'd-flex justify-content-end';
+let textDiv = document.createElement('div');
+textDiv.className = 'chat-text-user p-2 mb-2 w-75';
+textDiv.innerHTML = message.value;
+
+if (file.value !== '') {
+let reader = new FileReader();
+let uploadedFile = $("input[type=file]").get(0).files[0];
+let img = document.createElement('img');
+img.id = 'newImg' + id;
+img.className = 'image-sent';
+img.alt = 'photo';
+textDiv.append(img);
+reader.onload = function () {
+img.src = (reader.result);
+}
+
+reader.readAsDataURL(uploadedFile);
+}
+
+chatDiv.append(textDiv);
+chat.append(chatDiv);
+
+message.value = '';
+file.value = '';
+id++;
+},
+error: function () {
+alert('error');
+}
+})
+}
+}
+
+function scrollToBottom() {
 document.querySelector(".chat-section").scroll(0, 10000);
 }
 
@@ -180,7 +237,7 @@ continue;
 
 childElements = el.children;
 
-size = el.getAttribute('data-size').split('x');
+size = el.getAttribute('data-size') === null ? el.parentElement.children[1].getAttribute('data-size').split('x') : el.getAttribute('data-size').split('x');
 
 // create slide object
 item = {
@@ -416,15 +473,9 @@ imageSrcWillChange = false;
 });
 
 gallery.listen('gettingData', function (index, item) {
-if (useLargeImages) {
 item.src = item.o.src;
 item.w = item.o.w;
 item.h = item.o.h;
-} else {
-item.src = item.m.src;
-item.w = item.m.w;
-item.h = item.m.h;
-}
 });
 
 gallery.init();
