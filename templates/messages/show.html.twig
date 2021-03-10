@@ -139,6 +139,46 @@
 						<button class="btn btn-primary">Envoyer</button>
 					</div>
 				</form>
+				<div class="text-center">
+					<button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#signalModal">
+						Signaler
+					</button>
+				</div>
+
+				<!-- Modal signal -->
+				<div class="modal fade" id="signalModal" tabindex="-1" role="dialog" aria-labelledby="signalModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h2 class="loginTitle" id="exampleModalLabel">Signaler la conversation</h2>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p>
+									Vous constatez que la conversation ne respecte pas les règles definies dans nos
+									<a href="">conditions générales d'utilisation</a>?</p>
+								<ul class="text-muted">
+									<li>
+										<small>Propos interdits (insultes, propos racistes, homophobie, ...).</small>
+									</li>
+									<li>
+										<small>Conversation à but de transaction financière.</small>
+									</li>
+									<li>
+										<small>Autres cas définis dans nos conditions d'utilisations.</small>
+									</li>
+								</ul>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+								<button type="button" class="btn btn-danger">Signaler</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
