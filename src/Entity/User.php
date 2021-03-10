@@ -132,6 +132,11 @@ class User implements UserInterface
      */
     private $token;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SignaledDiscussions::class, mappedBy="createdBy")
+     */
+    private $signaledDiscussions;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -142,6 +147,7 @@ class User implements UserInterface
         $this->favorites = new ArrayCollection();
         $this->signaledOffers = new ArrayCollection();
         $this->associations = new ArrayCollection();
+        $this->signaledDiscussions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -567,6 +573,36 @@ class User implements UserInterface
     public function setToken(?string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SignaledDiscussions[]
+     */
+    public function getSignaledDiscussions(): Collection
+    {
+        return $this->signaledDiscussions;
+    }
+
+    public function addSignaledDiscussion(SignaledDiscussions $signaledDiscussion): self
+    {
+        if (!$this->signaledDiscussions->contains($signaledDiscussion)) {
+            $this->signaledDiscussions[] = $signaledDiscussion;
+            $signaledDiscussion->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSignaledDiscussion(SignaledDiscussions $signaledDiscussion): self
+    {
+        if ($this->signaledDiscussions->removeElement($signaledDiscussion)) {
+            // set the owning side to null (unless already changed)
+            if ($signaledDiscussion->getCreatedBy() === $this) {
+                $signaledDiscussion->setCreatedBy(null);
+            }
+        }
 
         return $this;
     }

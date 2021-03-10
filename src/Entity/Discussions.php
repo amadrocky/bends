@@ -65,9 +65,15 @@ class Discussions
      */
     private $isDeletedUser;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SignaledDiscussions::class, mappedBy="discussion")
+     */
+    private $signaledDiscussions;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->signaledDiscussions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -198,6 +204,36 @@ class Discussions
     public function setIsDeletedUser(?bool $isDeletedUser): self
     {
         $this->isDeletedUser = $isDeletedUser;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SignaledDiscussions[]
+     */
+    public function getSignaledDiscussions(): Collection
+    {
+        return $this->signaledDiscussions;
+    }
+
+    public function addSignaledDiscussion(SignaledDiscussions $signaledDiscussion): self
+    {
+        if (!$this->signaledDiscussions->contains($signaledDiscussion)) {
+            $this->signaledDiscussions[] = $signaledDiscussion;
+            $signaledDiscussion->setDiscussion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSignaledDiscussion(SignaledDiscussions $signaledDiscussion): self
+    {
+        if ($this->signaledDiscussions->removeElement($signaledDiscussion)) {
+            // set the owning side to null (unless already changed)
+            if ($signaledDiscussion->getDiscussion() === $this) {
+                $signaledDiscussion->setDiscussion(null);
+            }
+        }
 
         return $this;
     }
