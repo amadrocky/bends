@@ -98,11 +98,6 @@ class User implements UserInterface
     private $discussions;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Discussions", mappedBy="user")
-     */
-    private $discussionsUser;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Offers", mappedBy="createdBy")
      */
     private $offers;
