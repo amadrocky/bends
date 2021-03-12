@@ -168,10 +168,15 @@ alert('error')
 
 function loadFile(imgId) {
 const output = document.getElementById(imgId);
+let inputFileSize = output.previousElementSibling.files[0].size;
+if (inputFileSize > 2000000) {
+swal({title: "Fichier trop volumineux", text: "Le fichier ne doit pas dépasser 2 Mb", icon: "error"});
+} else {
 output.src = URL.createObjectURL(event.target.files[0]);
 output.onload = function () {
 URL.revokeObjectURL(output.src)
 }
-};
+}
+}
 	</script>
 {% endblock %}
