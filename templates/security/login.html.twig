@@ -6,7 +6,7 @@
 {% block body %}
 	<div class="homeSection">
 		<div class="row justify-content-center p-3 w-100 m-0">
-			<div id="login" class="col col-md-4 offset-md-4 loginBlock m-2 p-3 form-style">
+			<div id="login" class="col col-md-4 offset-md-4 loginBlock m-2 p-3 form-style fade-in">
 				<form method="post">
 					{% if error %}
 						<div class="alert alert-danger box-shadow">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -72,7 +72,7 @@
 				</div>
 			</div>
 
-			<div id="recover" class="col col-md-4 offset-md-4 loginBlock m-2 p-3 form-style d-none">
+			<div id="recover" class="col col-md-4 offset-md-4 loginBlock m-2 p-3 form-style fade-in d-none">
 				<form action="{{ path('recover') }}" method="post">
 					<div class="alert alert-info box-shadow" role="alert">
 						<i class="fas fa-info-circle"></i>
