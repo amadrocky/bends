@@ -60,6 +60,8 @@ class SecurityController extends AbstractController
                 $user,
                 $user->getPassword()
             ));
+            $user->setFirstname(ucfirst(strtolower($user->getFirstname())));
+            $user->setLastname(ucfirst(strtolower($user->getLastname())));
             $user->setCreatedAt(new \DateTime());
             $user->setModifiedAt(new \DateTime());
             $user->setWorkflowState('created');
