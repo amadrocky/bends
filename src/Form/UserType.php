@@ -55,7 +55,6 @@ class UserType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => true
             ])
-            //->add('roles')
             ->add('password', RepeatedType::class, array(
                 'type' => PasswordType::class,
                 'invalid_message' => 'Le mot de passe doit être similaire.',

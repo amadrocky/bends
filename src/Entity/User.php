@@ -48,7 +48,7 @@ class User implements UserInterface
      * @ORM\Column(type="date")
      * @Assert\LessThanOrEqual(
      *  value = "-18 years",
-     *  message = "Vous ne disposez pas de l'age requis pour l'inscription."
+     *  message = "Vous ne disposez pas de l'âge requis pour l'inscription."
      * )
      */
     private $dateOfBirth;
