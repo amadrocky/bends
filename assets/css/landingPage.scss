@@ -1,0 +1,48 @@
+.landing-title {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(170deg, rgba(255, 255, 255, 1) 50%, rgba(63, 81, 181, 1) 50%);
+    height: 80%;
+    h1 {
+        font-size: 100px;
+        padding-top: 80px;
+        opacity: 0;
+        transform: translateX(-30px);
+        animation: apparition 0.4s .3s ease-out forwards;
+    }
+    h2 {
+        font-size: 60px;
+        opacity: 0;
+        transform: translateY(-30px);
+        animation: apparition 0.4s .7s ease-out forwards;
+    }
+}
+
+.landing-presentation {
+    background-image: linear-gradient(rgba(255, 255, 255, .80), rgba(255, 255, 255, .80)), url("../static/images/agapanthus-1465146_640.jpg");
+    background-size: cover;
+    background-position-y: 47%;
+}
+
+p {
+    font-family: 'Montserrat', sans-serif;
+    strong {
+        color: $violet;
+    }
+}
+
+@keyframes apparition {
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    h1 {
+        padding-top: 0px !important;
+        font-size: 80px !important;
+    }
+    h2 {
+        font-size: 40px !important;
+    }
+}

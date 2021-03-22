@@ -32,4 +32,16 @@ class HomeController extends AbstractController
             'messages' => $messages
         ]);
     }
+
+    /**
+     * @Route("/land", name="land")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function landing(Request $request): Response
+    {
+
+        return $this->render('home/landing.html.twig');
+    }
 }
