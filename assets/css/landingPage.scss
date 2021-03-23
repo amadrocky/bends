@@ -1,10 +1,11 @@
 .landing-title {
     background: rgb(255, 255, 255);
-    background: linear-gradient(170deg, rgba(255, 255, 255, 1) 50%, rgba(63, 81, 181, 1) 50%);
-    height: 80%;
+    background-image: linear-gradient(170deg, rgba(255, 255, 255, .95) 50%, rgba(63, 81, 181, .80) 50%), url("../static/images/person-1245789_1920.jpg");
+    background-size: cover;
+    height: 100%;
     h1 {
-        font-size: 100px;
-        padding-top: 80px;
+        font-size: 130px;
+        padding-top: 50px;
         opacity: 0;
         transform: translateX(-30px);
         animation: apparition 0.4s .3s ease-out forwards;
@@ -17,17 +18,72 @@
     }
 }
 
+.landing-nav a {
+    color: $violet;
+}
+
+.landing-nav a:hover {
+    color: $blue;
+    text-decoration: none;
+}
+
 .landing-presentation {
     background-image: linear-gradient(rgba(255, 255, 255, .80), rgba(255, 255, 255, .80)), url("../static/images/agapanthus-1465146_640.jpg");
     background-size: cover;
     background-position-y: 47%;
 }
 
-p {
-    font-family: 'Montserrat', sans-serif;
-    strong {
+.landing-register p {
+    color: $violet;
+    border: 1px solid $violet;
+    border-radius: 20px;
+}
+
+.landing-register:hover {
+    p {
+        color: $blue;
+        border: 1px solid $blue;
+    }
+    text-decoration: none;
+}
+
+.landing-list {
+    margin-top: 300px;
+    color: white;
+    list-style-type: none;
+    p {
+        font-size: 20px;
+    }
+}
+
+.landing-cards .card {
+    border: none;
+    box-shadow: 0px 2px 5px black;
+}
+
+.landing-cards .card-body {
+    i {
+        font-size: 30px;
         color: $violet;
     }
+}
+
+.landing-card-one {
+    height: 150px;
+    background-image: url("../static/images/office-620822_1920.jpg");
+    background-size: cover;
+}
+
+.landing-card-two {
+    height: 150px;
+    background-image: url("../static/images/startup-594090_1920.jpg");
+    background-size: cover;
+}
+
+.landing-card-three {
+    height: 150px;
+    background-image: url("../static/images/team-4529717_1920.jpg");
+    background-size: cover;
 }
 
 @keyframes apparition {
@@ -38,6 +94,16 @@ p {
 }
 
 @media screen and (max-width: 768px) {
+    .landing-nav-zone {
+        margin-bottom: 10px;
+    }
+    .landing-nav a {
+        font-size: 12px;
+        text-align: center;
+    }
+    .landing-register {
+        font-size: 15px;
+    }
     .landing-title h1 {
         padding-top: 0px !important;
         font-size: 80px !important;
