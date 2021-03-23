@@ -39,6 +39,13 @@ body {
     padding: 0;
 }
 
+p {
+    font-family: 'Montserrat', sans-serif;
+    strong {
+        color: $violet;
+    }
+}
+
 .btn-primary {
     background-color: $primary;
     border: $primary;
