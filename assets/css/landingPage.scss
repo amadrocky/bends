@@ -186,6 +186,16 @@
         }
     }
     
+    .landing-quote {
+        font-size: 50px;
+        color: $violet;
+    }
+    
+    .comment-img {
+        height: 100px;
+        width: auto;
+    }
+    
     @keyframes apparition {
         100% {
             opacity: 1;
