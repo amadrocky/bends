@@ -165,6 +165,7 @@
     .landing-white-block {
         background-color: #fff;
         border-radius: 5px;
+        box-shadow: -1px 5px 5px -4px black;
     }
     
     .landing-asso {
@@ -256,6 +257,30 @@
                     width: 100%;
                 }
             }
+        }
+    }
+    
+    .landing-mobile {
+        background-image: url("../static/images/passenger-5593947_1920.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+        .landing-mobile-text {
+            background-color: rgba(0, 0, 0, .6);
+            .landing-mobile-title {
+                font-size: 50px;
+                color: $blue;
+                font-weight: normal;
+                text-shadow: 1px 1px 1px white;
+            }
+            p {
+                font-size: 30px;
+                color: white;
+                font-weight: bold;
+            }
+        }
+        .landing-mobile-img {
+            height: 400px;
+            width: auto;
         }
     }
     
