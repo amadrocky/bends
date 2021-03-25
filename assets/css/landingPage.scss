@@ -162,28 +162,30 @@
         }
     }
     
+    .landing-white-block {
+        background-color: #fff;
+        border-radius: 5px;
+    }
+    
     .landing-asso {
-        background: linear-gradient(130deg, rgba(254, 185, 57, 1) 0%, rgba(248, 58, 57, 1) 100%);
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        .asso-block {
-            background-color: #fff;
-            border-radius: 5px;
-            .asso-block-list {
-                p {
-                    text-align: justify;
-                    font-weight: bold;
-                    color: $violet;
-                    i {
-                        color: $blue;
-                    }
+        .asso-block-list {
+            p {
+                text-align: justify;
+                font-weight: bold;
+                color: $violet;
+                i {
+                    color: $blue;
                 }
             }
-            .asso-block-img {
-                height: 250px;
-                width: auto;
-            }
         }
+        .asso-block-img {
+            height: 250px;
+            width: auto;
+        }
+    }
+    
+    .landing-cmt {
+        box-shadow: 10px 0px 5px black;
     }
     
     .landing-quote {
@@ -193,7 +195,68 @@
     
     .comment-img {
         height: 100px;
-        width: auto;
+        width: 100px;
+        box-shadow: 1px 1px 10px 1px lightgrey;
+    }
+    
+    .landing-actu {
+        .title-bordered {
+            border-style: inset;
+            border-color: $blue;
+            border-width: 5px;
+        }
+        .landing-actu-title {
+            font-size: 50px;
+            line-height: 45px;
+        }
+        .actu-img {
+            height: 200px;
+            width: 200px;
+            box-shadow: 1px 1px 10px 1px lightgrey;
+        }
+        .actu-btn {
+            display: inline-block;
+            padding: .75rem 1.25rem;
+            border-radius: 10rem;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: .15rem;
+            transition: all .3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            &:after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: $violet;
+                border-radius: 10rem;
+                z-index: -2;
+            }
+            &:before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0%;
+                height: 100%;
+                background-color: darken($violet, 15%);
+                transition: all .3s;
+                border-radius: 10rem;
+                z-index: -1;
+            }
+            &:hover {
+                text-decoration: none;
+                color: #fff;
+                &:before {
+                    width: 100%;
+                }
+            }
+        }
     }
     
     @keyframes apparition {
