@@ -22,14 +22,22 @@
     
     .landing-nav {
         padding-top: 20px;
-        a {
+        ul {
+            display: flex;
+            list-style-type: none;
+            font-family: 'Oswald', sans-serif;
+        }
+        li {
             color: $violet;
+            margin: 0px 5px 0px 5px;
+            font-size: 20px;
         }
     }
     
-    .landing-nav a:hover {
+    .landing-nav li:hover {
         color: $blue;
         text-decoration: none;
+        cursor: pointer;
     }
     
     .landing-presentation {
@@ -326,7 +334,7 @@
         .landing-nav-zone {
             margin-bottom: 10px;
         }
-        .landing-nav a {
+        .landing-nav li {
             font-size: 12px;
             text-align: center;
         }

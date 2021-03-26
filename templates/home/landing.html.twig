@@ -8,12 +8,14 @@
 		<div class="d-flex justify-content-between landing-nav-zone">
 			<div></div>
 			<nav class="landing-nav d-flex justify-content-center my-0">
-				<a href="">Qui sommes-nous?</a>
-				<a href="">Éspace associations</a>
-				<a href="">Actualités</a>
-				<a href="">Contact</a>
+				<ul class="px-2">
+					<li onclick="scro('presentation')">Qui sommes-nous?</li>
+					<li onclick="scro('associations')">Éspace associations</li>
+					<li onclick="scro('actuality')">Actualités</li>
+					<li onclick="scro('contact')">Contact</li>
+				</ul>
 			</nav>
-			<a href="" class="landing-register mx-3">
+			<a href="{{ path('app_register') }}" class="landing-register mx-3">
 				<p class="px-2">S'inscrire</p>
 			</a>
 		</div>
@@ -41,13 +43,13 @@
 			</div>
 			<div class="col-12 col-md-6 text-center p-4">
 				<div class="landing-btn-box">
-					<a href="#" class="btn btn-white btn-animate">Ouvrir l'application</a>
+					<a href="{{ path('home') }}" class="btn btn-white btn-animate">Ouvrir l'application</a>
 				</div>
 			</div>
 		</div>
 
 	</div>
-	<div class="landing-presentation p-5">
+	<div id="presentation" class="landing-presentation p-5">
 		<h3 class="cmnty text-center mb-3">Qui sommes-nous ?</h3>
 		<p class="text-justify">Notre mission? La mise en relation entre partculiers, professionnels et associations autour du don d'objets et services bénévoles.</p>
 		<p class="text-justify">Dans un monde ou l'économie sociale et solidaire, le développement durable ainsi que le bien pour l'environnement prennent plus de place, nous proposons cette plateforme totalement
@@ -96,7 +98,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="landing-asso p-5">
+	<div id="associations" class="landing-asso p-5">
 		<div class="landing-white-block p-3">
 			<h3 class="cmnty text-center mb-3">Éspace associations</h3>
 			<p class="text-justify mb-2 p-3">Besoin de bénévoles aux quotidien ou pour un évenement? De matériel en particulier ? L'éspace permet aux associations de proposer leurs offres ainsi que leurs demandes afin d'avoir des retours plus proches de leurs attentes.</p>
@@ -130,7 +132,7 @@
 			<p class="text-muted">Caroline, utilisatrice</p>
 		</div>
 	</div>
-	<div class="landing-actu p-5">
+	<div id="actuality" class="landing-actu p-5">
 		<div class="landing-white-block p-3">
 			<h3 class="cmnty text-center mb-3">Actualités</h3>
 			<div class="row w-100 m-0">
@@ -165,7 +167,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="landing-contact p-5">
+	<div id="contact" class="landing-contact p-5">
 		<div class="landing-white-block p-3">
 			<h3 class="cmnty text-center mb-3">Contact</h3>
 			<div class="row w-100 m-0 justify-content-center">
@@ -211,4 +213,11 @@
 			</div>
 		</div>
 	</footer>
+
+	<script type="text/javascript">
+		function scro(id) {
+			document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+			
+		}
+	</script>
 {% endblock %}
