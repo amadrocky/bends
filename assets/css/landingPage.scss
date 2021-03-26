@@ -285,6 +285,25 @@
         }
     }
     
+    footer {
+        color: grey;
+        h3 {
+            color: grey !important;
+            font-size: 40px;
+            text-shadow: 1px 1px 1px white;
+        }
+        h6 {
+            font-size: 20px;
+        }
+        a {
+            color: grey;
+        }
+        a:hover {
+            text-decoration: none;
+            color: white;
+        }
+    }
+    
     @keyframes apparition {
         100% {
             opacity: 1;
