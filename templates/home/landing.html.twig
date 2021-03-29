@@ -41,7 +41,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="col-12 col-md-6 text-center p-4">
+			<div class="col-12 col-md-6 text-center p-4 overflow-hidden">
 				<div class="landing-btn-box">
 					<a href="{{ path('home') }}" class="btn btn-white btn-animate">Ouvrir l'application</a>
 				</div>
@@ -88,7 +88,7 @@
 					<h5><i class="fas fa-users"></i></h5>
 					<p>Rejoingez la communauté
 						<em class="bnds">Bends</em>
-						et devenez acteur d'une économie sociale et solidaire !</p>
+						et devenez acteur d'une économie sociale et solidaire</p>
 				</div>
 			</div>
 		</div>
@@ -219,8 +219,7 @@
 
 	<script type="text/javascript">
 		function scro(id) {
-document.getElementById(id).scrollIntoView({behavior: 'smooth'});
-
-}
+			document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+		}
 	</script>
 {% endblock %}

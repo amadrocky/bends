@@ -78,7 +78,7 @@
                             connecter</h4>
                     </a>
                 {% endif %}
-                <h3 class="text-center">Bends</h3>
+                <h3 class="text-center cursorPointer" onclick="backToLanding()">Bends</h3>
             </nav>
         </div>
     </div>
@@ -98,7 +98,7 @@
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        document.location.href = '/logout';
+                        document.location.href = '/app/logout';
                         swal("Vous avez bien été déconnecté", {
                             icon: "success",
                         });
@@ -107,5 +107,11 @@
                     }
                 });
         }
+
+        function backToLanding() {
+            document.location.href = '/';
+        }
+
+        document.querySelector('#nav').classList.remove('anim');
     </script>
 {% endblock %}
