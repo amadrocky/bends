@@ -30,7 +30,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 use App\Service\MailerService;
 
 /**
- * @Route("/offers")
+ * @Route("/app/offers")
  */
 class OffersController extends AbstractController
 {

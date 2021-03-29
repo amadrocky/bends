@@ -16,7 +16,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
 /**
- * @Route("/associations", name="associations_")
+ * @Route("/app/associations", name="associations_")
  */
 class AssociationsController extends AbstractController
 {

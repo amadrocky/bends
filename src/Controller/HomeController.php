@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/app", name="home")
      *
      * @param Request $request
      * @param MessageRepository $message
@@ -34,7 +34,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/land", name="land")
+     * @Route("/", name="land")
      *
      * @param Request $request
      * @return Response

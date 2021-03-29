@@ -16,7 +16,7 @@ use App\Entity\Offers;
 use App\Service\MailerService;
 
 /**
- * @Route("/messages", name="messages_")
+ * @Route("/app/messages", name="messages_")
  */
 class MessagesController extends AbstractController
 {

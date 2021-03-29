@@ -14,7 +14,7 @@ use App\Repository\OffersRepository;
 use App\Entity\User;
 
 /**
- * @Route("/profil", name="profil_")
+ * @Route("/app/profil", name="profil_")
  */
 class UserController extends AbstractController
 {

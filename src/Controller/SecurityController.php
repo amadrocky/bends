@@ -15,6 +15,9 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Service\MailerService;
 use App\Repository\UserRepository;
 
+/**
+ * @Route("/app")
+ */
 class SecurityController extends AbstractController
 {
     /**
