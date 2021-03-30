@@ -24,7 +24,7 @@ class MailerService
      * @param string $token
      * @return void
      */
-    public function sendEmail(string $name, string $email, string $subject, string $template, string $token = null)
+    public function sendEmail(string $name, string $email, string $subject, string $template, string $token = null, $addedVar = null)
     {
         $email = (new TemplatedEmail())
             ->from('support@bends.fr')
@@ -37,7 +37,8 @@ class MailerService
             // pass variables (name => value) to the template
             ->context([
                 'userFirstname' => $name,
-                'token' => $token
+                'token' => $token,
+                'addedVar' => $addedVar
             ])
         ;
 

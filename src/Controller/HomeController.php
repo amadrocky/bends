@@ -7,9 +7,32 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\MessageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Service\MailerService;
 
 class HomeController extends AbstractController
 {
+    /**
+     * @Route("/", name="land", methods={"GET","POST"})
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function landing(Request $request, MailerService $mailer): Response
+    {
+        if ($request->IsMethod('POST')) {
+            $mailer->sendEmail(
+                $_POST['email'], 
+                'sigaki4344@astarmax.com', 
+                'Nouveau message de ' . $_POST['name'],
+                'emails/landingMessage.html.twig',
+                null,
+                $_POST['message']
+            );
+        }
+
+        return $this->render('home/landing.html.twig');
+    }
+
     /**
      * @Route("/app", name="home")
      *
@@ -31,17 +54,5 @@ class HomeController extends AbstractController
             'user' => $this->getUser(),
             'messages' => $messages
         ]);
-    }
-
-    /**
-     * @Route("/", name="land")
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function landing(Request $request): Response
-    {
-
-        return $this->render('home/landing.html.twig');
     }
 }
