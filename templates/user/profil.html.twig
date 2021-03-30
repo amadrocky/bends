@@ -64,7 +64,7 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form id="editProfilForm" action="{{ path('profil_edit', {'id': user.id}) }}" method="post" enctype="multipart/form-data">
+										<form id="editProfilForm" class="form-style" action="{{ path('profil_edit', {'id': user.id}) }}" method="post" enctype="multipart/form-data">
 											<div class="subtitleZone p-1 mb-3">
 												<h5 class="text-white m-0">Informations</h5>
 											</div>
@@ -177,7 +177,7 @@
 											</button>
 										</div>
 										<div class="modal-body">
-											<form id="editForm" action="{{ path('associations_edit', {'id': userAssociation.id}) }}" method="post" enctype="multipart/form-data">
+											<form id="editForm" class="form-style" action="{{ path('associations_edit', {'id': userAssociation.id}) }}" method="post" enctype="multipart/form-data">
 												<div class="subtitleZone p-1 mb-3">
 													<h5 class="text-white m-0">Informations</h5>
 												</div>

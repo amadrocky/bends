@@ -65,7 +65,7 @@
 								{{ offer.category.name }}</p>
 
 						</div>
-						<form id="signal_offer" action="{{ path('offers_signal', {'id': offer.id}) }}" method="post" class="card col-sm-12 col-md m-2 p-2">
+						<form id="signal_offer" action="{{ path('offers_signal', {'id': offer.id}) }}" method="post" class="card form-style col-sm-12 col-md m-2 p-2">
 							{{ form_start(form) }}
 							{{ form_row(form.reason) }}
 							{{ form_row(form.comment) }}
