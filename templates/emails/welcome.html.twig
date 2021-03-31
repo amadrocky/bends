@@ -1,0 +1,38 @@
+<p>Bonjour
+	{{ userFirstname }},</p>
+
+<br/>
+
+<p>Toute l'équipe du site vous souhaite la bienvenue. Nous sommes très heureux de vous compter parmis nos utilisateurs et enrichir cette belle communauté.</p>
+
+<br/>
+
+<p>Vous pouvez dès à présent:</p>
+
+<br/>
+
+<ul>
+	<li>Déposer vos annonces.</li>
+	<li>Créer votre page association (si besoin).</li>
+	<li>Contacter les annonceurs directement sur la plateforme.</li>
+	<li>Consulter notre espace actualités.</li>
+</ul>
+
+<br/>
+
+<p>Pour toute information, n'hésitez pas à contacter notre équipe support.</p>
+
+<br/>
+
+<p>
+	À très bientôt sur
+	<a href="{{ url('land') }}" target="_blank">notre site</a>.
+</p>
+
+<br/>
+
+<p>L'équipe Bends !</p>
+
+<br/>
+
+{% include 'emails/_partials/footerEmail.html.twig' %}

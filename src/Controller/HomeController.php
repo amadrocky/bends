@@ -15,6 +15,7 @@ class HomeController extends AbstractController
      * @Route("/", name="land", methods={"GET","POST"})
      *
      * @param Request $request
+     * @param MailerService $mailer
      * @return Response
      */
     public function landing(Request $request, MailerService $mailer): Response
@@ -22,7 +23,7 @@ class HomeController extends AbstractController
         if ($request->IsMethod('POST')) {
             $mailer->sendEmail(
                 $_POST['email'], 
-                'sigaki4344@astarmax.com', 
+                $_POST['email'], 
                 'Nouveau message de ' . $_POST['name'],
                 'emails/landingMessage.html.twig',
                 null,

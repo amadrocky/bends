@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
-             return $this->redirectToRoute('home');
+             return $this->redirectToRoute('profil_index');
          }
 
         // get the login error if there is one
@@ -53,6 +53,10 @@ class SecurityController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, MailerService $mailer): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('profil_index');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -101,7 +105,7 @@ class SecurityController extends AbstractController
      * @param UserRepository $userRepository
      * @return RedirectResponse
      */
-    public function activeAccount(string $token, UserRepository $userRepository): RedirectResponse
+    public function activeAccount(string $token, UserRepository $userRepository, MailerService $mailer): RedirectResponse
     {
         $user = $userRepository->findOneBy(['token' => $token]);
 
@@ -112,6 +116,14 @@ class SecurityController extends AbstractController
             $user->setModifiedAt(new \DateTime());
             $em->persist($user);
             $em->flush();
+
+            $mailer->sendEmail(
+                $user->getFirstname(), 
+                $user->getEmail(),
+                'Bienvenue dans la communauté Bends !',
+                'emails/welcome.html.twig',
+                $user->getToken()
+            );
 
             $this->addFlash('success', 'Votre compte utilisateur est actif.');
 
@@ -132,6 +144,13 @@ class SecurityController extends AbstractController
      */
     public function sendActivationMail(User $user, MailerService $mailer): RedirectResponse
     {
+        if ($user->getToken() == "") {
+            $em = $this->getDoctrine()->getManager();
+            $user->setToken($this->generateToken());
+            $em->persist($user);
+            $em->flush();
+        }
+
         $mailer->sendEmail(
             $user->getFirstname(), 
             $user->getEmail(), 
