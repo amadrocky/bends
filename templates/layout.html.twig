@@ -1,5 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block favicon %}
+    {% if messages > 0 %}
+        <link rel="icon" href="{{ asset('build/icons/faviconNotif.png') }}"/>
+    {% else %}
+        <link rel="icon" href="{{ asset('build/icons/favicon.png') }}"/>
+    {% endif %}
+{% endblock %}
+
 {% block header %}
     <script type="text/javascript">
         {% for label, messages in app.flashes %}
