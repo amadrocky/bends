@@ -105,6 +105,11 @@
                 text-shadow: 1px 1px 1px white;
             }
         }
+        .carousel-indicators li {
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+        }
     }
     
     .landing-btn-box {
