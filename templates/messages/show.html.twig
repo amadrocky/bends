@@ -136,7 +136,7 @@
 						<textarea name="message" id="message" placeholder="Votre message ici ..." class="form-control"></textarea>
 					</div>
 					<div class="d-flex align-items-center">
-						<button class="btn btn-primary">Envoyer</button>
+						<button id="submitBtn" class="btn btn-primary">Envoyer</button>
 					</div>
 				</form>
 				<div class="text-center">
@@ -201,6 +201,7 @@ swal({title: "Message vide", icon: "error"});
 if (file.value !== '' && file.files[0].size > 2000000) {
 swal({title: "Fichier trop volumineux", text: "Le fichier ne doit pas dépasser 2 Mb", icon: "error"});
 } else {
+document.getElementById("submitBtn").disabled = true;
 $.ajax({
 url: "{{ path('messages_discussion_message', {'id': discussion.id}) }}",
 type: 'POST',
@@ -208,7 +209,12 @@ data: messageForm,
 cache: false,
 contentType: false,
 processData: false,
+beforeSend: function() {
+	document.getElementById("loader").classList.remove('d-none');
+},
 success: function () {
+document.getElementById("loader").classList.add('d-none');
+document.getElementById("submitBtn").disabled = false;
 let chatDiv = document.createElement('div');
 chatDiv.className = 'd-flex justify-content-end';
 let textDiv = document.createElement('div');

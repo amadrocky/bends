@@ -112,7 +112,7 @@ class MessagesController extends AbstractController
      * @param Discussions $discussion
      * @return Response
      */
-    public function show(Request $request, Discussions $discussion, MailerService $mailer): Response
+    public function show(Request $request, Discussions $discussion, MessageRepository $msg, MailerService $mailer): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -133,6 +133,10 @@ class MessagesController extends AbstractController
                 $entityManager->flush();
             }
         }
+        
+        $countMessages = count($msg->findUnreads($this->getUser()));
+
+        $request->getSession()->set('messages', $countMessages);
         
         return $this->render('messages/show.html.twig', [
             'discussion' => $discussion,
