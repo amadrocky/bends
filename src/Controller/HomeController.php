@@ -22,8 +22,8 @@ class HomeController extends AbstractController
     {
         if ($request->IsMethod('POST')) {
             $mailer->sendEmail(
-                $_POST['email'], 
-                $_POST['email'], 
+                $_POST['email'],
+                $_POST['email'],
                 'Nouveau message de ' . $_POST['name'],
                 'emails/landingMessage.html.twig',
                 null,

@@ -145,6 +145,18 @@ h1 {
     -ms-animation: fadeIn ease .8s;
 }
 
+.loader {
+    height: 100px;
+    width: auto;
+    margin: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1000;
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;

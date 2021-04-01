@@ -190,7 +190,7 @@
 											<form id="messageForm" class="form-style">
 												<textarea name="message" id="message" class="form-control" placeholder="Votre texte ici..." required></textarea>
 											</form>
-											<button class="btn btn-success btn-block my-2" onclick="submitMessage()">Envoyer</button>
+											<button id="msgBtn" class="btn btn-success btn-block my-2" onclick="submitMessage()">Envoyer</button>
 										</div>
 									{% else %}
 										<a href="{{ path('app_login') }}" class="btn btn-success btn-block text-white">
@@ -636,14 +636,20 @@ let value = document.querySelector("#messageForm textarea").value
 if (value == '') {
 swal({title: "Message vide", text: "Veuillez entrer votre message", icon: "info"})
 } else {
+document.getElementById("msgBtn").disabled = true;
 $.ajax({
 url: "{{ path('messages_new', {'id': offer.id}) }}",
 type: 'POST',
 data: {
 message: value
 },
+beforeSend: function() {
+	document.getElementById("loader").classList.remove('d-none');
+},
 success: function () {
+document.getElementById("loader").classList.add('d-none');
 swal({title: "Message envoyé", icon: "success"})
+document.getElementById("msgBtn").disabled = false;
 document.getElementById("message").value = ''
 },
 error: function () {

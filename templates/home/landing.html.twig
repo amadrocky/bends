@@ -246,7 +246,11 @@ data: landingContactForm,
 cache: false,
 contentType: false,
 processData: false,
+beforeSend: function() {
+	document.getElementById("loader").classList.remove('d-none');
+},
 success: function () {
+	document.getElementById("loader").classList.add('d-none');
 	formName.value = '';
 	formEmail.value = '';
 	formMessage.value = '';
