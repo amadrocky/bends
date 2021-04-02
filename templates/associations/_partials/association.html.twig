@@ -1,4 +1,4 @@
-<a href="{{ path('associations_show', {'id': association.id}) }}" class="d-flex col-12 col-md-5 py-4 m-2 associationCard noDecorationLink">
+<a href="{{ path('associations_show', {'id': association.id}) }}" class="d-flex py-4 m-2 associationCard noDecorationLink">
 	<div class="blocImageAssociation">
 		{% if association.picture %}
 			<img src="{{ asset('build/images/associations/') }}{{ association.picture }}" alt="image" class="associationImage box-shadow">

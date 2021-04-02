@@ -79,14 +79,15 @@
                 {% else %}
                     <a href="{{ path('messages_index') }}" class="lightLink"><p><i class="far fa-envelope"></i> Messages</p></a>
                 {% endif %}
+                <a href="{{ path('actuality') }}" class="noDecorationLink"><p class="mb-0"><em class="bnds">Bends</em> <em class="cmnty">Actuality</em></p></a>
                 {% if app.user %}
-                    <h4 class="text-right noDecorationLink cursorPointer mx-2" onclick="confirm()">Se déconnecter</h4>
+                    <h4 class="text-right noDecorationLink cursorPointer mx-2 mb-1" onclick="confirm()">Se déconnecter</h4>
                 {% else %}
                     <a href="{{ path('app_login') }}" class="noDecorationLink"><h4 class="text-right mx-2">Se
                             connecter</h4>
                     </a>
                 {% endif %}
-                <h3 class="text-center cursorPointer" onclick="backToLanding()">Bends</h3>
+                <h3 class="text-center cursorPointer mt-1" onclick="backToLanding()">Bends</h3>
             </nav>
         </div>
     </div>

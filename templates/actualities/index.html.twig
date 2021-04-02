@@ -1,0 +1,116 @@
+{% extends 'layout.html.twig' %}
+
+{% block favicon %}
+	<link rel="icon" href="{{ asset('build/icons/favicon.png') }}"/>
+{% endblock %}
+
+{% block title %}Bends actuality
+{% endblock %}
+
+{% block header %}
+	<div class="fixed-top">
+		<div id="nav" class="row headBar anim m-0">
+			<div class="col col-md-4 my-auto">
+				<a href="{{ path('home') }}" class="noDecorationLink">
+					<img class="menuButton" src="{{ asset('build/icons/violetBtn.png') }}" alt="bouton appli">
+				</a>
+			</div>
+			<div class="col-6 col-md-4 my-auto">
+				<a href="{{ path('actuality') }}" class="noDecorationLink">
+					<h1 class="text-center actu-title">Bends
+						<em class="cmnty-actu">actuality</em>
+					</h1>
+				</a>
+			</div>
+			<div class="col col-md-4 my-auto text-right">
+				<a href="{{ path('profil_index') }}">
+					<img class="menuButton rounded-circle" src="/build/images/profil/{{ user.profilImage }}" alt="Avatar">
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block body %}
+	<div class="actuSection">
+		<div class="row justify-content-around p-3 w-100 m-0">
+			<div class="col col-lg-7 loginBlock h-100 p-2">
+				{% for article in articles %}
+					{% include 'actualities/_partials/article.html.twig' %}
+				{% endfor %}
+			</div>
+			<div class="col col-lg-4 h-100 d-none d-md-block">
+				<div class="row">
+					<div class="col-12 loginBlock p-2 mb-3">
+						<h3 class="cmnty mb-2">Dernières annonces</h3>
+						{% for offer in lastOffers %}
+							{% include 'offers/_partials/offer.html.twig' %}
+						{% else %}
+							<div class="col-12">
+								<p class="alert alert-primary box-shadow">
+									Aucune annonce disponible. Déposez la votre
+									<a href="{{ path('offers_new') }}">ici</a>.
+								</p>
+							</div>
+						{% endfor %}
+					</div>
+					<div class="col-12 loginBlock p-2">
+						<h3 class="cmnty mb-2">Dernières associations</h3>
+						<div class="px-5">
+							{% for association in lastAssociations %}
+								{% include 'associations/_partials/association.html.twig' %}
+							{% else %}
+								<div class="col-12">
+									<p class="alert alert-primary box-shadow">
+										Aucune association disponible. Créez la votre
+										<a href="{{ path('associations_new') }}">ici</a>.
+									</p>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 mt-2 d-flex justify-content-center">
+				<div>
+					{{ knp_pagination_render(articles) }}
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="bg-dark p-5">
+		<div class="row w-100 m-0">
+			<div class="col-12 col-md-4 text-center">
+				<h3 class="bnds">Bends</h3>
+				<h6 class="cmnty">La communauté solidaire</h6>
+				<p>contact@bends.fr</p>
+			</div>
+			<div class="col-12 col-md-4 text-center">
+				<a href="{{ path('land') }}">
+					<p>Qui sommes-nous?</p>
+				</a>
+				<a href="{{ path('associations_home') }}">
+					<p>Éspace associations</p>
+				</a>
+				<a href="{{ path('actuality') }}">
+					<p>Actualités</p>
+				</a>
+			</div>
+			<div class="col-12 col-md-4 text-center">
+				<a href="">
+					<p>Mentions légales</p>
+				</a>
+				<a href="">
+					<p>Conditions générales d'utilisation</p>
+				</a>
+				<a href="">
+					<p>Faire un don</p>
+				</a>
+			</div>
+		</div>
+	</footer>
+
+	<script>
+		document.querySelector('#nav').classList.remove('anim');
+	</script>
+{% endblock %}

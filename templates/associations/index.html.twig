@@ -22,7 +22,9 @@
 						</div>
 					</div>
 					{% for association in associations %}
-						{% include 'associations/_partials/association.html.twig' %}
+						<div class="col-12 col-md-5">
+							{% include 'associations/_partials/association.html.twig' %}
+						</div>
 					{% else %}
 						<div class="col-12">
 							<p class="alert alert-primary box-shadow">

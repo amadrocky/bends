@@ -1,0 +1,14 @@
+<div class="actu-article p-3">
+	<h2 class="cmnty mb-3">{{ article.title }}</h2>
+	<div class="row h-100 m-0 justify-content-around">
+		<div class="col-12 col-md-6 mb-3 p-0 text-center w-100">
+			<img src="{{ asset('/build/images/actualities/') }}{{ article.image }}" class="actu-img" alt="image">
+		</div>
+		<div class="col-12 col-md-6 h-100 my-auto">
+			<p class="text-justify">{{ article.description }}</p>
+			<div class="text-center">
+				<a href="{{ article.link }}" class="actu-btn" target="_blank">Voir l'article</a>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,28 @@
+.actuSection {
+    padding-top: 120px !important;
+}
+
+.cmnty-actu {
+    font-family: 'Oswald', 'sans-serif';
+    color: $blue;
+    font-style: normal;
+}
+
+.actu-article {
+    background-color: white;
+    box-shadow: -1px 5px 5px -4px black;
+}
+
+.actu-img {
+    max-height: 20vw;
+    width: auto;
+}
+
+@media screen and (max-width: 414px) {
+    .actu-title {
+        font-size: 25px !important;
+    }
+    .actu-img {
+        max-height: 50vw;
+    }
+}
