@@ -1,0 +1,10 @@
+.adminSection {
+    padding-top: 100px !important;
+}
+
+.admin-menu-links p {
+    color: lightgrey;
+    &:hover {
+        color: white;
+    }
+}

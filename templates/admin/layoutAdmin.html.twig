@@ -1,0 +1,54 @@
+{% extends 'layout.html.twig' %}
+
+{% block favicon %}
+	<link rel="icon" href="{{ asset('build/icons/favicon.png') }}"/>
+{% endblock %}
+
+{% block title %}Bends admin
+{% endblock %}
+
+{% block header %}
+	<div class="fixed-top">
+		<div id="nav" class="row headBar anim m-0">
+			<div class="col col-md-4 my-auto">
+				<a href="{{ path('home') }}" class="noDecorationLink">
+					<img class="menuButton" src="{{ asset('build/icons/violetBtn.png') }}" alt="bouton appli">
+				</a>
+			</div>
+			<div class="col-6 col-md-4 my-auto">
+				<a href="{{ path('admin_home') }}" class="noDecorationLink">
+					<h1 class="text-center actu-title">Bends
+						<em class="cmnty-actu">admin</em>
+					</h1>
+				</a>
+			</div>
+			<div class="col col-md-4 my-auto text-right">
+				<a href="{{ path('profil_index') }}">
+					<img class="menuButton rounded-circle" src="/build/images/profil/{{ user.profilImage }}" alt="Avatar">
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block body %}
+    <div class="adminSection h-100">
+		<div class="row h-100 w-100 m-0">
+			<div class="col-3 bg-dark text-center p-4 admin-menu-links">
+				<a href="" class="noDecorationLink"><p>Dashboard</p></a>
+				<a href="" class="noDecorationLink"><p>Offres</p></a>
+				<a href="" class="noDecorationLink"><p>Utilisateurs</p></a>
+				<a href="" class="noDecorationLink"><p>Associations</p></a>
+				<a href="" class="noDecorationLink"><p>Articles</p></a>
+				<a href="" class="noDecorationLink"><p>Messages</p></a>
+			</div>
+			<div class="col bg-white">
+				{% block content %}{% endblock %}
+			</div>
+		</div>
+	</div>
+
+    <script>
+		document.querySelector('#nav').classList.remove('anim');
+    </script>
+{% endblock %}
