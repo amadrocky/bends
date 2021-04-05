@@ -11,10 +11,13 @@ use App\Repository\ArticlesRepository;
 use App\Repository\OffersRepository;
 use App\Repository\AssociationsRepository;
 
+/**
+ * @Route("/actuality", name="actuality_")
+ */
 class ActualitiesController extends AbstractController
 {
     /**
-     * @Route("/actuality", name="actuality")
+     * @Route("/", name="home")
      *
      * @param Request $request
      * @param ArticlesRepository $articlesRepository
@@ -46,5 +49,24 @@ class ActualitiesController extends AbstractController
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day')
         ]);
+    }
+
+    /**
+     * @Route("/addClick/{id}", name="add_click", requirements={"id":"\d+"}, methods={"POST"})
+     *
+     * @param integer $id
+     * @param ArticlesRepository $articlesRepository
+     * @return Response
+     */
+    public function addClick(int $id, ArticlesRepository $articlesRepository): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $article = $articlesRepository->find($id);
+
+        $article->setClicks($article->getClicks() + 1);
+        $em->persist($article);
+        $em->flush();
+
+        return $this->json(['article' => $article->getId()]);
     }
 }

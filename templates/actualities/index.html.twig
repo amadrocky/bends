@@ -16,7 +16,7 @@
 				</a>
 			</div>
 			<div class="col-6 col-md-4 my-auto">
-				<a href="{{ path('actuality') }}" class="noDecorationLink">
+				<a href="{{ path('actuality_home') }}" class="noDecorationLink">
 					<h1 class="text-center actu-title">Bends
 						<em class="cmnty-actu">actuality</em>
 					</h1>
@@ -92,7 +92,7 @@
 				<a href="{{ path('associations_home') }}">
 					<p>Éspace associations</p>
 				</a>
-				<a href="{{ path('actuality') }}">
+				<a href="{{ path('actuality_home') }}">
 					<p>Actualités</p>
 				</a>
 			</div>
@@ -112,5 +112,15 @@
 
 	<script>
 		document.querySelector('#nav').classList.remove('anim');
+
+function addClick(value) {
+$.ajax({
+url: "/actuality/addClick/" + value,
+type: 'POST',
+error: function () {
+alert('error')
+}
+})
+}
 	</script>
 {% endblock %}
