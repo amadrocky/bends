@@ -65,19 +65,19 @@
                 </button>
             </form>
             <nav>
-                <a href="{{ path('offers_new') }}" class="lightLink"><p><i class="fas fa-plus-circle"></i> Déposer une
+                <a href="{{ path('offers_new') }}" class="lightLink"><p class="mb-2"><i class="fas fa-plus-circle"></i> Déposer une
                         annonce</p></a>
-                <a href="{{ path('offers_index') }}" class="lightLink"><p><i class="fas fa-eye"></i> Consulter les
+                <a href="{{ path('offers_index') }}" class="lightLink"><p class="mb-2"><i class="fas fa-eye"></i> Consulter les
                         annonces</p></a>
-                <a href="{{ path('associations_home') }}" class="lightLink"><p><i class="fas fa-hands-helping"></i> Espace associations</p></a>
+                <a href="{{ path('associations_home') }}" class="lightLink"><p class="mb-2"><i class="fas fa-hands-helping"></i> Espace associations</p></a>
                 <h4 class="mx-2">Mon éspace</h4>
-                <a href="{{ path('profil_index') }}" class="lightLink"><p><i class="fas fa-user-circle"></i> Profil</p></a>
-                <a href="{{ path('offers_lastResearches') }}" class="lightLink"><p><i class="fas fa-search"></i> Recherches</p></a>
-                <a href="{{ path('favorites') }}" class="lightLink"><p><i class="far fa-star"></i> Favoris</p></a>
+                <a href="{{ path('profil_index') }}" class="lightLink"><p class="mb-2"><i class="fas fa-user-circle"></i> Profil</p></a>
+                <a href="{{ path('offers_lastResearches') }}" class="lightLink"><p class="mb-2"><i class="fas fa-search"></i> Recherches</p></a>
+                <a href="{{ path('favorites') }}" class="lightLink"><p class="mb-2"><i class="far fa-star"></i> Favoris</p></a>
                 {% if messages > 0 %}
-                    <a href="{{ path('messages_index') }}" class="lightLink"><p><i class="far fa-envelope"></i> Messages <span class="notification-number">{{ messages }}</span></p></a>
+                    <a href="{{ path('messages_index') }}" class="lightLink"><p class="mb-2"><i class="far fa-envelope"></i> Messages <span class="notification-number">{{ messages }}</span></p></a>
                 {% else %}
-                    <a href="{{ path('messages_index') }}" class="lightLink"><p><i class="far fa-envelope"></i> Messages</p></a>
+                    <a href="{{ path('messages_index') }}" class="lightLink"><p class="mb-2"><i class="far fa-envelope"></i> Messages</p></a>
                 {% endif %}
                 <a href="{{ path('actuality_home') }}" class="noDecorationLink"><p class="mb-0"><em class="bnds">Bends</em> <em class="cmnty">Actuality</em></p></a>
                 {% if app.user %}
