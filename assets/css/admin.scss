@@ -2,9 +2,19 @@
     padding-top: 100px !important;
 }
 
-.admin-menu-links p {
-    color: lightgrey;
-    &:hover {
-        color: white;
+.admin-menu-links {
+    a {
+        display: block;
+        padding: 20px 10px;
+        &:hover {
+            background-color: darken($color: lightgrey, $amount: 50);
+        }
+    }
+    p {
+        color: lightgrey;
+        margin: 0;
+        &:hover {
+            color: white;
+        }
     }
 }
