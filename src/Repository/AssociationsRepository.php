@@ -78,6 +78,28 @@ class AssociationsRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * Associations by period
+     *
+     * @param \DateTime $start_date
+     * @param \DateTime $end_date
+     * @return array
+     */
+    public function findByPeriod(\DateTime $start_date, \DateTime $end_date): array
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.createdAt >= :start_date AND o.createdAt <= :end_date')
+            ->andWhere('o.workflowState = :workflow_state')
+            ->setParameters([
+                'workflow_state' => 'active',
+                'start_date' => $start_date,
+                'end_date' => $end_date
+                ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Associations[] Returns an array of Associations objects
     //  */

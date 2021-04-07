@@ -36,6 +36,28 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    /**
+     * Users by period
+     *
+     * @param \DateTime $start_date
+     * @param \DateTime $end_date
+     * @return array
+     */
+    public function findByPeriod(\DateTime $start_date, \DateTime $end_date): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.createdAt >= :start_date AND u.createdAt <= :end_date')
+            ->andWhere('u.workflowState IN (:workflow_state)')
+            ->setParameters([
+                'workflow_state' => ['created', 'active'],
+                'start_date' => $start_date,
+                'end_date' => $end_date
+                ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

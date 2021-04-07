@@ -6,6 +6,7 @@ use App\Entity\Offers;
 use App\Entity\Associations;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DateTime;
 
 /**
  * @method Offers|null find($id, $lockMode = null, $lockVersion = null)
@@ -100,6 +101,48 @@ class OffersRepository extends ServiceEntityRepository
             ->distinct()
             ->orderBy('o.createdAt', 'DESC')
             ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Offers by period
+     *
+     * @param \DateTime $start_date
+     * @param \DateTime $end_date
+     * @return array
+     */
+    public function findByPeriod(\DateTime $start_date, \DateTime $end_date): array
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.createdAt >= :start_date AND o.createdAt <= :end_date')
+            ->andWhere('o.workflowState = :workflow_state')
+            ->setParameters([
+                'workflow_state' => 'created',
+                'start_date' => $start_date,
+                'end_date' => $end_date
+                ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Get the top five of offers by categories
+     *
+     * @return array
+     */
+    public function getByCategories(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->select('COUNT(o.id) as nbOffers', 'IDENTITY(o.category) as category_id', 'c.name as category_name')
+            ->innerJoin('o.category', 'c')
+            ->where('o.workflowState = :workflow_state')
+            ->setParameter('workflow_state', 'created')
+            ->groupBy('category_id')
+            ->orderBy('nbOffers', 'DESC')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult()
         ;

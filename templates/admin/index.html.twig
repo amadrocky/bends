@@ -1,5 +1,248 @@
 {% extends 'admin/layoutAdmin.html.twig' %}
 
 {% block content %}
-	
+	<div class="row admin-indicators px-3 py-1">
+		<div class="col p-3">
+			<div class="admin-number p-3">
+				<div>
+					<b>{{ countOffers }}{% if offersDatas['trend'] == 'up' %}
+						<i class="fas fa-arrow-up text-success"></i> 
+					{% elseif offersDatas['trend'] == 'down' %}
+						<i class="fas fa-arrow-down text-danger"></i> 
+					{% else %}
+						<i class="fas fa-equals text-secondary"></i>
+					{% endif %}</b>
+				</div>
+				<h4 class="cmnty">Annonces</h4>
+			</div>
+		</div>
+		<div class="col p-3">
+			<div class="admin-number p-3">
+				<div>
+					<b>{{ countUsers }}{% if usersDatas['trend'] == 'up' %}
+						<i class="fas fa-arrow-up text-success"></i> 
+					{% elseif usersDatas['trend'] == 'down' %}
+						<i class="fas fa-arrow-down text-danger"></i> 
+					{% else %}
+						<i class="fas fa-equals text-secondary"></i>
+					{% endif %}</b>
+				</div>
+				<h4 class="cmnty">Utilisateurs</h4>
+			</div>
+		</div>
+		<div class="col p-3">
+			<div class="admin-number p-3">
+				<div>
+					<b>{{ countAsso }}{% if associationsDatas['trend'] == 'up' %}
+						<i class="fas fa-arrow-up text-success"></i> 
+					{% elseif associationsDatas['trend'] == 'down' %}
+						<i class="fas fa-arrow-down text-danger"></i> 
+					{% else %}
+						<i class="fas fa-equals text-secondary"></i>
+					{% endif %}</b>
+				</div>
+				<h4 class="cmnty">Associations</h4>
+			</div>
+		</div>
+	</div>
+
+	<div class="row px-3 py-1">
+		<div class="col-6 p-3">
+			<div class="chartZone p-2">
+				<canvas id="offersChart"></canvas>
+			</div>
+		</div>
+		<div class="col-6 p-3">
+			<div class="chartZone p-2">
+				<canvas id="usersChart"></canvas>
+			</div>
+		</div>
+		<div class="col-6 p-3">
+			<div class="chartZone p-2">
+				<canvas id="assoChart"></canvas>
+			</div>
+		</div>
+		<div class="col-6 p-3">
+			<div class="chartZone p-2">
+				<canvas id="catChart"></canvas>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		var ctx = document.getElementById('offersChart');
+		var offersChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: [
+					{% for key in offersDatas['datas']|keys %}
+						'{{ key }}',
+					{% endfor %}
+				],
+				datasets: [{
+					data: [
+						{% for offer in offersDatas['datas'] %}
+							{{ offer }},
+						{% endfor %}
+					],
+					backgroundColor: [
+						{% for offer in offersDatas['datas'] %}
+							'rgb(63, 81, 181)',
+						{% endfor %}
+					]
+				}]
+			},
+			options: {
+				responsive: true,
+				plugins: {
+					title: {
+						display: true,
+						text: 'Total des offres de la semaine'
+					},
+					legend: {
+						display: false,
+					}
+				},
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+
+		var ctx = document.getElementById('usersChart');
+		var usersChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: [
+					{% for key in usersDatas['datas']|keys %}
+						'{{ key }}',
+					{% endfor %}
+				],
+				datasets: [{
+					data: [
+						{% for user in usersDatas['datas'] %}
+							{{ user }},
+						{% endfor %}
+					],
+					backgroundColor: [
+						{% for user in usersDatas['datas'] %}
+							'rgb(63, 81, 181)',
+						{% endfor %}
+					],
+					borderColor: 'rgba(96, 125, 139, 0.4)',
+				}]
+			},
+			options: {
+				responsive: true,
+				plugins: {
+					title: {
+						display: true,
+						text: 'Total des utilisateurs de la semaine'
+					},
+					legend: {
+						display: false,
+					}
+				},
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+
+		var ctx = document.getElementById('assoChart');
+		var assoChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: [
+					{% for key in associationsDatas['datas']|keys %}
+						'{{ key }}',
+					{% endfor %}
+				],
+				datasets: [{
+					data: [
+						{% for asso in associationsDatas['datas'] %}
+							{{ asso }},
+						{% endfor %}
+					],
+					backgroundColor: [
+						{% for asso in associationsDatas['datas'] %}
+							'rgb(63, 81, 181)',
+						{% endfor %}
+					]
+				}]
+			},
+			options: {
+				showLine: false,
+				responsive: true,
+				plugins: {
+					title: {
+						display: true,
+						text: 'Total des associations de la semaine'
+					},
+					legend: {
+						display: false,
+					}
+				},
+				elements: {
+					line: {
+						showLine: false
+					}
+				},
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+
+		var ctx = document.getElementById('catChart');
+		var catChart = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				labels: [
+					{% for cat in categoriesDatas %}
+						'{{ cat['category_name'] }}',
+					{% endfor %}
+				],
+				datasets: [{
+					data: [
+						{% for cat in categoriesDatas %}
+							{{ cat['nbOffers'] }} * 100 / {{ total }},
+						{% endfor %}
+					],
+					backgroundColor: [
+						'rgb(63, 81, 181)',
+						'rgb(255, 99, 132)',
+						'rgb(54, 162, 235)',
+						'rgb(255, 206, 86)',
+						'rgb(75, 192, 192)'
+					]
+				}]
+			},
+			options: {
+				responsive: true,
+				plugins: {
+					title: {
+						display: true,
+						text: 'Top 5 catégories'
+					},
+					legend: {
+						display: true,
+						position: 'bottom'
+					}
+				},
+				scales: {
+					y: {
+						beginAtZero: true,
+						display: false
+					}
+				}
+			}
+		});
+	</script>
 {% endblock %}

@@ -18,3 +18,22 @@
         }
     }
 }
+
+.admin-indicators {
+    .admin-number {
+        border: 1px solid $violet;
+        border-radius: 5px;
+        text-align: center;
+    }
+    b {
+        font-size: 30px;
+    }
+}
+
+.chartZone {
+    border: 1px solid $violet;
+    border-radius: 5px;
+    canvas {
+        max-height: 250px;
+    }
+}
