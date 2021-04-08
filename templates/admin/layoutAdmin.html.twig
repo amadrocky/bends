@@ -33,16 +33,18 @@
 
 {% block body %}
     <div class="adminSection h-100">
-		<div class="row h-100 w-100 m-0">
-			<div class="col-2 bg-dark py-4 px-0 admin-menu-links">
+		<div class="d-flex h-100 w-100 m-0 position-fixed">
+			<div class="bg-dark py-4 px-0 admin-menu-links">
 				<a href="{{ path('admin_home') }}" class="noDecorationLink"><p><i class="fas fa-tachometer-alt"></i> Dashboard</p></a>
-				<a href="" class="noDecorationLink"><p><i class="fas fa-newspaper"></i> Offres</p></a>
+				<a href="" class="noDecorationLink"><p><i class="fas fa-check-square"></i> Validations</p></a>
+				<a href="{{ path('admin_offers') }}" class="noDecorationLink"><p><i class="fas fa-newspaper"></i> Offres</p></a>
 				<a href="" class="noDecorationLink"><p><i class="fas fa-user-friends"></i> Utilisateurs</p></a>
 				<a href="" class="noDecorationLink"><p><i class="fas fa-building"></i> Associations</p></a>
 				<a href="" class="noDecorationLink"><p><i class="fas fa-at"></i> Articles</p></a>
 				<a href="" class="noDecorationLink"><p><i class="fas fa-envelope"></i> Messages</p></a>
+				<a href="" class="noDecorationLink"><p><i class="fas fa-exclamation-triangle"></i> Signalements</p></a>
 			</div>
-			<div class="col bg-white">
+			<div class="bg-white w-100 overflow-auto">
 				{% block content %}{% endblock %}
 			</div>
 		</div>

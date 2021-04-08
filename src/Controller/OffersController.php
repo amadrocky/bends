@@ -45,7 +45,7 @@ class OffersController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository, CacheInterface $cache): Response
     {
-        $datas = $offersRepository->findBy(['workflowState' => 'created'], ['createdAt' => 'DESC']);
+        $datas = $offersRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC']);
 
         if(isset($_GET['search'])) {
             $search = $_GET['search'];

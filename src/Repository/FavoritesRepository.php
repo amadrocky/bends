@@ -32,11 +32,12 @@ class FavoritesRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('f')
             ->innerJoin('f.offer', 'o')
             ->where('f.user = :user')
-            ->andWhere('o.workflowState = :workflow_state')
-            ->andWhere('f.workflowState = :workflow_state')
+            ->andWhere('o.workflowState = :workflow_state_offer')
+            ->andWhere('f.workflowState = :workflow_state_favorite')
             ->setParameters([
                 'user' => $user,
-                'workflow_state' => 'created'
+                'workflow_state_offer' => 'active',
+                'workflow_state_favorite' => 'created'
                 ])
             ->orderBy('f.id', 'DESC')
             ->getQuery()

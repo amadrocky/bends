@@ -78,7 +78,7 @@ class OffersRepository extends ServiceEntityRepository
             ->innerJoin(Associations::class, 'a')
             ->where('o.createdBy = a.createdBy')
             ->andWhere('o.workflowState = :workflow_state')
-            ->setParameter('workflow_state', 'created')
+            ->setParameter('workflow_state', 'active')
             ->orderBy('o.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
@@ -97,7 +97,7 @@ class OffersRepository extends ServiceEntityRepository
             ->innerJoin('o.createdBy', 'user')
             ->where('user = :association')
             ->andWhere('o.workflowState = :workflow_state')
-            ->setParameters(['workflow_state' => 'created', 'association' => $association->getCreatedBy()])
+            ->setParameters(['workflow_state' => 'active', 'association' => $association->getCreatedBy()])
             ->distinct()
             ->orderBy('o.createdAt', 'DESC')
             ->setMaxResults(3)
@@ -119,7 +119,7 @@ class OffersRepository extends ServiceEntityRepository
             ->where('o.createdAt >= :start_date AND o.createdAt <= :end_date')
             ->andWhere('o.workflowState = :workflow_state')
             ->setParameters([
-                'workflow_state' => 'created',
+                'workflow_state' => 'active',
                 'start_date' => $start_date,
                 'end_date' => $end_date
                 ])
@@ -139,7 +139,7 @@ class OffersRepository extends ServiceEntityRepository
             ->select('COUNT(o.id) as nbOffers', 'IDENTITY(o.category) as category_id', 'c.name as category_name')
             ->innerJoin('o.category', 'c')
             ->where('o.workflowState = :workflow_state')
-            ->setParameter('workflow_state', 'created')
+            ->setParameter('workflow_state', 'active')
             ->groupBy('category_id')
             ->orderBy('nbOffers', 'DESC')
             ->setMaxResults(5)

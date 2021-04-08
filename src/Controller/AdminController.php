@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Offers;
 use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
 use App\Repository\AssociationsRepository;
@@ -44,6 +45,36 @@ class AdminController extends AbstractController
             'associationsDatas' => $associationsDatas,
             'categoriesDatas' => $categoriesDatas,
             'total' => $total
+        ]);
+    }
+
+    /**
+     * @Route("/offers", name="offers")
+     *
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function adminOffers(OffersRepository $offersRepository): Response
+    {
+        return $this->render('admin/offers/index.html.twig', [
+            'user' => $this->getUser(),
+            'allOffers' => $offersRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC'])
+        ]);
+    }
+
+    /**
+     * @Route("/offers/{id}", name="offers_show", requirements={"id":"\d+"})
+     *
+     * @param Offers $offer
+     * @param AssociationsRepository $associationsRepository
+     * @return Response
+     */
+    public function adminOffersShow(Offers $offer, AssociationsRepository $associationsRepository): Response
+    {
+        return $this->render('admin/offers/show.html.twig', [
+            'user' => $this->getUser(),
+            'offer' => $offer,
+            'offerAssociation' => $associationsRepository->findByOffer($offer)
         ]);
     }
 
