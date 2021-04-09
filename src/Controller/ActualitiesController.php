@@ -38,7 +38,7 @@ class ActualitiesController extends AbstractController
             5// nombre d'éléments
         );
 
-        $lastOffers = array_slice($offersRepository->findBy(['workflowState' => 'created'], ['createdAt' => 'DESC']), 0, 3);
+        $lastOffers = array_slice($offersRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC']), 0, 3);
         $lastAssociations = array_slice($associationsRepository->findBy(['workflowState' => 'active'], ['modifiedAt' => 'DESC']), 0, 3);
 
         return $this->render('actualities/index.html.twig', [
