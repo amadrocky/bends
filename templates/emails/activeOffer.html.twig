@@ -1,0 +1,34 @@
+<p>Bonjour
+	{{ userFirstname }},</p>
+
+<br/>
+
+<p>Votre annonce est en ligne !</p>
+
+<br/>
+
+<p>Vous pouvez dès à présent :</p>
+
+<ul>
+	<li>Consulter votre annonce.</li>
+	<li>L'exporter au format PDF (avec un lien QR code vers la page de l'annonce).</li>
+</ul>
+
+<br/>
+
+<p>Pour toute information, n'hésitez pas à contacter notre équipe support.</p>
+
+<br/>
+
+<p>
+	À très bientôt sur
+	<a href="{{ url('land') }}" target="_blank">notre site</a>.
+</p>
+
+<br/>
+
+<p>L'équipe Bends !</p>
+
+<br/>
+
+{% include 'emails/_partials/footerEmail.html.twig' %}

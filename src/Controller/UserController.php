@@ -49,10 +49,6 @@ class UserController extends AbstractController
             }
 
             $session->set('cities', $cities);
-
-            if(isset($_POST['deleteFile'])) {
-                dd($_POST['deleteFile']);
-            }
         }
 
         return $this->render('user/profil.html.twig', [
@@ -60,7 +56,7 @@ class UserController extends AbstractController
             'messages' => $request->getSession()->get('messages'),
             'userAssociation' => $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0] : [],
             'cities' => $cities,
-            'userOffers' => $offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'created'], ['createdAt' => 'DESC'])
+            'userOffers' => $offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'], ['createdAt' => 'DESC'])
         ]);
     }
 

@@ -9,6 +9,7 @@ use App\Entity\Offers;
 use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
 use App\Repository\AssociationsRepository;
+use App\Service\MailerService;
 
 /**
  * * @Route("/admin", name="admin_")
@@ -37,7 +38,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/index.html.twig', [
             'user' => $this->getUser(),
-            'countOffers' => count($offersRepository->findByworkflowState('created')),
+            'countOffers' => count($offersRepository->findByworkflowState('active')),
             'countUsers' => count($userRepository->findAll()),
             'countAsso' => count($associationsRepository->findByworkflowState('active')),
             'offersDatas' => $offersDatas,
@@ -76,6 +77,40 @@ class AdminController extends AbstractController
             'offer' => $offer,
             'offerAssociation' => $associationsRepository->findByOffer($offer)
         ]);
+    }
+
+    /**
+     * @Route("/offers/{id}/action", name="offers_action", requirements={"id":"\d+"}, methods={"POST"})
+     *
+     * @param Offers $offer
+     * @return Response
+     */
+    public function offerAction(Offers $offer, MailerService $mailer): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $offer->setWorkflowState($_POST['action']);
+        $offer->setModifiedAt(new \DateTime());
+        $em->persist($offer);
+        $em->flush();
+
+        if ($_POST['action'] == 'active') {
+            $mailer->sendEmail(
+                $offer->getCreatedBy()->getFirstname(), 
+                $offer->getCreatedBy()->getEmail(),
+                'Votre annonce est en ligne !',
+                'emails/activeOffer.html.twig'
+            );
+        } else {
+            $mailer->sendEmail(
+                $offer->getCreatedBy()->getFirstname(), 
+                $offer->getCreatedBy()->getEmail(),
+                'Votre annonce',
+                'emails/inactiveOffer.html.twig'
+            );
+        }
+
+        return $this->json(['offer' => $offer->getId()]);
     }
 
     /**

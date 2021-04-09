@@ -1,0 +1,33 @@
+<p>Bonjour
+	{{ userFirstname }},</p>
+
+<br/>
+
+<p>Votre annonce à été désactivée ou non validée par nos équipes pour une des raisons suivantes:</p>
+
+<br/>
+
+<ul>
+	<li>Annonce à caractère commercial.</li>
+	<li>Annonce présentant des images ou du texte non validé par nos équipes.</li>
+	<li>Autre motif présent dans nos <a href="{{ url('land') }}" target="_blank">conditions générales d'utilisation</a>.</li>
+</ul>
+
+<br/>
+
+<p>Pour toute information, n'hésitez pas à contacter notre équipe support.</p>
+
+<br/>
+
+<p>
+	À très bientôt sur
+	<a href="{{ url('land') }}" target="_blank">notre site</a>.
+</p>
+
+<br/>
+
+<p>L'équipe Bends !</p>
+
+<br/>
+
+{% include 'emails/_partials/footerEmail.html.twig' %}

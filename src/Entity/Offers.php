@@ -101,6 +101,11 @@ class Offers
      */
     private $qrCode;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $modifiedAt;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -319,6 +324,18 @@ class Offers
     public function setQrCode(?string $qrCode): self
     {
         $this->qrCode = $qrCode;
+
+        return $this;
+    }
+
+    public function getModifiedAt(): ?\DateTimeInterface
+    {
+        return $this->modifiedAt;
+    }
+
+    public function setModifiedAt(?\DateTimeInterface $modifiedAt): self
+    {
+        $this->modifiedAt = $modifiedAt;
 
         return $this;
     }
