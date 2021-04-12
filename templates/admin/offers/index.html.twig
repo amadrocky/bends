@@ -33,24 +33,4 @@
 			</tbody>
 		</table>
 	</div>
-
-	{% verbatim %}
-		<div id="app"></div>
-	{% endverbatim %}
-
-	<script>
-		Vue.component('offer', {
-template: ``,
-props: [],
-methods: {}
-})
-
-var app = new Vue({
-el: "#app",
-data: {
-offers: {{ allOffers|json_encode }}
-},
-methods: {}
-})
-	</script>
 {% endblock %}

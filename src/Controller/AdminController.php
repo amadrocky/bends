@@ -83,6 +83,7 @@ class AdminController extends AbstractController
      * @Route("/offers/{id}/action", name="offers_action", requirements={"id":"\d+"}, methods={"POST"})
      *
      * @param Offers $offer
+     * @param MailerService $mailer
      * @return Response
      */
     public function offerAction(Offers $offer, MailerService $mailer): Response
@@ -111,6 +112,21 @@ class AdminController extends AbstractController
         }
 
         return $this->json(['offer' => $offer->getId()]);
+    }
+
+
+    /**
+     * @Route("/users", name="users")
+     *
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    public function adminUsers(UserRepository $userRepository): Response
+    {
+        return $this->render('admin/users/index.html.twig', [
+            'user' => $this->getUser(),
+            'users' => $userRepository->getUsersArray()
+        ]);
     }
 
     /**

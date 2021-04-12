@@ -38,13 +38,13 @@
 				<a href="{{ path('admin_home') }}" class="noDecorationLink"><p><i class="fas fa-tachometer-alt"></i> Dashboard</p></a>
 				<a href="" class="noDecorationLink"><p><i class="fas fa-check-square"></i> Validations</p></a>
 				<a href="{{ path('admin_offers') }}" class="noDecorationLink"><p><i class="fas fa-newspaper"></i> Offres</p></a>
-				<a href="" class="noDecorationLink"><p><i class="fas fa-user-friends"></i> Utilisateurs</p></a>
+				<a href="{{ path('admin_users') }}" class="noDecorationLink"><p><i class="fas fa-user-friends"></i> Utilisateurs</p></a>
 				<a href="" class="noDecorationLink"><p><i class="fas fa-building"></i> Associations</p></a>
 				<a href="" class="noDecorationLink"><p><i class="fas fa-at"></i> Articles</p></a>
 				<a href="" class="noDecorationLink"><p><i class="fas fa-envelope"></i> Messages</p></a>
 				<a href="" class="noDecorationLink"><p><i class="fas fa-exclamation-triangle"></i> Signalements</p></a>
 			</div>
-			<div class="bg-white w-100 overflow-auto">
+			<div class="bg-white w-100 overflow-auto admin-content">
 				{% block content %}{% endblock %}
 			</div>
 		</div>
