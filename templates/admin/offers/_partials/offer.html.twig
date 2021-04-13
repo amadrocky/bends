@@ -1,0 +1,31 @@
+<a href="{{ path('admin_offers_show', {'id': offer.id}) }}" class="noDecorationLink text-dark">
+	<div class="row w-100 m-0 bg-white box-shadow py-1 mb-2">
+		<div class="col">
+			{% if offer.pictures is not empty %}
+				<img src="{{ asset('/build/images/offers/') }}{{ offer.pictures[0] }}" class="miniature" alt="image">
+			{% else %}
+				<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature" alt="image">
+			{% endif %}
+		</div>
+		<div class="col d-flex flex-columns align-items-center">
+			<p class="m-0">{{ offer.title }}</p>
+		</div>
+		<div class="col d-flex flex-columns align-items-center">
+			{% if offer.type.id == 1 %}
+				<span class="card-badge badge-pill badge-primary text-white" style="font-size: 12px">
+					<b>Offre</b>
+				</span>
+			{% else %}
+				<span class="card-badge badge-pill badge-warning text-white" style="font-size: 12px">
+					<b>Demande</b>
+				</span>
+			{% endif %}
+		</div>
+		<div class="col d-flex flex-columns align-items-center">
+			<p class="m-0">{{ offer.city }}</p>
+		</div>
+		<div class="col d-flex flex-columns align-items-center">
+			<p class="m-0">{{ offer.createdAt|date('d/m/Y H:i') }}</p>
+		</div>
+	</div>
+</a>

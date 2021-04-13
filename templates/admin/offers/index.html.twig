@@ -2,35 +2,19 @@
 
 {% block content %}
 	<div class="p-3">
-		<table class="table table-striped table-hover table-sm">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Image</th>
-					<th>Titre</th>
-					<th>Type</th>
-					<th>Ville</th>
-					<th>Date</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for offer in allOffers %}
-					<tr class="cursorPointer" onclick="window.location.href='/admin/offers/{{ offer.id }}'">
-						<th>{{ offer.id }}</th>
-						<td>
-							{% if offer.pictures is not empty %}
-								<img src="{{ asset('/build/images/offers/') }}{{ offer.pictures[0] }}" class="miniature" alt="image">
-							{% else %}
-								<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature" alt="image">
-							{% endif %}
-						</td>
-						<td>{{ offer.title }}</td>
-						<td>{{ offer.type.name }}</td>
-						<td>{{ offer.city }}</td>
-						<td>{{ offer.createdAt|date('d-m-Y H:i') }}</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+		{% for offer in offers %}
+			{% include 'admin/offers/_partials/offer.html.twig' %}
+		{% else %}
+			<div>
+				<p class="alert alert-primary box-shadow">
+					Aucune annonce disponible.
+				</p>
+			</div>
+		{% endfor %}
+		<div class="row w-100 m-0 my-3 justify-content-center">
+			<div class="col d-flex justify-content-center">
+				{{ knp_pagination_render(offers) }}
+			</div>
+		</div>
 	</div>
 {% endblock %}

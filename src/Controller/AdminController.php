@@ -10,6 +10,8 @@ use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
 use App\Repository\AssociationsRepository;
 use App\Service\MailerService;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * * @Route("/admin", name="admin_")
@@ -52,14 +54,20 @@ class AdminController extends AbstractController
     /**
      * @Route("/offers", name="offers")
      *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminOffers(OffersRepository $offersRepository): Response
+    public function adminOffers(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository): Response
     {
+        $datas = $offersRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC']);
+
+        $offers = $paginator->paginate($datas, $request->query->getInt('page', 1), 20);
+
         return $this->render('admin/offers/index.html.twig', [
             'user' => $this->getUser(),
-            'allOffers' => $offersRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC'])
+            'offers' => $offers
         ]);
     }
 
