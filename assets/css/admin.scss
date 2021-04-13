@@ -47,3 +47,12 @@
     width: 150px;
     height: 150px;
 }
+
+.validation-number {
+    background-color: $success;
+    color: white;
+    border-radius: 100%;
+    padding: 0px 5px 3px 5px;
+    font-size: 15px;
+    box-shadow: -1px 5px 5px -4px black;
+}

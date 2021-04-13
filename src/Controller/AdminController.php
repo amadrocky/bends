@@ -44,6 +44,7 @@ class AdminController extends AbstractController
             'countOffers' => count($offersRepository->findByworkflowState('active')),
             'countUsers' => count($userRepository->findAll()),
             'countAsso' => count($associationsRepository->findByworkflowState('active')),
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
             'offersDatas' => $offersDatas,
             'usersDatas' => $usersDatas,
             'associationsDatas' => $associationsDatas,
@@ -68,7 +69,8 @@ class AdminController extends AbstractController
 
         return $this->render('admin/offers/index.html.twig', [
             'user' => $this->getUser(),
-            'offers' => $offers
+            'offers' => $offers,
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
         ]);
     }
 
@@ -88,7 +90,8 @@ class AdminController extends AbstractController
 
         return $this->render('admin/offers/validations.html.twig', [
             'user' => $this->getUser(),
-            'offers' => $offers
+            'offers' => $offers,
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
         ]);
     }
 
@@ -97,14 +100,16 @@ class AdminController extends AbstractController
      *
      * @param Offers $offer
      * @param AssociationsRepository $associationsRepository
+     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminOffersShow(Offers $offer, AssociationsRepository $associationsRepository): Response
+    public function adminOffersShow(Offers $offer, AssociationsRepository $associationsRepository, OffersRepository $offersRepository): Response
     {
         return $this->render('admin/offers/show.html.twig', [
             'user' => $this->getUser(),
             'offer' => $offer,
-            'offerAssociation' => $associationsRepository->findByOffer($offer)
+            'offerAssociation' => $associationsRepository->findByOffer($offer),
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
         ]);
     }
 
@@ -148,13 +153,15 @@ class AdminController extends AbstractController
      * @Route("/users", name="users")
      *
      * @param UserRepository $userRepository
+     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminUsers(UserRepository $userRepository): Response
+    public function adminUsers(UserRepository $userRepository, OffersRepository $offersRepository): Response
     {
         return $this->render('admin/users/index.html.twig', [
             'user' => $this->getUser(),
-            'users' => $userRepository->getUsersArray()
+            'users' => $userRepository->getUsersArray(),
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
         ]);
     }
 
@@ -172,7 +179,8 @@ class AdminController extends AbstractController
             'user' => $this->getUser(),
             'adminUser' => $adminUser,
             'userAssociation' => $associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'])[0] : [],
-            'userOffers' => $offersRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'], ['createdAt' => 'DESC'])
+            'userOffers' => $offersRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'], ['createdAt' => 'DESC']),
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
         ]);
     }
 
