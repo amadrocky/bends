@@ -185,6 +185,41 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/users/{id}/action", name="users_action", requirements={"id":"\d+"}, methods={"POST"})
+     *
+     * @param User $user
+     * @param MailerService $mailer
+     * @return Response
+     */
+    public function userAction(User $user, MailerService $mailer): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user->setWorkflowState($_POST['action']);
+        $user->setModifiedAt(new \DateTime());
+        $em->persist($user);
+        $em->flush();
+
+        if ($_POST['action'] == 'active') {
+            $mailer->sendEmail(
+                $user->getFirstname(), 
+                $user->getEmail(),
+                'Informations sur votre compte',
+                'emails/welcome.html.twig'
+            );
+        } else {
+            $mailer->sendEmail(
+                $user->getFirstname(), 
+                $user->getEmail(),
+                'Informations sur votre compte',
+                'emails/inactiveUser.html.twig'
+            );
+        }
+
+        return $this->json(['user' => $user->getId()]);
+    }
+
+    /**
      * Génère les datas pour le graphique de la semaine & la tendance
      *
      * @param [type] $repository
