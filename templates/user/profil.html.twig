@@ -145,7 +145,7 @@
 							</div>
 							<div class="row m-2 p-2 bloc-association">
 								<div class="col-12 col-md-3 text-center mb-3">
-									{% if userAssociation is null %}
+									{% if userAssociation.picture is null %}
 										<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="associationImage box-shadow" alt="image">
 									{% else %}
 										<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" class="associationImage box-shadow" alt="image">

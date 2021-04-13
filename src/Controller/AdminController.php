@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Offers;
+use App\Entity\User;
 use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
 use App\Repository\AssociationsRepository;
@@ -154,6 +155,24 @@ class AdminController extends AbstractController
         return $this->render('admin/users/index.html.twig', [
             'user' => $this->getUser(),
             'users' => $userRepository->getUsersArray()
+        ]);
+    }
+
+    /**
+     * @Route("/users/{id}", name="users_show", requirements={"id":"\d+"})
+     *
+     * @param User $user
+     * @param AssociationsRepository $associationsRepository
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function adminUsersShow(User $adminUser, AssociationsRepository $associationsRepository, OffersRepository $offersRepository): Response
+    {
+        return $this->render('admin/users/show.html.twig', [
+            'user' => $this->getUser(),
+            'adminUser' => $adminUser,
+            'userAssociation' => $associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'])[0] : [],
+            'userOffers' => $offersRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'], ['createdAt' => 'DESC'])
         ]);
     }
 

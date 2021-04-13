@@ -1,0 +1,78 @@
+{% extends 'admin/layoutAdmin.html.twig' %}
+
+{% block content %}
+	<div class="p-3">
+		<table class="table table-striped table-hover table-bordered mb-3">
+			<tr>
+				<td rowspan="8" class="text-center">
+					{% if adminUser.profilImage %}
+						<img class="adminProfilImage rounded-circle img-thumbnail" src="{{ asset('build/images/profil/') }}{{ adminUser.profilImage }}" alt="Avatar">
+					{% else %}
+						<img class="adminProfilImage rounded-circle img-thumbnail" src="{{ asset('build/icons/Avatar.png') }}" alt="Avatar">
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>Nom</th>
+				<td>{{ adminUser.lastname }}</td>
+			</tr>
+			<tr>
+				<th>Prénom</th>
+				<td>{{ adminUser.firstname }}</td>
+			</tr>
+			<tr>
+				<th>Sexe</th>
+				<td>{{ adminUser.gender }}</td>
+			</tr>
+			<tr>
+				<th>Age</th>
+				<td>{{ adminUser.getAge }}
+					({{ adminUser.dateOfBirth|date('d/m/Y') }})</td>
+			</tr>
+			<tr>
+				<th>Email</th>
+				<td>{{ adminUser.email }}</td>
+			</tr>
+			<tr>
+				<th>Pseudonyme</th>
+				<td>{{ adminUser.pseudonym }}</td>
+			</tr>
+			<tr>
+				<th>Membre depuis le</th>
+				<td>{{ adminUser.createdAt|date('d/m/Y') }}</td>
+			</tr>
+		</table>
+
+		{% if userAssociation is not empty %}
+			<div class="pl-5 mb-3">
+				<a href="" class="d-flex py-4 m-2 associationCard noDecorationLink">
+					<div class="blocImageAssociation">
+						{% if userAssociation.picture %}
+							<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" class="associationImage box-shadow">
+						{% else %}
+							<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="image" class="associationImage box-shadow">
+						{% endif %}
+					</div>
+					<div class="descriptionZone p-3">
+						<h3 class="cmnty">{{ userAssociation.name }}</h3>
+						{% if userAssociation.description|length > 60 %}
+							<p class="associationDescription text-dark">{{ userAssociation.description|slice(0, 60) ~ '...' }}</p>
+						{% else %}
+							<p class="associationDescription text-dark">{{ userAssociation.description }}</p>
+						{% endif %}
+						<p class="text-muted m-0">
+							<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
+							{{ userAssociation.city }}
+						</p>
+					</div>
+				</a>
+			</div>
+		{% endif %}
+
+		{% if userOffers|length > 0 %}
+			{% for offer in userOffers %}
+				{% include 'admin/offers/_partials/offer.html.twig' %}
+			{% endfor %}
+		{% endif %}
+	</div>
+{% endblock %}
