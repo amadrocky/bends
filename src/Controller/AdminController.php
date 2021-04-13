@@ -72,6 +72,26 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/offers/validations", name="offers_validations")
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function adminOffersToValidate(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository): Response
+    {
+        $datas = $offersRepository->findByWorkflowState('created');
+
+        $offers = $paginator->paginate($datas, $request->query->getInt('page', 1), 20);
+
+        return $this->render('admin/offers/validations.html.twig', [
+            'user' => $this->getUser(),
+            'offers' => $offers
+        ]);
+    }
+
+    /**
      * @Route("/offers/{id}", name="offers_show", requirements={"id":"\d+"})
      *
      * @param Offers $offer

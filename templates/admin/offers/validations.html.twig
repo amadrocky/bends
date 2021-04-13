@@ -1,0 +1,20 @@
+{% extends 'admin/layoutAdmin.html.twig' %}
+
+{% block content %}
+	<div class="p-3">
+		{% for offer in offers %}
+			{% include 'admin/offers/_partials/offer.html.twig' %}
+		{% else %}
+			<div>
+				<p class="alert alert-primary box-shadow">
+					Aucune annonce disponible.
+				</p>
+			</div>
+		{% endfor %}
+		<div class="row w-100 m-0 my-3 justify-content-center">
+			<div class="col d-flex justify-content-center">
+				{{ knp_pagination_render(offers) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
