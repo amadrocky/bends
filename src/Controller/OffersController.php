@@ -194,7 +194,7 @@ class OffersController extends AbstractController
             $entityManager->persist($offer);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Votre annonce a bien été enregistrée');
+            $this->addFlash('success', 'Votre annonce a bien été enregistrée. Vous receverez un email de confirmation une fois votre annonce publiée.');
 
             return $this->redirectToRoute('offers_index');
         }
