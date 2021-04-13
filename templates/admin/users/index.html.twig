@@ -6,7 +6,7 @@
             <div class="w-25 mb-3">
                 <input type="text" class="form-control" placeholder="Rechercher (email)" v-model="search">
             </div>
-			<div class="row w-100 m-0 bg-white box-shadow py-1 mb-2 cursorPointer" v-for="user in filteredUsers" :key="user.id" v-on:click="show(user.id)">
+			<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2 cursorPointer" v-for="user in filteredUsers" :key="user.id" v-on:click="show(user.id)">
 				<div class="col">
 					<img class="menuButton rounded-circle" :src="user.profilImage == null ? '/build/icons/Avatar.png' : '/build/images/profil/' + user.profilImage" alt="Avatar">
 				</div>

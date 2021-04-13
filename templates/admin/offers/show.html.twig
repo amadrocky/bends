@@ -151,6 +151,16 @@
 
 	<script>
 		function action(value) {
+			swal({
+title: "Êtes vous sûr(e)?",
+text: "Veuillez confirmer",
+icon: "warning",
+buttons: [
+"Annuler", "Confirmer"
+],
+dangerMode: false
+}).then((willDelete) => {
+if (willDelete) {
 $.ajax({
 url: '{{ path('admin_offers_action', {'id': offer.id}) }}',
 type: 'POST',
@@ -174,6 +184,10 @@ error: function () {
 alert('error')
 }
 })
+} else {
+swal("Action annulée");
+}
+});
 }
 
 try {
