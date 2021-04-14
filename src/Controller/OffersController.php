@@ -123,7 +123,7 @@ class OffersController extends AbstractController
         }
 
         if ($this->getUser()->getWorkflowState() !== 'active') {
-            $this->addFlash('info', 'Veuillez finaliser votre inscription en activant votre compte');
+            $this->addFlash('info', 'Veuillez activer votre compte');
             return $this->redirectToRoute('profil_index');
         }
 
@@ -236,7 +236,7 @@ class OffersController extends AbstractController
      */
     public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, AssociationsRepository $associationsRepository, FavoritesRepository $favoritesRepository, MailerService $mailer): Response
     {
-        if ($offer->getWorkflowState() === 'deleted') {
+        if ($offer->getWorkflowState() != 'active') {
             return $this->redirectToRoute('offers_deleted', ['id' => $offer->getId()]);
         }
 

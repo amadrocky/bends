@@ -32,298 +32,307 @@
 								</div>
 							</div>
 						{% endif %}
-						<div class="subtitleZone p-1 mb-3">
-							<h5 class="text-white m-0">Informations</h5>
-						</div>
-						<div class="row d-flex p-3">
-							<div class="col profil-info">
-								<p><em>Email:</em>
-									{{ user.email }}</p><hr/>
-								<p><em>Sexe:</em>
-									{{ user.gender }}</p><hr/>
-								<p><em>Age:</em>
-									{{ user.age }}</p><hr/>
-								<p>Membre depuis le
-									{{ user.createdAt|date('d/m/Y') }}</p>
+						{% if user.workflowState == 'inactive' %}
+							<div class="alert alert-danger box-shadow">
+								<i class="fas fa-info-circle"></i>
+								Votre compte est désactivé. Contactez nos équipes pour plus d'informations.
 							</div>
-							<div class="col col-md-2 p-2 d-flex flex-columns align-items-center">
-								<button type="button" class="btn btn-warning m-auto box-shadow" data-toggle="modal" data-target="#editProfilModal">
-									<i class="fas fa-user-edit"></i>
-								</button>
-							</div>
-						</div>
-
-						<!-- Modal edit profil -->
-						<div class="modal fade" id="editProfilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog modal-dialog-centered" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h2 class="loginTitle" id="exampleModalLabel">Mes informations</h2>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<div class="modal-body">
-										<form id="editProfilForm" class="form-style" action="{{ path('profil_edit', {'id': user.id}) }}" method="post" enctype="multipart/form-data">
-											<div class="subtitleZone p-1 mb-3">
-												<h5 class="text-white m-0">Informations</h5>
-											</div>
-											<input type="text" name="lastname" value="{{ user.lastname }}" class="form-control mb-2" placeholder="Nom" required>
-											<input type="text" name="firstname" value="{{ user.firstname }}" class="form-control mb-2" placeholder="Prénom" required>
-											<input type="text" name="pseudonym" value="{{ user.pseudonym }}" class="form-control mb-2" placeholder="Pseudonyme" required>
-											<input type="date" name="birthDate" value="{{ user.dateOfBirth|date('Y-m-d') }}" class="form-control" required>
-											<div class="mb-2">
-												<small class="text-muted">
-													<i class="fas fa-info-circle"></i>
-													Veuillez saisir votre date de naissance.
-												</small>
-											</div>
-											<input type="text" name="email" value="{{ user.email }}" class="form-control mb-2" placeholder="Email" required>
-											<select name="gender" id="gender" class="form-control mb-3">
-												<option value="M" {{ user.gender == 'M' ? 'selected' : '' }}>Homme</option>
-												<option value="F" {{ user.gender == 'F' ? 'selected' : '' }}>Femme</option>
-											</select>
-											<div class="subtitleZone p-1 mb-3">
-												<h5 class="text-white m-0">Image de profil</h5>
-											</div>
-											{% if user.profilImage %}
-												<img src="/build/images/profil/{{ user.profilImage }}" style="max-height: 150px" alt="Avatar">
-											{% endif %}
-											<label for="imgProfile" class="cursorPointer m-0 img-offers">
-												<i class="fas fa-camera"></i>
-												Nouvelle image</label>
-											<input id="imgProfile" name="imgProfile" type="file" accept="image/png, image/jpeg" onchange="loadFile('profileOutput')" hidden/>
-											<img id="profileOutput" class="input-photo my-1"/>
-											<div class="mb-2">
-												<small class="text-muted">
-													<i class="fas fa-info-circle"></i>
-													Ciquez sur l'icone pour séléctionner une nouvelle photo.
-												</small>
-											</div>
-											{% if user.profilImage %}
-												<input type="checkbox" id="deleteFile" name="deleteFile">
-												<label for="deleteFile" class="text-danger m-0">
-													<small>Supprimer l'image</small>
-												</label>
-												<div>
-													<small class="text-muted">
-														<i class="fas fa-info-circle"></i>
-														Cochez la case pour supprimer l'image.
-													</small>
-												</div>
-											{% endif %}
-											<div class="subtitleZone p-1 my-3">
-												<h5 class="text-white m-0">Mon compte</h5>
-											</div>
-										</form>
-										<form id="deleteUserForm" class="d-inline" action="{{ path('profil_delete', {'id': user.id}) }}" method="post">
-											<input type="hidden" name="_method" value="DELETE">
-											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-										</form>
-										<form id="editPassword" action="{{ path('recover') }}" method="post">
-											<input type="email" name="email" value="{{ user.email }}" hidden>
-										</form>
-										<button class="btn btn-primary btn-block" onclick="editPassword()">
-											<i class="fas fa-user-shield"></i>
-											Reinitialiser le mot de passe</button>
-										<button class="btn btn-outline-danger btn-sm btn-block my-2" onclick="confirmDeleteUser()">
-											<i class="fas fa-user-slash"></i>
-											Supprimer le compte</button>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-										<button type="button" class="btn btn-primary" onclick="submit('editProfilForm')">Enregistrer</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- End modal edit profil -->
-
-						{% if userAssociation is not empty %}
+						{% else %}
 							<div class="subtitleZone p-1 mb-3">
-								<h5 class="text-white m-0">Votre association</h5>
+								<h5 class="text-white m-0">Informations</h5>
 							</div>
-							<div class="row m-2 p-2 bloc-association">
-								<div class="col-12 col-md-3 text-center mb-3">
-									{% if userAssociation.picture is null %}
-										<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="associationImage box-shadow" alt="image">
-									{% else %}
-										<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" class="associationImage box-shadow" alt="image">
-									{% endif %}
-								</div>
-								<div class="col-12 col-md mx-2">
-									<h3 class="cmnty">{{ userAssociation.name }}</h3>
-									<p>{{ userAssociation.description|slice(0, 60) ~ '...' }}</p>
+							<div class="row d-flex p-3">
+								<div class="col profil-info">
 									<p>
-										<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
-										{{ userAssociation.city }},
-										{{ userAssociation.context }}</p>
+										<em>Email:</em>
+										{{ user.email }}</p><hr/>
+									<p>
+										<em>Sexe:</em>
+										{{ user.gender }}</p><hr/>
+									<p>
+										<em>Age:</em>
+										{{ user.age }}</p><hr/>
+									<p>Membre depuis le
+										{{ user.createdAt|date('d/m/Y') }}</p>
 								</div>
-								<div class="col-12 col-md-2 d-flex flex-columns align-items-center">
-									<button type="button" class="btn btn-warning m-auto box-shadow" data-toggle="modal" data-target="#editAssoModal">
-										<i class="fas fa-cog"></i>
+								<div class="col col-md-2 p-2 d-flex flex-columns align-items-center">
+									<button type="button" class="btn btn-warning m-auto box-shadow" data-toggle="modal" data-target="#editProfilModal">
+										<i class="fas fa-user-edit"></i>
 									</button>
 								</div>
 							</div>
 
-							<!-- Modal edit association -->
-							<div class="modal fade" id="editAssoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-								<div class="modal-dialog" role="document">
+							<!-- Modal edit profil -->
+							<div class="modal fade" id="editProfilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h2 class="loginTitle" id="exampleModalLabel">Mon association</h2>
+											<h2 class="loginTitle" id="exampleModalLabel">Mes informations</h2>
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												<span aria-hidden="true">&times;</span>
 											</button>
 										</div>
 										<div class="modal-body">
-											<form id="editForm" class="form-style" action="{{ path('associations_edit', {'id': userAssociation.id}) }}" method="post" enctype="multipart/form-data">
+											<form id="editProfilForm" class="form-style" action="{{ path('profil_edit', {'id': user.id}) }}" method="post" enctype="multipart/form-data">
 												<div class="subtitleZone p-1 mb-3">
 													<h5 class="text-white m-0">Informations</h5>
 												</div>
-												<input type="text" name="name" value="{{ userAssociation.name }}" class="form-control mb-2" placeholder="Nom" required>
-												<textarea name="description" id="" maxlength="255" class="form-control mb-2" placeholder="Description" required>{{ userAssociation.description }}</textarea>
-												{% if userAssociation.link is null %}
-													<input type="text" name="link" placeholder="Site internet (facultatif)" class="form-control mb-2">
-												{% else %}
-													<input type="text" name="link" value="{{ userAssociation.link }}" class="form-control mb-2" placeholder="Site internet (facultatif)">
-												{% endif %}
-												<div class="mb-3">
+												<input type="text" name="lastname" value="{{ user.lastname }}" class="form-control mb-2" placeholder="Nom" required>
+												<input type="text" name="firstname" value="{{ user.firstname }}" class="form-control mb-2" placeholder="Prénom" required>
+												<input type="text" name="pseudonym" value="{{ user.pseudonym }}" class="form-control mb-2" placeholder="Pseudonyme" required>
+												<input type="date" name="birthDate" value="{{ user.dateOfBirth|date('Y-m-d') }}" class="form-control" required>
+												<div class="mb-2">
 													<small class="text-muted">
 														<i class="fas fa-info-circle"></i>
-														Entrez vôtre lien au format absolu (ex: http://www.exemple.com).
+														Veuillez saisir votre date de naissance.
 													</small>
 												</div>
+												<input type="text" name="email" value="{{ user.email }}" class="form-control mb-2" placeholder="Email" required>
+												<select name="gender" id="gender" class="form-control mb-3">
+													<option value="M" {{ user.gender == 'M' ? 'selected' : '' }}>Homme</option>
+													<option value="F" {{ user.gender == 'F' ? 'selected' : '' }}>Femme</option>
+												</select>
 												<div class="subtitleZone p-1 mb-3">
-													<h5 class="text-white m-0">Image / Logo</h5>
+													<h5 class="text-white m-0">Image de profil</h5>
 												</div>
-												<div class="row p-3">
-													<div class="col-12 col-md mb-2">
-														{% if userAssociation is null %}
-															<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo" style="max-height: 100px">
-														{% else %}
-															<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" style="max-height: 100px">
-														{% endif %}
-													</div>
-													<div class="col-12 col-md mb-2">
-														<label for="img" class="cursorPointer m-0 img-offers">
-															<i class="fas fa-camera"></i>
-															Nouvelle image</label>
-														<input id="img" name="img" type="file" accept="image/png, image/jpeg" onchange="loadFile('output')" hidden/>
-														<img id="output" class="input-photo my-1"/>
-													</div>
-													<div class="col-12 p-0">
-														<small class="text-muted">
-															<i class="fas fa-info-circle"></i>
-															Ciquez sur l'icone pour séléctionner une nouvelle photo.
-														</small>
-													</div>
-												</div>
-												<div class="subtitleZone p-1 mb-3">
-													<h5 class="text-white m-0">Localisation</h5>
-												</div>
-												<p>
-													<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
-													{{ userAssociation.city }},
-													{{ userAssociation.context }}</p>
-												<div class="row">
-													<div class="col mb-1">
-														<input id="zip" name="zip" type="text" maxlength="5" onchange="setZipCode(this.value)" class="form-control" placeholder="Code postal" pattern="[0-9]{5}">
-													</div>
-													<div class="col">
-														<select name="filtered_cities" id="filteredCities" class="form-control">
-															{% for city in cities %}
-																<option value="{{ city.name }}">{{ city.name }}</option>
-															{% endfor %}
-														</select>
-													</div>
-													<div class="col-12 mb-3">
-														<small class="text-muted">
-															<i class="fas fa-info-circle"></i>
-															Entrez votre code postal pour sélectionner la ville parmi la liste proposée.
-														</small>
-													</div>
-												</div>
-												<div class="subtitleZone p-1 mb-3">
-													<h5 class="text-white m-0">Réseaux sociaux (facultatifs)</h5>
-												</div>
-												{% if userAssociation.facebooklink is null %}
-													<input type="text" class="form-control mb-2" name="facebookLink" value="http://www.facebook.com">
-												{% else %}
-													<input type="text" class="form-control mb-2" name="facebookLink" value="{{ userAssociation.facebooklink }}">
+												{% if user.profilImage %}
+													<img src="/build/images/profil/{{ user.profilImage }}" style="max-height: 150px" alt="Avatar">
 												{% endif %}
-												{% if userAssociation.twitterLink is null %}
-													<input type="text" class="form-control mb-2" name="twitterLink" value="http://www.twitter.com">
-												{% else %}
-													<input type="text" class="form-control mb-2" name="twitterLink" value="{{ userAssociation.twitterLink }}">
-												{% endif %}
-												{% if userAssociation.instagramLink is null %}
-													<input type="text" class="form-control mb-2" name="instagramLink" value="http://www.instagram.com">
-												{% else %}
-													<input type="text" class="form-control mb-2" name="instagramLink" value="{{ userAssociation.instagramLink }}">
-												{% endif %}
-												<div class="mb-3">
+												<label for="imgProfile" class="cursorPointer m-0 img-offers">
+													<i class="fas fa-camera"></i>
+													Nouvelle image</label>
+												<input id="imgProfile" name="imgProfile" type="file" accept="image/png, image/jpeg" onchange="loadFile('profileOutput')" hidden/>
+												<img id="profileOutput" class="input-photo my-1"/>
+												<div class="mb-2">
 													<small class="text-muted">
 														<i class="fas fa-info-circle"></i>
-														Entrez vos liens au format absolu (ex: http://www.exemple.com).
+														Ciquez sur l'icone pour séléctionner une nouvelle photo.
 													</small>
+												</div>
+												{% if user.profilImage %}
+													<input type="checkbox" id="deleteFile" name="deleteFile">
+													<label for="deleteFile" class="text-danger m-0">
+														<small>Supprimer l'image</small>
+													</label>
+													<div>
+														<small class="text-muted">
+															<i class="fas fa-info-circle"></i>
+															Cochez la case pour supprimer l'image.
+														</small>
+													</div>
+												{% endif %}
+												<div class="subtitleZone p-1 my-3">
+													<h5 class="text-white m-0">Mon compte</h5>
 												</div>
 											</form>
-											<form id="deleteForm" class="d-inline" method="post" action="{{ path('associations_delete', {'id': userAssociation.id}) }}">
+											<form id="deleteUserForm" class="d-inline" action="{{ path('profil_delete', {'id': user.id}) }}" method="post">
 												<input type="hidden" name="_method" value="DELETE">
-												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ userAssociation.id) }}">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
 											</form>
-											<button class="btn btn-outline-danger btn-sm btn-block" onclick="confirmDelete()">
-												<i class="far fa-trash-alt"></i>
-												Supprimer l'association</button>
+											<form id="editPassword" action="{{ path('recover') }}" method="post">
+												<input type="email" name="email" value="{{ user.email }}" hidden>
+											</form>
+											<button class="btn btn-primary btn-block" onclick="editPassword()">
+												<i class="fas fa-user-shield"></i>
+												Reinitialiser le mot de passe</button>
+											<button class="btn btn-outline-danger btn-sm btn-block my-2" onclick="confirmDeleteUser()">
+												<i class="fas fa-user-slash"></i>
+												Supprimer le compte</button>
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-											<button type="button" class="btn btn-primary" onclick="submit('editForm')">Enregistrer</button>
+											<button type="button" class="btn btn-primary" onclick="submit('editProfilForm')">Enregistrer</button>
 										</div>
 									</div>
 								</div>
 							</div>
-							<!-- End modal edit association -->
-						{% endif %}
+							<!-- End modal edit profil -->
 
-						{% if userOffers|length > 0 %}
-							<div class="subtitleZone p-1 my-3">
-								<h5 class="text-white m-0">Vos annonces</h5>
-							</div>
+							{% if userAssociation is not empty %}
+								<div class="subtitleZone p-1 mb-3">
+									<h5 class="text-white m-0">Votre association</h5>
+								</div>
+								<div class="row m-2 p-2 bloc-association">
+									<div class="col-12 col-md-3 text-center mb-3">
+										{% if userAssociation.picture is null %}
+											<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="associationImage box-shadow" alt="image">
+										{% else %}
+											<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" class="associationImage box-shadow" alt="image">
+										{% endif %}
+									</div>
+									<div class="col-12 col-md mx-2">
+										<h3 class="cmnty">{{ userAssociation.name }}</h3>
+										<p>{{ userAssociation.description|slice(0, 60) ~ '...' }}</p>
+										<p>
+											<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
+											{{ userAssociation.city }},
+											{{ userAssociation.context }}</p>
+									</div>
+									<div class="col-12 col-md-2 d-flex flex-columns align-items-center">
+										<button type="button" class="btn btn-warning m-auto box-shadow" data-toggle="modal" data-target="#editAssoModal">
+											<i class="fas fa-cog"></i>
+										</button>
+									</div>
+								</div>
 
-							{% for offer in userOffers %}
-								<div class="col-12 my-2 p-2 bg-white message-card">
-									<div class="d-flex">
-										<a href="{{ path('offers_show', {'id': offer.id}) }}" class="discussion-link d-flex w-100">
-											{% if offer.pictures is not empty %}
-												<img src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
-											{% else %}
-												<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
-											{% endif %}
-											<div class="pl-2">
-												<p class="message-user m-0">
-													{{ offer.title }}
-												</p>
-												<div class="message-preview">
-													<span class="text-muted">{{ offer.createdAt|date('d/m') }}</span>
-												</div>
+								<!-- Modal edit association -->
+								<div class="modal fade" id="editAssoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h2 class="loginTitle" id="exampleModalLabel">Mon association</h2>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
 											</div>
-										</a>
-										<div class="d-flex flex-columns align-items-center">
-											<form id="deleteOfferForm{{ offer.id }}" class="d-inline" method="post" action="{{ path('offers_delete', {'id': offer.id}) }}">
-												<input type="hidden" name="_method" value="DELETE">
-												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
-											</form>
-											<button class="btn btn-outline-danger" onclick="confirmDeleteOffer({{ offer.id }})">
-												<i class="far fa-trash-alt"></i>
-											</button>
+											<div class="modal-body">
+												<form id="editForm" class="form-style" action="{{ path('associations_edit', {'id': userAssociation.id}) }}" method="post" enctype="multipart/form-data">
+													<div class="subtitleZone p-1 mb-3">
+														<h5 class="text-white m-0">Informations</h5>
+													</div>
+													<input type="text" name="name" value="{{ userAssociation.name }}" class="form-control mb-2" placeholder="Nom" required>
+													<textarea name="description" id="" maxlength="255" class="form-control mb-2" placeholder="Description" required>{{ userAssociation.description }}</textarea>
+													{% if userAssociation.link is null %}
+														<input type="text" name="link" placeholder="Site internet (facultatif)" class="form-control mb-2">
+													{% else %}
+														<input type="text" name="link" value="{{ userAssociation.link }}" class="form-control mb-2" placeholder="Site internet (facultatif)">
+													{% endif %}
+													<div class="mb-3">
+														<small class="text-muted">
+															<i class="fas fa-info-circle"></i>
+															Entrez vôtre lien au format absolu (ex: http://www.exemple.com).
+														</small>
+													</div>
+													<div class="subtitleZone p-1 mb-3">
+														<h5 class="text-white m-0">Image / Logo</h5>
+													</div>
+													<div class="row p-3">
+														<div class="col-12 col-md mb-2">
+															{% if userAssociation is null %}
+																<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo" style="max-height: 100px">
+															{% else %}
+																<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" style="max-height: 100px">
+															{% endif %}
+														</div>
+														<div class="col-12 col-md mb-2">
+															<label for="img" class="cursorPointer m-0 img-offers">
+																<i class="fas fa-camera"></i>
+																Nouvelle image</label>
+															<input id="img" name="img" type="file" accept="image/png, image/jpeg" onchange="loadFile('output')" hidden/>
+															<img id="output" class="input-photo my-1"/>
+														</div>
+														<div class="col-12 p-0">
+															<small class="text-muted">
+																<i class="fas fa-info-circle"></i>
+																Ciquez sur l'icone pour séléctionner une nouvelle photo.
+															</small>
+														</div>
+													</div>
+													<div class="subtitleZone p-1 mb-3">
+														<h5 class="text-white m-0">Localisation</h5>
+													</div>
+													<p>
+														<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
+														{{ userAssociation.city }},
+														{{ userAssociation.context }}</p>
+													<div class="row">
+														<div class="col mb-1">
+															<input id="zip" name="zip" type="text" maxlength="5" onchange="setZipCode(this.value)" class="form-control" placeholder="Code postal" pattern="[0-9]{5}">
+														</div>
+														<div class="col">
+															<select name="filtered_cities" id="filteredCities" class="form-control">
+																{% for city in cities %}
+																	<option value="{{ city.name }}">{{ city.name }}</option>
+																{% endfor %}
+															</select>
+														</div>
+														<div class="col-12 mb-3">
+															<small class="text-muted">
+																<i class="fas fa-info-circle"></i>
+																Entrez votre code postal pour sélectionner la ville parmi la liste proposée.
+															</small>
+														</div>
+													</div>
+													<div class="subtitleZone p-1 mb-3">
+														<h5 class="text-white m-0">Réseaux sociaux (facultatifs)</h5>
+													</div>
+													{% if userAssociation.facebooklink is null %}
+														<input type="text" class="form-control mb-2" name="facebookLink" value="http://www.facebook.com">
+													{% else %}
+														<input type="text" class="form-control mb-2" name="facebookLink" value="{{ userAssociation.facebooklink }}">
+													{% endif %}
+													{% if userAssociation.twitterLink is null %}
+														<input type="text" class="form-control mb-2" name="twitterLink" value="http://www.twitter.com">
+													{% else %}
+														<input type="text" class="form-control mb-2" name="twitterLink" value="{{ userAssociation.twitterLink }}">
+													{% endif %}
+													{% if userAssociation.instagramLink is null %}
+														<input type="text" class="form-control mb-2" name="instagramLink" value="http://www.instagram.com">
+													{% else %}
+														<input type="text" class="form-control mb-2" name="instagramLink" value="{{ userAssociation.instagramLink }}">
+													{% endif %}
+													<div class="mb-3">
+														<small class="text-muted">
+															<i class="fas fa-info-circle"></i>
+															Entrez vos liens au format absolu (ex: http://www.exemple.com).
+														</small>
+													</div>
+												</form>
+												<form id="deleteForm" class="d-inline" method="post" action="{{ path('associations_delete', {'id': userAssociation.id}) }}">
+													<input type="hidden" name="_method" value="DELETE">
+													<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ userAssociation.id) }}">
+												</form>
+												<button class="btn btn-outline-danger btn-sm btn-block" onclick="confirmDelete()">
+													<i class="far fa-trash-alt"></i>
+													Supprimer l'association</button>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+												<button type="button" class="btn btn-primary" onclick="submit('editForm')">Enregistrer</button>
+											</div>
 										</div>
 									</div>
 								</div>
-							{% endfor %}
-						{% endif %}
+								<!-- End modal edit association -->
+							{% endif %}
 
+							{% if userOffers|length > 0 %}
+								<div class="subtitleZone p-1 my-3">
+									<h5 class="text-white m-0">Vos annonces</h5>
+								</div>
+
+								{% for offer in userOffers %}
+									<div class="col-12 my-2 p-2 bg-white message-card">
+										<div class="d-flex">
+											<a href="{{ path('offers_show', {'id': offer.id}) }}" class="discussion-link d-flex w-100">
+												{% if offer.pictures is not empty %}
+													<img src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
+												{% else %}
+													<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
+												{% endif %}
+												<div class="pl-2">
+													<p class="message-user m-0">
+														{{ offer.title }}
+													</p>
+													<div class="message-preview">
+														<span class="text-muted">{{ offer.createdAt|date('d/m') }}</span>
+													</div>
+												</div>
+											</a>
+											<div class="d-flex flex-columns align-items-center">
+												<form id="deleteOfferForm{{ offer.id }}" class="d-inline" method="post" action="{{ path('offers_delete', {'id': offer.id}) }}">
+													<input type="hidden" name="_method" value="DELETE">
+													<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offer.id) }}">
+												</form>
+												<button class="btn btn-outline-danger" onclick="confirmDeleteOffer({{ offer.id }})">
+													<i class="far fa-trash-alt"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							{% endif %}
+						{% endif %}
 						<button onclick="confirm()" class="btn btn-outline-danger btn-block mt-3">
 							Déconnexion
 						</button>

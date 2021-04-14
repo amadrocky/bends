@@ -188,16 +188,35 @@ class AdminController extends AbstractController
      * @Route("/users/{id}/action", name="users_action", requirements={"id":"\d+"}, methods={"POST"})
      *
      * @param User $user
+     * @param OffersRepository $offersRepository
+     * @param AssociationsRepository $associationsRepository
      * @param MailerService $mailer
      * @return Response
      */
-    public function userAction(User $user, MailerService $mailer): Response
+    public function userAction(User $user, OffersRepository $offersRepository, AssociationsRepository $associationsRepository, MailerService $mailer): Response
     {
         $em = $this->getDoctrine()->getManager();
 
         $user->setWorkflowState($_POST['action']);
         $user->setModifiedAt(new \DateTime());
         $em->persist($user);
+
+        $userOffers = $_POST['action'] == 'active' ? $offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'inactive']) : $offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']);
+        if(count($userOffers) > 0){
+            foreach($userOffers as $offer){
+                $offer->setWorkFlowState($_POST['action']);
+                $offer->setModifiedAt(new \DateTime());
+                $em->persist($offer);
+            }
+        }
+
+        $userAsso = $_POST['action'] == 'active' ? $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'inactive']) : $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']);
+        if(count($userAsso) > 0){
+            $userAsso[0]->setWorkFlowState($_POST['action']);
+            $userAsso[0]->setModifiedAt(new \DateTime());
+            $em->persist($userAsso[0]);
+        }
+
         $em->flush();
 
         if ($_POST['action'] == 'active') {

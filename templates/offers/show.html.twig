@@ -181,17 +181,24 @@
 										{% endif %}
 									</div>
 									{% if user %}
-										<div class="offer-contact text-center p-2 mt-2">
-											<p class="m-0">
-												<b>
-													<i class="fas fa-paper-plane"></i>
-													Message direct</b>
-											</p>
-											<form id="messageForm" class="form-style">
-												<textarea name="message" id="message" class="form-control" placeholder="Votre texte ici..." required></textarea>
-											</form>
-											<button id="msgBtn" class="btn btn-success btn-block my-2" onclick="submitMessage()">Envoyer</button>
-										</div>
+										{% if user.workflowState == 'active' %}
+											<div class="offer-contact text-center p-2 mt-2">
+												<p class="m-0">
+													<b>
+														<i class="fas fa-paper-plane"></i>
+														Message direct</b>
+												</p>
+												<form id="messageForm" class="form-style">
+													<textarea name="message" id="message" class="form-control" placeholder="Votre texte ici..." required></textarea>
+												</form>
+												<button id="msgBtn" class="btn btn-success btn-block my-2" onclick="submitMessage()">Envoyer</button>
+											</div>
+										{% else %}
+											<a href="{{ path('profil_index') }}" class="btn btn-info btn-block text-white">
+												<i class="fas fa-envelope"></i>
+												Envoyez un message une fois votre compte activé
+											</a>
+										{% endif %}
 									{% else %}
 										<a href="{{ path('app_login') }}" class="btn btn-success btn-block text-white">
 											<i class="fas fa-envelope"></i>
@@ -643,8 +650,8 @@ type: 'POST',
 data: {
 message: value
 },
-beforeSend: function() {
-	document.getElementById("loader").classList.remove('d-none');
+beforeSend: function () {
+document.getElementById("loader").classList.remove('d-none');
 },
 success: function () {
 document.getElementById("loader").classList.add('d-none');
