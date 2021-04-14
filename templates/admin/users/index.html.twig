@@ -24,7 +24,7 @@
 					<p class="m-0">{{moment(user.createdAt.date).format('DD/MM/YYYY')}}</p>
 				</div>
 				<div class="col d-flex flex-columns align-items-center">
-					<i class="fas fa-circle" :class="user.workflowState == 'active' ? 'text-success' : user.workflowState == 'inactive' ? 'text-danger' : 'text-secondary'"></i>
+					<i class="fas fa-circle ml-auto" :class="user.workflowState == 'active' ? 'text-success' : user.workflowState == 'inactive' ? 'text-danger' : 'text-secondary'"></i>
 				</div>
 			</div>
 		</div>
