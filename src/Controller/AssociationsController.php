@@ -250,6 +250,10 @@ class AssociationsController extends AbstractController
      */
     public function show(Request $request, Associations $association, OffersRepository $offersRepository): Response
     {
+        if ($association->getWorkflowState() != 'active') {
+            return $this->redirectToRoute('associations_associations_deleted', ['id' => $association->getId()]);
+        }
+
         return $this->render('associations/show.html.twig', [
             $user = $this->getUser(),
             'association' => $association,
@@ -329,6 +333,22 @@ class AssociationsController extends AbstractController
         $this->addFlash('success', 'Modification(s) enregistrée(s)');
 
         return $this->redirectToRoute('profil_index');
+    }
+
+    /**
+     * Redirect if association is deleted
+     * 
+     * @Route("/{id}/status", name="associations_deleted", methods={"GET"})
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function deletedAssociation(Request $request): Response
+    {
+        return $this->render('associations/errorPage.html.twig', [
+            'user' => $this->getUser(),
+            'messages' => $request->getSession()->get('messages')
+        ]);
     }
 
     /**

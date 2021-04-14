@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Association introuvable
+{% endblock %}
+
+{% block body %}
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
+				<div class="alert alert-info box-shadow" role="alert">
+					<i class="fas fa-info-circle"></i>
+					Accociation supprimée ou désactivée<hr/>
+                    Consultez toutes nos <a href="{{ path('associations_index') }}">associations</a>.
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <script type="text/javascript">
+		document.getElementById("body").classList.add('homeAssociations');
+	</script>
+{% endblock %}
