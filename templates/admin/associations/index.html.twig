@@ -1,0 +1,52 @@
+{% extends 'admin/layoutAdmin.html.twig' %}
+
+{% block content %}
+	{% verbatim %}
+		<div id="app" class="p-3">
+			<div class="w-25 mb-3">
+				<input type="text" class="form-control" placeholder="Rechercher" v-model="search">
+			</div>
+			<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2 cursorPointer" v-for="association in filteredAssociations" :key="association.id" v-on:click="show(association.id)">
+				<div class="col">
+					<img :src="association.picture == null ? '/build/images/picture-no-image.jpg' : '/build/images/associations/' + association.picture" class="miniature" alt="image">
+				</div>
+				<div class="col d-flex flex-columns align-items-center">
+					<h4 class="cmnty">{{association.name}}</h4>
+				</div>
+				<div class="col d-flex flex-columns align-items-center">
+					<p class="text-muted m-0">
+						<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
+						{{association.city}}
+					</p>
+				</div>
+				<div class="col d-flex flex-columns align-items-center">
+					<p class="m-0">{{moment(association.createdAt.date).format('DD/MM/YYYY')}}</p>
+				</div>
+				<div class="col d-flex flex-columns align-items-center">
+					<i class="fas fa-circle ml-auto" :class="association.workflowState == 'active' ? 'text-success' : association.workflowState == 'inactive' ? 'text-danger' : 'text-secondary'"></i>
+				</div>
+			</div>
+		</div>
+	{% endverbatim %}
+
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: () => ({
+                associations: {{ associations|json_encode|raw }},
+                moment,
+                search: '',
+            }),
+            computed: {
+                filteredAssociations() {
+                    return this.search.length > 0 ? this.associations.filter(association => association.name.toLowerCase().includes(this.search.toLowerCase())) : this.associations;
+                },
+            },
+			methods: {
+				show(associationId) {
+					window.location.href='/admin/users/' + associationId;
+				}
+			}
+        })
+	</script>
+{% endblock %}

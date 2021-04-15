@@ -87,14 +87,29 @@ class AssociationsRepository extends ServiceEntityRepository
      */
     public function findByPeriod(\DateTime $start_date, \DateTime $end_date): array
     {
-        return $this->createQueryBuilder('o')
-            ->where('o.createdAt >= :start_date AND o.createdAt <= :end_date')
-            ->andWhere('o.workflowState = :workflow_state')
+        return $this->createQueryBuilder('a')
+            ->where('a.createdAt >= :start_date AND a.createdAt <= :end_date')
+            ->andWhere('a.workflowState = :workflow_state')
             ->setParameters([
                 'workflow_state' => 'active',
                 'start_date' => $start_date,
                 'end_date' => $end_date
                 ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Associations array
+     *
+     * @return array
+     */
+    public function getAssociationsArray(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.id', 'a.name', 'a.city', 'a.picture', 'a.createdAt', 'a.workflowState')
+            ->orderBy('a.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;

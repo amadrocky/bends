@@ -58,28 +58,28 @@
 					</table>
 
 					{% if userAssociation is not empty %}
-						<div class="pl-5 mb-3">
-							<a href="" class="d-flex py-4 m-2 associationCard noDecorationLink">
-								<div class="blocImageAssociation">
+						<div class="my-5">
+							<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2 cursorPointer">
+								<div class="col">
 									{% if userAssociation.picture %}
-										<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" class="associationImage box-shadow">
+										<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" class="miniature">
 									{% else %}
-										<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="image" class="associationImage box-shadow">
+										<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="image" class="miniature">
 									{% endif %}
 								</div>
-								<div class="descriptionZone p-3">
+								<div class="col d-flex flex-columns align-items-center">
 									<h3 class="cmnty">{{ userAssociation.name }}</h3>
-									{% if userAssociation.description|length > 60 %}
-										<p class="associationDescription text-dark">{{ userAssociation.description|slice(0, 60) ~ '...' }}</p>
-									{% else %}
-										<p class="associationDescription text-dark">{{ userAssociation.description }}</p>
-									{% endif %}
+								</div>
+								<div class="col d-flex flex-columns align-items-center">
 									<p class="text-muted m-0">
 										<i class="fas fa-map-marker-alt" style="color: #3f51b5"></i>
 										{{ userAssociation.city }}
 									</p>
 								</div>
-							</a>
+								<div class="col d-flex flex-columns align-items-center">
+									<p class="m-0">{{ userAssociation.createdAt|date('d/m/Y') }}</p>
+								</div>
+							</div>
 						</div>
 					{% endif %}
 

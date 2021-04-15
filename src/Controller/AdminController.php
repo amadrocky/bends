@@ -161,7 +161,7 @@ class AdminController extends AbstractController
         return $this->render('admin/users/index.html.twig', [
             'user' => $this->getUser(),
             'users' => $userRepository->getUsersArray(),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countValidations' => count($offersRepository->findByWorkflowState('created'))
         ]);
     }
 
@@ -180,7 +180,7 @@ class AdminController extends AbstractController
             'adminUser' => $adminUser,
             'userAssociation' => $associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'])[0] : [],
             'userOffers' => $offersRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'], ['createdAt' => 'DESC']),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countValidations' => count($offersRepository->findByWorkflowState('created'))
         ]);
     }
 
@@ -236,6 +236,22 @@ class AdminController extends AbstractController
         }
 
         return $this->json(['user' => $user->getId()]);
+    }
+
+    /**
+     * @Route("/associations", name="associations")
+     *
+     * @param AssociationsRepository $associationsRepository
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function adminAssociations(AssociationsRepository $associationsRepository, OffersRepository $offersRepository): Response
+    {
+        return $this->render('admin/associations/index.html.twig', [
+            'user' => $this->getUser(),
+            'associations' => $associationsRepository->getAssociationsArray(),
+            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+        ]);
     }
 
     /**
