@@ -24,7 +24,11 @@
 			</div>
 			<div class="col col-md-4 my-auto text-right">
 				<a href="{{ path('profil_index') }}">
-					<img class="menuButton rounded-circle" src="{{ asset('build/images/profil/') }}{{ user.profilImage }}" alt="Avatar">
+					{% if user.profilImage %}
+						<img class="menuButton rounded-circle" src="{{ asset('build/images/profil/') }}{{ user.profilImage }}" alt="Avatar">
+					{% else %}
+						<img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}" alt="Avatar">
+					{% endif %}
 				</a>
 			</div>
 		</div>
