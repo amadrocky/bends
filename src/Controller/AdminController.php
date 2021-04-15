@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Offers;
 use App\Entity\User;
+use App\Entity\Associations;
 use App\Repository\OffersRepository;
 use App\Repository\UserRepository;
 use App\Repository\AssociationsRepository;
@@ -252,6 +253,57 @@ class AdminController extends AbstractController
             'associations' => $associationsRepository->getAssociationsArray(),
             'countValidations' => count($offersRepository->findByWorkflowState('created'))
         ]);
+    }
+
+    /**
+     * @Route("/associations/{id}", name="associations_show", requirements={"id":"\d+"})
+     *
+     * @param AssociationsRepository $associationsRepository
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function adminAssociationsShow(Associations $association, OffersRepository $offersRepository): Response
+    {
+        return $this->render('admin/associations/show.html.twig', [
+            'user' => $this->getUser(),
+            'association' => $association,
+            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+        ]);
+    }
+
+    /**
+     * @Route("/associations/{id}/action", name="associations_action", requirements={"id":"\d+"}, methods={"POST"})
+     *
+     * @param Associations $association
+     * @param MailerService $mailer
+     * @return Response
+     */
+    public function admiAssociationsAction(Associations $association, MailerService $mailer): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $association->setWorkflowState($_POST['action']);
+        $association->setModifiedAt(new \DateTime());
+        $em->persist($association);
+        $em->flush();
+
+        if ($_POST['action'] == 'active') {
+            $mailer->sendEmail(
+                $association->getCreatedBy()->getFirstname(), 
+                $association->getCreatedBy()->getEmail(),
+                'Informations sur votre association',
+                'emails/activeAssociation.html.twig'
+            );
+        } else {
+            $mailer->sendEmail(
+                $association->getCreatedBy()->getFirstname(), 
+                $association->getCreatedBy()->getEmail(),
+                'Informations sur votre association',
+                'emails/inactiveAssociation.html.twig'
+            );
+        }
+
+        return $this->json(['association' => $association->getId()]);
     }
 
     /**

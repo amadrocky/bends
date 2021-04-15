@@ -1,0 +1,29 @@
+<p>Bonjour
+	{{ userFirstname }},</p>
+
+<br/>
+
+<p>Votre association est activée !</p>
+
+<br/>
+
+<p>Elle figure parmi la liste des associations et sur vos annonces.</p>
+
+<br/>
+
+<p>Pour toute information, n'hésitez pas à contacter notre équipe support.</p>
+
+<br/>
+
+<p>
+	À très bientôt sur
+	<a href="{{ url('land') }}" target="_blank">notre site</a>.
+</p>
+
+<br/>
+
+<p>L'équipe Bends !</p>
+
+<br/>
+
+{% include 'emails/_partials/footerEmail.html.twig' %}
