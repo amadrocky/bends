@@ -16,6 +16,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Articles;
 use App\Repository\ArticlesRepository;
+use App\Form\ArticleType;
 
 /**
  * * @Route("/admin", name="admin_")
@@ -321,6 +322,55 @@ class AdminController extends AbstractController
             'user' => $this->getUser(),
             'articles' => $articlesRepository->getArticlesArray(),
             'countValidations' => count($offersRepository->findByWorkflowState('created'))
+        ]);
+    }
+
+    /**
+     * @Route("/articles/new", name="articles_new", methods={"GET","POST"})
+     *
+     * @param Request $request
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function adminArticlesNew(Request $request, OffersRepository $offersRepository): Response
+    {
+        $article = new Articles();
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $fileName = $_FILES['imgArticle']['name'];
+            $uploadDir = $_SERVER['PWD'] . '/assets/static/images/actualities/';
+
+            if ($fileName !== "") {
+                $file = null;
+
+                /* On renomme l'image */
+                $extention = strrchr($fileName, ".");
+                $fileName = 'article_' . uniqid() . $extention;
+
+                $uploadFile = $uploadDir . basename($fileName);
+                move_uploaded_file($_FILES['imgArticle']['tmp_name'], $uploadFile);
+                $file = basename($uploadFile);
+
+                $article->setImage($fileName);
+            }
+
+            $article->setCreatedAt(new \DateTime());
+            $article->setModifiedAt(new \DateTime());
+            $article->setWorkflowState('active');
+            $entityManager->persist($article);
+            $entityManager->flush();
+            
+            return $this->redirectToRoute('admin_articles');
+        }
+
+        return $this->render('admin/articles/new.html.twig', [
+            'user' => $this->getUser(),
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'form' => $form->createView(),
         ]);
     }
 

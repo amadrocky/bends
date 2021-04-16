@@ -40,7 +40,7 @@ class Articles
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $clicks;
+    private $clicks = 0;
 
     /**
      * @ORM\Column(type="datetime")
