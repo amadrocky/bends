@@ -1,0 +1,105 @@
+{% extends 'admin/layoutAdmin.html.twig' %}
+
+{% block content %}
+	<div class="d-flex">
+		<div class="p-3 flex-fill">
+			<table class="table table-striped table-hover table-bordered mb-3">
+				<tr>
+					<td rowspan="12" class="text-center">
+						{% if article.image %}
+							<img src="{{ asset('build/images/actualities/') }}{{ article.image }}" alt="image" class="adminProfilImage">
+						{% else %}
+							<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="image" class="adminProfilImage">
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>Titre</th>
+					<td>{{ article.title }}</td>
+				</tr>
+				<tr>
+					<th>Description</th>
+					<td>{{ article.description }}</td>
+				</tr>
+				<tr>
+					<th>Lien</th>
+					<td>{{ article.link }}</td>
+				</tr>
+				<tr>
+					<th>Clicks</th>
+					<td>{{ article.clicks }}</td>
+				</tr>
+				<tr>
+					<th>Date</th>
+					<td>{{ article.createdAt|date('d/m/Y, H:i') }}</td>
+				</tr>
+				<tr>
+					<th>Statut</th>
+					{% if article.workflowState == "active" %}
+						<td>
+							<span class="btn btn-success">
+								Activé</span>
+						</td>
+					{% else %}
+						<td>
+							<span class="btn btn-dark">
+								Désactivé</span>
+						</td>
+					{% endif %}
+				</tr>
+			</table>
+		</div>
+		<div class="p-3">
+			{% if article.workflowState == "active" %}
+				<button class="btn btn-danger" onclick="action('inactive')">
+					<i class="fas fa-times"></i>
+					Désactiver</button>
+			{% else %}
+				<span class="btn btn-success" onclick="action('active')">
+					Activer</span>
+			{% endif %}
+		</div>
+	</div>
+
+	<script>
+		function action(value) {
+swal({
+title: "Êtes vous sûr(e)?",
+text: "Veuillez confirmer",
+icon: "warning",
+buttons: [
+"Annuler", "Confirmer"
+],
+dangerMode: false
+}).then((willDelete) => {
+if (willDelete) {
+$.ajax({
+url: '{{ path('admin_articles_action', {'id': article.id}) }}',
+type: 'POST',
+dataType: "html",
+data: {
+action: value
+},
+beforeSend: function () {
+document.getElementById("loader").classList.remove('d-none');
+},
+success: function () {
+document.getElementById("loader").classList.add('d-none');
+if (value == 'inactive') {
+swal({title: "Validé", text: "L'article à bien été désactivée", icon: "success"});
+} else {
+swal({title: "Validé", text: "L'article à bien été activée", icon: "success"});
+}
+location.reload();
+},
+error: function () {
+alert('error')
+}
+})
+} else {
+swal("Action annulée");
+}
+});
+}
+	</script>
+{% endblock %}

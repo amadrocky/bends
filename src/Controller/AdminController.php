@@ -14,6 +14,8 @@ use App\Repository\AssociationsRepository;
 use App\Service\MailerService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Articles;
+use App\Repository\ArticlesRepository;
 
 /**
  * * @Route("/admin", name="admin_")
@@ -194,7 +196,7 @@ class AdminController extends AbstractController
      * @param MailerService $mailer
      * @return Response
      */
-    public function userAction(User $user, OffersRepository $offersRepository, AssociationsRepository $associationsRepository, MailerService $mailer): Response
+    public function adminUsersAction(User $user, OffersRepository $offersRepository, AssociationsRepository $associationsRepository, MailerService $mailer): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -278,7 +280,7 @@ class AdminController extends AbstractController
      * @param MailerService $mailer
      * @return Response
      */
-    public function admiAssociationsAction(Associations $association, MailerService $mailer): Response
+    public function adminAssociationsAction(Associations $association, MailerService $mailer): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -304,6 +306,56 @@ class AdminController extends AbstractController
         }
 
         return $this->json(['association' => $association->getId()]);
+    }
+
+    /**
+     * @Route("/articles", name="articles")
+     *
+     * @param ArticlesRepository $articlesRepository
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function adminArticles(ArticlesRepository $articlesRepository, OffersRepository $offersRepository): Response
+    {
+        return $this->render('admin/articles/index.html.twig', [
+            'user' => $this->getUser(),
+            'articles' => $articlesRepository->getArticlesArray(),
+            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+        ]);
+    }
+
+    /**
+     * @Route("/articles/{id}", name="articles_show", requirements={"id":"\d+"})
+     *
+     * @param Articles $article
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function adminArticlesShow(Articles $article, OffersRepository $offersRepository): Response
+    {
+        return $this->render('admin/articles/show.html.twig', [
+            'user' => $this->getUser(),
+            'article' => $article,
+            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+        ]);
+    }
+
+    /**
+     * @Route("/articles/{id}/action", name="articles_action", requirements={"id":"\d+"}, methods={"POST"})
+     *
+     * @param Articles $article
+     * @return Response
+     */
+    public function adminArticlesAction(Articles $article): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $article->setWorkflowState($_POST['action']);
+        $article->setModifiedAt(new \DateTime());
+        $em->persist($article);
+        $em->flush();
+
+        return $this->json(['article' => $article->getId()]);
     }
 
     /**

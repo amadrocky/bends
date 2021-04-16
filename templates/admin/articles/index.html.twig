@@ -1,0 +1,57 @@
+{% extends 'admin/layoutAdmin.html.twig' %}
+
+{% block content %}
+	{% verbatim %}
+		<div id="app" class="p-3">
+			<div class="d-flex">
+				<div class="w-25 mb-3">
+					<input type="text" class="form-control" placeholder="Rechercher" v-model="search">
+				</div>
+				<div class="ml-3">
+					<a href="" class="btn btn-success">
+						<i class="fas fa-plus"></i>
+						Ajouter</a>
+				</div>
+			</div>
+			<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2 cursorPointer" v-for="article in filteredArticles" :key="article.id" v-on:click="show(article.id)">
+				<div class="col">
+					<img :src="article.image == null ? '/build/images/picture-no-image.jpg' : '/build/images/actualities/' + article.image" class="miniature" alt="image">
+				</div>
+				<div class="col d-flex flex-columns align-items-center">
+					<h4 class="cmnty">{{article.title}}</h4>
+				</div>
+				<div class="col d-flex flex-columns align-items-center">
+					<p class="m-0">{{moment(article.createdAt.date).format('DD/MM/YYYY, HH:mm')}}</p>
+				</div>
+				<div class="col d-flex flex-columns align-items-center">
+					<p class="text-muted m-0">
+						<i class="fas fa-eye" style="color: #3f51b5"></i>
+						{{article.clicks}}
+					</p>
+				</div>
+				<div class="col d-flex flex-columns align-items-center">
+					<i class="fas fa-circle ml-auto" :class="article.workflowState == 'active' ? 'text-success' : article.workflowState == 'inactive' ? 'text-danger' : 'text-secondary'"></i>
+				</div>
+			</div>
+		</div>
+	{% endverbatim %}
+
+	<script>
+		var app = new Vue({
+el: "#app",
+data: () => (
+{articles: {{ articles|json_encode|raw }}, moment, search: ''}
+),
+computed: {
+filteredArticles() {
+return this.search.length > 0 ? this.articles.filter(article => article.title.toLowerCase().includes(this.search.toLowerCase())) : this.articles;
+}
+},
+methods: {
+show(articleId) {
+window.location.href = '/admin/articles/' + articleId;
+}
+}
+})
+	</script>
+{% endblock %}

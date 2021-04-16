@@ -19,6 +19,21 @@ class ArticlesRepository extends ServiceEntityRepository
         parent::__construct($registry, Articles::class);
     }
 
+    /**
+     * Articles array
+     *
+     * @return array
+     */
+    public function getArticlesArray(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.id', 'a.title', 'a.image', 'a.clicks', 'a.createdAt', 'a.workflowState')
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Articles[] Returns an array of Articles objects
     //  */

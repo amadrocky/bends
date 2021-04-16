@@ -52,6 +52,11 @@ class Articles
      */
     private $workflowState;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $modifiedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +142,18 @@ class Articles
     public function setWorkflowState(string $workflowState): self
     {
         $this->workflowState = $workflowState;
+
+        return $this;
+    }
+
+    public function getModifiedAt(): ?\DateTimeInterface
+    {
+        return $this->modifiedAt;
+    }
+
+    public function setModifiedAt(?\DateTimeInterface $modifiedAt): self
+    {
+        $this->modifiedAt = $modifiedAt;
 
         return $this;
     }
