@@ -34,7 +34,7 @@ class OffersRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('o')
             ->where('o.workflowState = :workflow_state')
-            ->setParameter('workflow_state', 'created');
+            ->setParameter('workflow_state', 'active');
 
         if ($search != "") {
             $qb
