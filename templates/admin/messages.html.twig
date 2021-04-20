@@ -1,0 +1,64 @@
+{% extends 'admin/layoutAdmin.html.twig' %}
+
+{% block content %}
+	<div class="p-3">
+		<form id="messageForm" class="row w-100 m-0" method="post">
+			<div class="col col-md-6">
+				<input type="email" id="email" name="email" placeholder="Email" class="form-control mb-3" required>
+				<input type="text" id="subject" name="subject" placeholder="Objet" class="form-control mb-3" required>
+				<textarea name="message" id="message" placeholder="Message" class="form-control mb-3" required></textarea>
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-envelope"></i>
+					Envoyer</button>
+			</div>
+		</form>
+	</div>
+
+	<script>
+		document.getElementById("messageForm").addEventListener('submit', onSubmit);
+
+function onSubmit(event) {
+event.preventDefault();
+
+let messageForm = new FormData(this);
+let formSubject = document.getElementById("subject");
+let formEmail = document.getElementById("email");
+let formMessage = document.getElementById("message");
+swal({
+title: "Êtes vous sûr(e)?",
+text: "Veuillez confirmer l'envoi",
+icon: "warning",
+buttons: [
+"Annuler", "Confirmer"
+],
+dangerMode: false
+}).then((willDelete) => {
+if (willDelete) {
+$.ajax({
+url: "{{ path('admin_messages') }}",
+type: 'POST',
+data: messageForm,
+cache: false,
+contentType: false,
+processData: false,
+beforeSend: function() {
+	document.getElementById("loader").classList.remove('d-none');
+},
+success: function () {
+	document.getElementById("loader").classList.add('d-none');
+	formSubject.value = '';
+	formEmail.value = '';
+	formMessage.value = '';
+swal({title: "Message envoyé", text: "Votre message a bien été transmis.", icon: "success"});
+},
+error: function () {
+alert('error');
+}
+})
+} else {
+swal("Action annulée");
+}
+});
+}
+	</script>
+{% endblock %}

@@ -409,6 +409,31 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/messages", name="messages", methods={"GET","POST"})
+     *
+     * @param Request $request
+     * @param OffersRepository $offersRepository
+     * @param MailerService $mailer
+     * @return Response
+     */
+    public function adminSendMessage(Request $request, OffersRepository $offersRepository, MailerService $mailer): Response
+    {
+        if ($request->IsMethod('POST')) {
+            $mailer->sendAdminEmail(
+                $_POST['email'], 
+                $_POST['subject'],
+                $_POST['message'],
+                'emails/adminMessage.html.twig'
+            );
+        }
+
+        return $this->render('admin/messages.html.twig', [
+            'user' => $this->getUser(),
+            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+        ]);
+    }
+
+    /**
      * Génère les datas pour le graphique de la semaine & la tendance
      *
      * @param [type] $repository
