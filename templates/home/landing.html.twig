@@ -51,15 +51,22 @@
 	</div>
 	<div id="presentation" class="landing-presentation p-5">
 		<h3 class="cmnty text-center mb-3">Qui sommes-nous ?</h3>
-		<p class="text-justify">Notre mission? La mise en relation entre partculiers, professionnels et associations autour du don d'objets et services bénévoles.</p>
-		<p class="text-justify">Dans un monde ou l'économie sociale et solidaire, le développement durable ainsi que le bien pour l'environnement prennent plus de place, nous proposons cette plateforme totalement
-			<strong>gratuite</strong>
-			permettant à tous de pouvoir s'entraider tout en recyclant dans le partage.</p>
-		<p class="text-justify">Ayez le bon reflexle en
-			<strong>donnant vos objets</strong>
-			et en
-			<strong>proposant vos sérvices bénévoles</strong>
-			près de chez vous.</p>
+		<div class="row h-100 w-100 m-0">
+			<div class="col-12 col-md-6 text-center p-3 my-auto">
+				<p class="text-justify">Notre mission? La mise en relation entre partculiers, professionnels et associations autour du don d'objets et services bénévoles.</p>
+				<p class="text-justify">Dans un monde ou l'économie sociale et solidaire, le développement durable ainsi que le bien pour l'environnement prennent plus de place, nous proposons cette plateforme totalement
+					<strong>gratuite</strong>
+					permettant à tous de pouvoir s'entraider tout en recyclant dans le partage.</p>
+				<p class="text-justify">Ayez le bon reflexle en
+					<strong>donnant vos objets</strong>
+					et en
+					<strong>proposant vos sérvices bénévoles</strong>
+					près de chez vous.</p>
+			</div>
+			<div class="col-12 col-md-6 text-center">
+				<img src="{{ asset('build/images/social-media-5187243_1920.png') }}" alt="image" class="presentation-img my-3">
+			</div>
+		</div>
 	</div>
 	<div id="carouselIndicators" class="carousel slide carousel-fade landing-slide" data-ride="carousel">
 		<ol class="carousel-indicators">
@@ -246,14 +253,14 @@ data: landingContactForm,
 cache: false,
 contentType: false,
 processData: false,
-beforeSend: function() {
-	document.getElementById("loader").classList.remove('d-none');
+beforeSend: function () {
+document.getElementById("loader").classList.remove('d-none');
 },
 success: function () {
-	document.getElementById("loader").classList.add('d-none');
-	formName.value = '';
-	formEmail.value = '';
-	formMessage.value = '';
+document.getElementById("loader").classList.add('d-none');
+formName.value = '';
+formEmail.value = '';
+formMessage.value = '';
 swal({title: "Message envoyé", text: "Votre message a bien été transmis à nos équipes.", icon: "success"});
 },
 error: function () {
