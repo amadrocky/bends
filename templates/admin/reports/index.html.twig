@@ -1,7 +1,7 @@
 {% extends 'admin/layoutAdmin.html.twig' %}
 
 {% block content %}
-	<div class="row w-100 m-0 p-3">
+	<div class="row w-100 m-0 px-3 pt-3 pb-5">
 		<div class="col p-3">
 			{% for offer in signaledOffers %}
 				<table class="table table-striped table-hover table-bordered mb-2">
@@ -50,13 +50,23 @@
 							</tr>
 						{% endif %}
 					{% endif %}
+					<tr>
+						<th>Action</th>
+						<td>
+							{% if offer.workflowState == 'processed' %}
+								<span class="btn btn-secondary">Traité</span>
+							{% else %}
+								<button class="btn btn-success" onclick="action('processed', {{ offer.id }})">Traiter</button>
+							{% endif %}
+						</td>
+					</tr>
 				</table>
-                {% else %}
-                    <div>
-				<p class="alert alert-primary box-shadow">
-					Aucune offre signalée.
-				</p>
-			</div>
+			{% else %}
+				<div>
+					<p class="alert alert-primary box-shadow">
+						Aucune offre signalée.
+					</p>
+				</div>
 			{% endfor %}
 		</div>
 		<div class="col p-3">
@@ -65,4 +75,42 @@
 			{% endfor %}
 		</div>
 	</div>
+
+	<script>
+		function action(value, reportId) {
+swal({
+title: "Êtes vous sûr(e)?",
+text: "Veuillez confirmer",
+icon: "warning",
+buttons: [
+"Annuler", "Confirmer"
+],
+dangerMode: false
+}).then((willDelete) => {
+if (willDelete) {
+$.ajax({
+url: '/admin/reports/offers/' + reportId + '/action',
+type: 'POST',
+dataType: "html",
+data: {
+action: value
+},
+beforeSend: function () {
+document.getElementById("loader").classList.remove('d-none');
+},
+success: function () {
+document.getElementById("loader").classList.add('d-none');
+swal({title: "Validé", text: "L'action à bien été traitée", icon: "success"});
+location.reload();
+},
+error: function () {
+alert('error')
+}
+})
+} else {
+swal("Action annulée");
+}
+});
+}
+	</script>
 {% endblock %}

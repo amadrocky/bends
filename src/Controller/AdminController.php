@@ -19,6 +19,7 @@ use App\Repository\ArticlesRepository;
 use App\Form\ArticleType;
 use App\Repository\SignaledOffersRepository;
 use App\Repository\SignaledDiscussionsRepository;
+use App\Entity\SignaledOffers;
 
 /**
  * * @Route("/admin", name="admin_")
@@ -447,10 +448,28 @@ class AdminController extends AbstractController
     {
         return $this->render('admin/reports/index.html.twig', [
             'user' => $this->getUser(),
-            'signaledOffers' => $signaledOffersRepository->findAll(),
+            'signaledOffers' => $signaledOffersRepository->findByWorkflowState('created'),
             'signaledDiscussions' => $signaledDiscussionsRepository->findAll(),
             'countValidations' => count($offersRepository->findByWorkflowState('created'))
         ]);
+    }
+
+    /**
+     * @Route("/reports/offers/{id}/action", name="reports_offers_action", requirements={"id":"\d+"}, methods={"POST"})
+     *
+     * @param SignaledOffers $article
+     * @return Response
+     */
+    public function adminSignaledOffersAction(SignaledOffers $signaledOffers): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $signaledOffers->setWorkflowState($_POST['action']);
+        $signaledOffers->setModifiedAt(new \DateTime());
+        $em->persist($signaledOffers);
+        $em->flush();
+
+        return $this->json(['signaledOffers' => $signaledOffers->getId()]);
     }
 
     /**
