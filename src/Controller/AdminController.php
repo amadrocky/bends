@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Articles;
 use App\Repository\ArticlesRepository;
 use App\Form\ArticleType;
+use App\Repository\SignaledOffersRepository;
+use App\Repository\SignaledDiscussionsRepository;
 
 /**
  * * @Route("/admin", name="admin_")
@@ -429,6 +431,24 @@ class AdminController extends AbstractController
 
         return $this->render('admin/messages.html.twig', [
             'user' => $this->getUser(),
+            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+        ]);
+    }
+
+    /**
+     * @Route("/reports", name="reports")
+     *
+     * @param SignaledOffersRepository $signaledOffersRepository
+     * @param SignaledDiscussionsRepository $signaledDiscussionsRepository
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function adminReports(SignaledOffersRepository $signaledOffersRepository, SignaledDiscussionsRepository $signaledDiscussionsRepository, OffersRepository $offersRepository): Response
+    {
+        return $this->render('admin/reports/index.html.twig', [
+            'user' => $this->getUser(),
+            'signaledOffers' => $signaledOffersRepository->findAll(),
+            'signaledDiscussions' => $signaledDiscussionsRepository->findAll(),
             'countValidations' => count($offersRepository->findByWorkflowState('created'))
         ]);
     }
