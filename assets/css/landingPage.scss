@@ -31,6 +31,24 @@
             color: $violet;
             margin: 0px 5px 0px 5px;
             font-size: 20px;
+            display: table-cell;
+            position: relative;
+            &:after {
+                background: none repeat scroll 0 0 transparent;
+                bottom: 0;
+                content: "";
+                display: block;
+                height: 1px;
+                left: 50%;
+                position: absolute;
+                background: $blue;
+                transition: width 0.3s ease 0s, left 0.3s ease 0s;
+                width: 0;
+            }
+            &:hover:after {
+                width: 100%;
+                left: 0;
+            }
         }
     }
     
