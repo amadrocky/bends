@@ -20,6 +20,7 @@ use App\Form\ArticleType;
 use App\Repository\SignaledOffersRepository;
 use App\Repository\SignaledDiscussionsRepository;
 use App\Entity\SignaledOffers;
+use App\Entity\SignaledDiscussions;
 
 /**
  * * @Route("/admin", name="admin_")
@@ -449,7 +450,35 @@ class AdminController extends AbstractController
         return $this->render('admin/reports/index.html.twig', [
             'user' => $this->getUser(),
             'signaledOffers' => $signaledOffersRepository->findByWorkflowState('created'),
-            'signaledDiscussions' => $signaledDiscussionsRepository->findAll(),
+            'signaledDiscussions' => $signaledDiscussionsRepository->findByWorkflowState('created'),
+            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+        ]);
+    }
+
+    /**
+     * @Route("/reports/discussions/{id}", name="reports_discussion", requirements={"id":"\d+"}, methods={"GET","POST"})
+     *
+     * @param Request $request
+     * @param SignaledDiscussions $signaledDiscussion
+     * @param OffersRepository $offersRepository
+     * @return Response
+     */
+    public function adminReportsDiscussionShow(Request $request, SignaledDiscussions $signaledDiscussion, OffersRepository $offersRepository): Response
+    {
+        if ($request->IsMethod('POST')) {
+            $em = $this->getDoctrine()->getManager();
+
+            $signaledDiscussion->setWorkflowState($_POST['action']);
+            $signaledDiscussion->setModifiedAt(new \DateTime());
+            $em->persist($signaledDiscussion);
+            $em->flush();
+
+            return $this->json(['signaledDiscussion' => $signaledDiscussion->getId()]);
+        }
+
+        return $this->render('admin/reports/discussion.html.twig', [
+            'user' => $this->getUser(),
+            'signaledDiscussion' => $signaledDiscussion,
             'countValidations' => count($offersRepository->findByWorkflowState('created'))
         ]);
     }
