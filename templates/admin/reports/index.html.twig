@@ -3,6 +3,7 @@
 {% block content %}
 	<div class="row w-100 m-0 px-3 pt-3 pb-5">
 		<div class="col p-3">
+		<h2 class="cmnty">Offres signalées</h2>
 			{% for offer in signaledOffers %}
 				<table class="table table-striped table-hover table-bordered mb-2">
 					<tr>
@@ -70,6 +71,7 @@
 			{% endfor %}
 		</div>
 		<div class="col p-3">
+			<h2 class="cmnty">Discussions signalées</h2>
 			{% for discussion in signaledDiscussions %}
 				<a href="{{ path('admin_reports_discussion', {'id': discussion.id}) }}" class="noDecorationLink text-dark">
 					<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2">
@@ -86,6 +88,12 @@
 						</div>
 					</div>
 				</a>
+			{% else %}
+				<div>
+					<p class="alert alert-primary box-shadow">
+						Aucune discussion signalée.
+					</p>
+				</div>
 			{% endfor %}
 		</div>
 	</div>

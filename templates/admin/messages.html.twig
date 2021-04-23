@@ -2,6 +2,7 @@
 
 {% block content %}
 	<div class="p-3">
+		<h2 class="cmnty">Envoi d'email</h2>
 		<form id="messageForm" class="row w-100 m-0" method="post">
 			<div class="col col-md-6">
 				<input type="email" id="email" name="email" placeholder="Email" class="form-control mb-3" required>
@@ -41,14 +42,14 @@ data: messageForm,
 cache: false,
 contentType: false,
 processData: false,
-beforeSend: function() {
-	document.getElementById("loader").classList.remove('d-none');
+beforeSend: function () {
+document.getElementById("loader").classList.remove('d-none');
 },
 success: function () {
-	document.getElementById("loader").classList.add('d-none');
-	formSubject.value = '';
-	formEmail.value = '';
-	formMessage.value = '';
+document.getElementById("loader").classList.add('d-none');
+formSubject.value = '';
+formEmail.value = '';
+formMessage.value = '';
 swal({title: "Message envoyé", text: "Votre message a bien été transmis.", icon: "success"});
 },
 error: function () {
