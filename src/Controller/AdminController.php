@@ -21,6 +21,7 @@ use App\Repository\SignaledOffersRepository;
 use App\Repository\SignaledDiscussionsRepository;
 use App\Entity\SignaledOffers;
 use App\Entity\SignaledDiscussions;
+use App\Service\ReportsService;
 
 /**
  * * @Route("/admin", name="admin_")
@@ -35,7 +36,7 @@ class AdminController extends AbstractController
      * @param AssociationsRepository $associationsRepository
      * @return Response
      */
-    public function index(OffersRepository $offersRepository, UserRepository $userRepository, AssociationsRepository $associationsRepository): Response
+    public function index(OffersRepository $offersRepository, UserRepository $userRepository, AssociationsRepository $associationsRepository, ReportsService $reportsService): Response
     {
         $offersDatas = $this->getDatas($offersRepository);
         $usersDatas = $this->getDatas($userRepository);
@@ -57,7 +58,8 @@ class AdminController extends AbstractController
             'usersDatas' => $usersDatas,
             'associationsDatas' => $associationsDatas,
             'categoriesDatas' => $categoriesDatas,
-            'total' => $total
+            'total' => $total,
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -69,7 +71,7 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminOffers(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository): Response
+    public function adminOffers(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         $datas = $offersRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC']);
 
@@ -79,6 +81,7 @@ class AdminController extends AbstractController
             'user' => $this->getUser(),
             'offers' => $offers,
             'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -90,7 +93,7 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminOffersToValidate(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository): Response
+    public function adminOffersToValidate(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         $datas = $offersRepository->findByWorkflowState('created');
 
@@ -100,6 +103,7 @@ class AdminController extends AbstractController
             'user' => $this->getUser(),
             'offers' => $offers,
             'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -111,13 +115,14 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminOffersShow(Offers $offer, AssociationsRepository $associationsRepository, OffersRepository $offersRepository): Response
+    public function adminOffersShow(Offers $offer, AssociationsRepository $associationsRepository, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         return $this->render('admin/offers/show.html.twig', [
             'user' => $this->getUser(),
             'offer' => $offer,
             'offerAssociation' => $associationsRepository->findByOffer($offer),
             'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -164,12 +169,13 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminUsers(UserRepository $userRepository, OffersRepository $offersRepository): Response
+    public function adminUsers(UserRepository $userRepository, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         return $this->render('admin/users/index.html.twig', [
             'user' => $this->getUser(),
             'users' => $userRepository->getUsersArray(),
-            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -181,14 +187,15 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminUsersShow(User $adminUser, AssociationsRepository $associationsRepository, OffersRepository $offersRepository): Response
+    public function adminUsersShow(User $adminUser, AssociationsRepository $associationsRepository, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         return $this->render('admin/users/show.html.twig', [
             'user' => $this->getUser(),
             'adminUser' => $adminUser,
             'userAssociation' => $associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'])[0] : [],
             'userOffers' => $offersRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'], ['createdAt' => 'DESC']),
-            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -253,12 +260,13 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminAssociations(AssociationsRepository $associationsRepository, OffersRepository $offersRepository): Response
+    public function adminAssociations(AssociationsRepository $associationsRepository, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         return $this->render('admin/associations/index.html.twig', [
             'user' => $this->getUser(),
             'associations' => $associationsRepository->getAssociationsArray(),
-            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -269,12 +277,13 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminAssociationsShow(Associations $association, OffersRepository $offersRepository): Response
+    public function adminAssociationsShow(Associations $association, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         return $this->render('admin/associations/show.html.twig', [
             'user' => $this->getUser(),
             'association' => $association,
-            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -320,12 +329,13 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminArticles(ArticlesRepository $articlesRepository, OffersRepository $offersRepository): Response
+    public function adminArticles(ArticlesRepository $articlesRepository, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         return $this->render('admin/articles/index.html.twig', [
             'user' => $this->getUser(),
             'articles' => $articlesRepository->getArticlesArray(),
-            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -336,7 +346,7 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminArticlesNew(Request $request, OffersRepository $offersRepository): Response
+    public function adminArticlesNew(Request $request, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         $article = new Articles();
         $form = $this->createForm(ArticleType::class, $article);
@@ -375,6 +385,7 @@ class AdminController extends AbstractController
             'user' => $this->getUser(),
             'countValidations' => count($offersRepository->findByWorkflowState('created')),
             'form' => $form->createView(),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -385,12 +396,13 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminArticlesShow(Articles $article, OffersRepository $offersRepository): Response
+    public function adminArticlesShow(Articles $article, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         return $this->render('admin/articles/show.html.twig', [
             'user' => $this->getUser(),
             'article' => $article,
-            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -420,7 +432,7 @@ class AdminController extends AbstractController
      * @param MailerService $mailer
      * @return Response
      */
-    public function adminSendMessage(Request $request, OffersRepository $offersRepository, MailerService $mailer): Response
+    public function adminSendMessage(Request $request, OffersRepository $offersRepository, MailerService $mailer, ReportsService $reportsService): Response
     {
         if ($request->IsMethod('POST')) {
             $mailer->sendAdminEmail(
@@ -433,7 +445,8 @@ class AdminController extends AbstractController
 
         return $this->render('admin/messages.html.twig', [
             'user' => $this->getUser(),
-            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -445,13 +458,14 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminReports(SignaledOffersRepository $signaledOffersRepository, SignaledDiscussionsRepository $signaledDiscussionsRepository, OffersRepository $offersRepository): Response
+    public function adminReports(SignaledOffersRepository $signaledOffersRepository, SignaledDiscussionsRepository $signaledDiscussionsRepository, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         return $this->render('admin/reports/index.html.twig', [
             'user' => $this->getUser(),
             'signaledOffers' => $signaledOffersRepository->findByWorkflowState('created'),
             'signaledDiscussions' => $signaledDiscussionsRepository->findByWorkflowState('created'),
-            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 
@@ -463,7 +477,7 @@ class AdminController extends AbstractController
      * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminReportsDiscussionShow(Request $request, SignaledDiscussions $signaledDiscussion, OffersRepository $offersRepository): Response
+    public function adminReportsDiscussionShow(Request $request, SignaledDiscussions $signaledDiscussion, OffersRepository $offersRepository, ReportsService $reportsService): Response
     {
         if ($request->IsMethod('POST')) {
             $em = $this->getDoctrine()->getManager();
@@ -479,7 +493,8 @@ class AdminController extends AbstractController
         return $this->render('admin/reports/discussion.html.twig', [
             'user' => $this->getUser(),
             'signaledDiscussion' => $signaledDiscussion,
-            'countValidations' => count($offersRepository->findByWorkflowState('created'))
+            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countReports' => $reportsService->getCountOfReportedElements()
         ]);
     }
 

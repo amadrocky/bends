@@ -85,11 +85,21 @@
 						<i class="fas fa-envelope"></i>
 						Messages</p>
 				</a>
-				<a href="{{ path('admin_reports') }}" class="noDecorationLink">
-					<p>
-						<i class="fas fa-exclamation-triangle"></i>
-						Signalements</p>
-				</a>
+				{% if countReports > 0 %}
+					<a href="{{ path('admin_reports') }}" class="noDecorationLink">
+						<p>
+							<i class="fas fa-exclamation-triangle"></i>
+							Signalements
+							<span class="reports-number">{{ countReports }}</span>
+						</p>
+					</a>
+				{% else %}
+					<a href="{{ path('admin_reports') }}" class="noDecorationLink">
+						<p>
+							<i class="fas fa-exclamation-triangle"></i>
+							Signalements</p>
+					</a>
+				{% endif %}
 			</div>
 			<div class="bg-white w-100 overflow-auto admin-content">
 				{% block content %}{% endblock %}
