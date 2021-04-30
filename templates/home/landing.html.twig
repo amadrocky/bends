@@ -5,20 +5,27 @@
 
 {% block body %}
 	<div class="landing-title">
-		<div class="d-flex justify-content-between landing-nav-zone">
-			<div></div>
-			<nav class="landing-nav d-flex justify-content-center my-0">
-				<ul class="px-2">
-					<li onclick="scro('presentation')">Qui sommes-nous?</li>
-					<li onclick="scro('associations')">Éspace associations</li>
-					<li onclick="scro('actuality')">Actualités</li>
-					<li onclick="scro('contact')">Contact</li>
-				</ul>
-			</nav>
-			<a href="{{ path('app_register') }}" class="landing-register mx-3">
-				<p class="px-2">S'inscrire</p>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+			<a class="navbar-brand" href="/">
+				<img src="{{ asset('build/icons/violetBtn.png') }}" width="30" height="30" class="d-inline-block align-top rounded-circle box-shadow" alt="logo">
 			</a>
-		</div>
+			<button id="landing-nav-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav w-100">
+					<p class="nav-item nav-link landing-link m-0" onclick="scro('presentation'); closeNav()">Qui sommes-nous?</p>
+					<p class="nav-item nav-link landing-link m-0" onclick="scro('associations'); closeNav()">Éspace associations</p>
+					<p class="nav-item nav-link landing-link m-0" onclick="scro('actuality'); closeNav()">Actualités</p>
+					<p class="nav-item nav-link landing-link m-0" onclick="scro('contact'); closeNav()">Contact</p>
+					<div class="flex-fill text-right">
+						<a href="{{ path('app_register') }}" class="btn btn-primary">
+							S'inscrire
+						</a>
+					</div>
+				</div>
+			</div>
+		</nav>
 		<h1>Bends</h1>
 		<h2 class="cmnty">La communauté solidaire</h2>
 		<div class="row landing-list w-100 mx-0">
@@ -267,6 +274,10 @@ error: function () {
 alert('error');
 }
 })
+}
+
+function closeNav() {
+document.getElementById("landing-nav-btn").click();
 }
 	</script>
 {% endblock %}

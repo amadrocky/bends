@@ -1,391 +1,372 @@
-    .landing-title {
-        background: rgb(255, 255, 255);
-        background-image: linear-gradient(170deg, rgba(255, 255, 255, .95) 50%, rgba(63, 81, 181, .40) 50%), url("../static/images/person-1245789_1920.jpg");
-        background-size: cover;
-        height: 100%;
-        h1 {
-            padding-left: 20px;
-            font-size: 130px;
-            padding-top: 50px;
-            opacity: 0;
-            transform: translateX(-30px);
-            animation: apparition 0.4s .3s ease-out forwards;
-        }
-        h2 {
-            padding-left: 20px;
-            font-size: 60px;
-            opacity: 0;
-            transform: translateY(-30px);
-            animation: apparition 0.4s .7s ease-out forwards;
-        }
+.landing-title {
+    background: rgb(255, 255, 255);
+    background-image: linear-gradient(170deg, rgba(255, 255, 255, .95) 50%, rgba(63, 81, 181, .40) 50%), url("../static/images/person-1245789_1920.jpg");
+    background-size: cover;
+    height: 100%;
+    h1 {
+        padding-left: 20px;
+        font-size: 130px;
+        padding-top: 120px;
+        opacity: 0;
+        transform: translateX(-30px);
+        animation: apparition 0.4s .3s ease-out forwards;
     }
-    
-    .landing-nav {
-        padding-top: 20px;
-        ul {
-            display: flex;
-            list-style-type: none;
-            font-family: 'Oswald', sans-serif;
-        }
-        li {
-            color: $violet;
-            margin: 0px 5px 0px 5px;
-            font-size: 20px;
-            display: table-cell;
-            position: relative;
-            &:after {
-                background: none repeat scroll 0 0 transparent;
-                bottom: 0;
-                content: "";
-                display: block;
-                height: 1px;
-                left: 50%;
-                position: absolute;
-                background: $blue;
-                transition: width 0.3s ease 0s, left 0.3s ease 0s;
-                width: 0;
-            }
-            &:hover:after {
-                width: 100%;
-                left: 0;
-            }
-        }
+    h2 {
+        padding-left: 20px;
+        font-size: 60px;
+        opacity: 0;
+        transform: translateY(-30px);
+        animation: apparition 0.4s .7s ease-out forwards;
     }
-    
-    .landing-nav li:hover {
-        color: $blue;
-        text-decoration: none;
-        cursor: pointer;
+}
+
+.navbar-toggler {
+    border-color: rgba(96, 125, 139, .2) !important;
+}
+
+.landing-link {
+    color: $blue !important;
+    &:after {
+        background: none repeat scroll 0 0 transparent;
+        bottom: 0;
+        content: "";
+        display: block;
+        height: 1px;
+        left: 50%;
+        background: $blue;
+        transition: width 0.3s ease 0s, left 0.3s ease 0s;
+        width: 0;
     }
-    
-    .landing-presentation {
-        background-image: linear-gradient(rgba(255, 255, 255, .80), rgba(255, 255, 255, .80)), url("../static/images/agapanthus-1465146_640.jpg");
-        background-size: cover;
-        background-position-y: 47%;
-        .presentation-img {
-            height: 300px;
-            width: auto;
-            box-shadow: 1px 1px 10px 1px lightgrey;
-        }
+    &:hover:after {
+        width: 100%;
+        left: 0;
     }
-    
-    .landing-register {
-        padding-top: 20px;
-        p {
-            color: $violet;
-            border: 1px solid $violet;
-            border-radius: 20px;
-        }
-    }
-    
-    .landing-register:hover {
-        p {
-            color: $blue;
-            border: 1px solid $blue;
-        }
-        text-decoration: none;
-    }
-    
-    .landing-list {
-        margin-top: 300px;
-        color: white;
-        ul {
-            list-style-type: none;
-            .li1 {
-                opacity: 0;
-                transform: translateY(-30px);
-                animation: apparition 0.4s 1s ease-out forwards;
-            }
-            .li2 {
-                opacity: 0;
-                transform: translateY(-30px);
-                animation: apparition 0.4s 1.2s ease-out forwards;
-            }
-            .li3 {
-                opacity: 0;
-                transform: translateY(-30px);
-                animation: apparition 0.4s 1.5s ease-out forwards;
-            }
-        }
-        p {
-            font-size: 3vh;
-        }
-    }
-    
-    .landing-slide {
-        .carousel-item img {
-            max-height: 50vh;
-            object-fit: cover;
-        }
-        .carousel-caption {
-            background-color: rgba(0, 0, 0, .6);
-            i {
-                font-size: 30px;
-                color: $violet;
-                text-shadow: 1px 1px 2px white;
-            }
-            em {
-                text-shadow: 1px 1px 1px white;
-            }
-        }
-        .carousel-indicators li {
-            width: 10px;
-            height: 10px;
-            border-radius: 100%;
-        }
-    }
-    
-    .landing-btn-box {
-        .btn:link,
-        .btn:visited {
-            text-transform: uppercase;
-            text-decoration: none;
-            padding: 15px 40px;
-            border-radius: 100px;
-            transition: all .2s;
-        }
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        .btn:active {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
-        .btn-white {
-            background-color: #fff;
-            color: $blue;
-        }
-        .btn::after {
-            content: "";
-            display: inline-block;
-            height: 100%;
-            width: 100%;
-            border-radius: 100px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            transition: all .4s;
-        }
-        .btn-white::after {
-            background-color: #fff;
-        }
-        .btn:hover::after {
-            transform: scaleX(1.4) scaleY(1.6);
-            opacity: 0;
-        }
-        .btn-animated {
-            animation: moveInBottom 5s ease-out;
-            animation-fill-mode: backwards;
-        }
-    }
-    
-    .landing-white-block {
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: -1px 5px 5px -4px black;
-    }
-    
-    .landing-asso {
-        .asso-block-list {
-            p {
-                text-align: justify;
-                font-weight: bold;
-                color: $violet;
-                i {
-                    color: $blue;
-                }
-            }
-        }
-        .asso-block-img {
-            height: 250px;
-            width: auto;
-        }
-    }
-    
-    .landing-cmt {
-        box-shadow: 10px 0px 5px black;
-    }
-    
-    .landing-quote {
-        font-size: 50px;
-        color: $violet;
-    }
-    
-    .comment-img {
-        height: 100px;
-        width: 100px;
+}
+
+.landing-link:hover {
+    color: $violet !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.landing-presentation {
+    background-image: linear-gradient(rgba(255, 255, 255, .80), rgba(255, 255, 255, .80)), url("../static/images/agapanthus-1465146_640.jpg");
+    background-size: cover;
+    background-position-y: 47%;
+    .presentation-img {
+        height: 300px;
+        width: auto;
         box-shadow: 1px 1px 10px 1px lightgrey;
     }
-    
-    .landing-actu {
-        .title-bordered {
-            border-style: inset;
-            border-color: $blue;
-            border-width: 5px;
-        }
-        .landing-actu-title {
-            font-size: 50px;
-            line-height: 45px;
-        }
-        .actu-img {
-            height: 200px;
-            width: 200px;
-            box-shadow: 1px 1px 10px 1px lightgrey;
-        }
-    }
-    
-    .actu-btn {
-        display: inline-block;
-        padding: .75rem 1.25rem;
-        border-radius: 10rem;
-        color: #fff;
-        text-transform: uppercase;
-        font-size: 1rem;
-        letter-spacing: .15rem;
-        transition: all .3s;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-        border: none;
-        &:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: $violet;
-            border-radius: 10rem;
-            z-index: -2;
-        }
-        &:before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0%;
-            height: 100%;
-            background-color: darken($violet, 15%);
-            transition: all .3s;
-            border-radius: 10rem;
-            z-index: -1;
-        }
-        &:hover {
-            text-decoration: none;
-            color: #fff;
-            &:before {
-                width: 100%;
-            }
-        }
-    }
-    
-    .landing-mobile {
-        background-image: url("../static/images/passenger-5593947_1920.jpg");
-        background-size: cover;
-        background-attachment: fixed;
-        .landing-mobile-text {
-            background-color: rgba(0, 0, 0, .6);
-            .landing-mobile-title {
-                font-size: 50px;
-                color: $blue;
-                font-weight: normal;
-                text-shadow: 1px 1px 1px white;
-            }
-            p {
-                font-size: 30px;
-                color: white;
-                font-weight: bold;
-            }
-        }
-        .landing-mobile-img {
-            height: 400px;
-            width: auto;
-        }
-    }
-    
-    footer {
-        color: grey;
-        h3 {
-            color: lightgrey !important;
-            font-size: 40px;
-            text-shadow: 1px 1px 1px black;
-        }
-        h6 {
-            font-size: 20px;
-        }
-        a {
-            color: grey;
-        }
-        a:hover {
-            text-decoration: none;
-            color: white;
-        }
-    }
-    
-    @keyframes apparition {
-        100% {
-            opacity: 1;
-            transform: none;
-        }
-    }
-    
-    @keyframes moveInBottom {
-        0% {
+}
+
+.landing-register {
+    color: $violet;
+    border: 1px solid $violet;
+    border-radius: 20px;
+}
+
+.landing-register:hover {
+    color: $blue;
+    border: 1px solid $blue;
+    text-decoration: none;
+}
+
+.landing-list {
+    margin-top: 300px;
+    color: white;
+    ul {
+        list-style-type: none;
+        .li1 {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(-30px);
+            animation: apparition 0.4s 1s ease-out forwards;
         }
-        100% {
-            opacity: 1;
-            transform: translateY(0px);
+        .li2 {
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: apparition 0.4s 1.2s ease-out forwards;
+        }
+        .li3 {
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: apparition 0.4s 1.5s ease-out forwards;
         }
     }
-    /* iPhone 6/7/8 &Plus &X*/
-    
-    @media screen and (max-width: 414px) {
-        .landing-nav-zone {
-            margin-bottom: 10px;
+    p {
+        font-size: 3vh;
+    }
+}
+
+.landing-slide {
+    .carousel-item img {
+        max-height: 50vh;
+        object-fit: cover;
+    }
+    .carousel-caption {
+        background-color: rgba(0, 0, 0, .6);
+        i {
+            font-size: 30px;
+            color: $violet;
+            text-shadow: 1px 1px 2px white;
         }
-        .landing-nav li {
-            font-size: 12px;
-            text-align: center;
+        em {
+            text-shadow: 1px 1px 1px white;
         }
-        .landing-register {
-            font-size: 15px;
-        }
-        .landing-title h1 {
-            padding-top: 0px !important;
-            font-size: 80px !important;
-        }
-        .landing-title h2 {
-            font-size: 40px !important;
-        }
-        .landing-list {
-            margin-top: 20vh !important;
-            p {
-                font-size: 17px;
+    }
+    .carousel-indicators li {
+        width: 10px;
+        height: 10px;
+        border-radius: 100%;
+    }
+}
+
+.landing-btn-box {
+    .btn:link,
+    .btn:visited {
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 15px 40px;
+        border-radius: 100px;
+        transition: all .2s;
+    }
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .btn:active {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+    .btn-white {
+        background-color: #fff;
+        color: $blue;
+    }
+    .btn::after {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        border-radius: 100px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: all .4s;
+    }
+    .btn-white::after {
+        background-color: #fff;
+    }
+    .btn:hover::after {
+        transform: scaleX(1.4) scaleY(1.6);
+        opacity: 0;
+    }
+    .btn-animated {
+        animation: moveInBottom 5s ease-out;
+        animation-fill-mode: backwards;
+    }
+}
+
+.landing-white-block {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: -1px 5px 5px -4px black;
+}
+
+.landing-asso {
+    .asso-block-list {
+        p {
+            text-align: justify;
+            font-weight: bold;
+            color: $violet;
+            i {
+                color: $blue;
             }
         }
-        .presentation-img {
-            height: 150px !important;
-            width: auto;
-            box-shadow: 1px 1px 10px 1px lightgrey;
-        }
-        .asso-block-img {
-            height: 130px !important;
-            width: auto;
+    }
+    .asso-block-img {
+        height: 250px;
+        width: auto;
+    }
+}
+
+.landing-cmt {
+    box-shadow: 10px 0px 5px black;
+}
+
+.landing-quote {
+    font-size: 50px;
+    color: $violet;
+}
+
+.comment-img {
+    height: 100px;
+    width: 100px;
+    box-shadow: 1px 1px 10px 1px lightgrey;
+}
+
+.landing-actu {
+    .title-bordered {
+        border-style: inset;
+        border-color: $blue;
+        border-width: 5px;
+    }
+    .landing-actu-title {
+        font-size: 50px;
+        line-height: 45px;
+    }
+    .actu-img {
+        height: 200px;
+        width: 200px;
+        box-shadow: 1px 1px 10px 1px lightgrey;
+    }
+}
+
+.actu-btn {
+    display: inline-block;
+    padding: .75rem 1.25rem;
+    border-radius: 10rem;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: .15rem;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    border: none;
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: $violet;
+        border-radius: 10rem;
+        z-index: -2;
+    }
+    &:before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0%;
+        height: 100%;
+        background-color: darken($violet, 15%);
+        transition: all .3s;
+        border-radius: 10rem;
+        z-index: -1;
+    }
+    &:hover {
+        text-decoration: none;
+        color: #fff;
+        &:before {
+            width: 100%;
         }
     }
-    
-    @media screen and (min-width: 1366px) {
-        .landing-list {
-            margin-top: 15vh !important;
+}
+
+.landing-mobile {
+    background-image: url("../static/images/passenger-5593947_1920.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    .landing-mobile-text {
+        background-color: rgba(0, 0, 0, .6);
+        .landing-mobile-title {
+            font-size: 50px;
+            color: $blue;
+            font-weight: normal;
+            text-shadow: 1px 1px 1px white;
+        }
+        p {
+            font-size: 30px;
+            color: white;
+            font-weight: bold;
         }
     }
-    
-    @media screen and (min-width: 1500px) {
-        .landing-list {
-            margin-top: 35vh !important;
+    .landing-mobile-img {
+        height: 400px;
+        width: auto;
+    }
+}
+
+footer {
+    color: grey;
+    h3 {
+        color: lightgrey !important;
+        font-size: 40px;
+        text-shadow: 1px 1px 1px black;
+    }
+    h6 {
+        font-size: 20px;
+    }
+    a {
+        color: grey;
+    }
+    a:hover {
+        text-decoration: none;
+        color: white;
+    }
+}
+
+@keyframes apparition {
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+
+/* iPhone 6/7/8 &Plus &X*/
+
+@media screen and (max-width: 414px) {
+    .landing-register {
+        font-size: 15px;
+    }
+    .landing-title h1 {
+        padding-top: 60px !important;
+        font-size: 80px !important;
+    }
+    .landing-title h2 {
+        font-size: 40px !important;
+    }
+    .landing-list {
+        margin-top: 20vh !important;
+        p {
+            font-size: 17px;
         }
     }
+    .presentation-img {
+        height: 150px !important;
+        width: auto;
+        box-shadow: 1px 1px 10px 1px lightgrey;
+    }
+    .asso-block-img {
+        height: 130px !important;
+        width: auto;
+    }
+}
+
+@media screen and (min-width: 1366px) {
+    .landing-list {
+        margin-top: 15vh !important;
+    }
+}
+
+@media screen and (min-width: 1500px) {
+    .landing-list {
+        margin-top: 35vh !important;
+    }
+}
