@@ -435,12 +435,21 @@ class AdminController extends AbstractController
     public function adminSendMessage(Request $request, OffersRepository $offersRepository, MailerService $mailer, ReportsService $reportsService): Response
     {
         if ($request->IsMethod('POST')) {
-            $mailer->sendAdminEmail(
-                $_POST['email'], 
-                $_POST['subject'],
-                $_POST['message'],
-                'emails/adminMessage.html.twig'
+            $mailer->sendInBlueEmail(
+                $_POST['email'],
+                3,
+                [
+                    'OBJET' => $_POST['subject'],
+                    'MESSAGE' => $_POST['message']
+                ]
             );
+
+            // $mailer->sendAdminEmail(
+            //     $_POST['email'], 
+            //     $_POST['subject'],
+            //     $_POST['message'],
+            //     'emails/adminMessage.html.twig'
+            // );
         }
 
         return $this->render('admin/messages.html.twig', [
