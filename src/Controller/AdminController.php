@@ -143,18 +143,20 @@ class AdminController extends AbstractController
         $em->flush();
 
         if ($_POST['action'] == 'active') {
-            $mailer->sendEmail(
-                $offer->getCreatedBy()->getFirstname(), 
+            $mailer->sendInBlueEmail(
                 $offer->getCreatedBy()->getEmail(),
-                'Votre annonce est en ligne !',
-                'emails/activeOffer.html.twig'
+                2,
+                [
+                    'PRENOM' => $offer->getCreatedBy()->getFirstname()
+                ]
             );
         } else {
-            $mailer->sendEmail(
-                $offer->getCreatedBy()->getFirstname(), 
+            $mailer->sendInBlueEmail(
                 $offer->getCreatedBy()->getEmail(),
-                'Votre annonce',
-                'emails/inactiveOffer.html.twig'
+                5,
+                [
+                    'PRENOM' => $offer->getCreatedBy()->getFirstname()
+                ]
             );
         }
 
@@ -235,18 +237,20 @@ class AdminController extends AbstractController
         $em->flush();
 
         if ($_POST['action'] == 'active') {
-            $mailer->sendEmail(
-                $user->getFirstname(), 
+            $mailer->sendInBlueEmail(
                 $user->getEmail(),
-                'Informations sur votre compte',
-                'emails/welcome.html.twig'
+                12,
+                [
+                    'PRENOM' => $user->getFirstname()
+                ]
             );
         } else {
-            $mailer->sendEmail(
-                $user->getFirstname(), 
+            $mailer->sendInBlueEmail(
                 $user->getEmail(),
-                'Informations sur votre compte',
-                'emails/inactiveUser.html.twig'
+                6,
+                [
+                    'PRENOM' => $user->getFirstname()
+                ]
             );
         }
 
@@ -304,18 +308,20 @@ class AdminController extends AbstractController
         $em->flush();
 
         if ($_POST['action'] == 'active') {
-            $mailer->sendEmail(
-                $association->getCreatedBy()->getFirstname(), 
+            $mailer->sendInBlueEmail(
                 $association->getCreatedBy()->getEmail(),
-                'Informations sur votre association',
-                'emails/activeAssociation.html.twig'
+                1,
+                [
+                    'PRENOM' => $association->getCreatedBy()->getFirstname()
+                ]
             );
         } else {
-            $mailer->sendEmail(
-                $association->getCreatedBy()->getFirstname(), 
+            $mailer->sendInBlueEmail(
                 $association->getCreatedBy()->getEmail(),
-                'Informations sur votre association',
-                'emails/inactiveAssociation.html.twig'
+                4,
+                [
+                    'PRENOM' => $association->getCreatedBy()->getFirstname()
+                ]
             );
         }
 
@@ -443,13 +449,6 @@ class AdminController extends AbstractController
                     'MESSAGE' => $_POST['message']
                 ]
             );
-
-            // $mailer->sendAdminEmail(
-            //     $_POST['email'], 
-            //     $_POST['subject'],
-            //     $_POST['message'],
-            //     'emails/adminMessage.html.twig'
-            // );
         }
 
         return $this->render('admin/messages.html.twig', [

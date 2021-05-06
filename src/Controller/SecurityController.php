@@ -21,9 +21,10 @@ use App\Repository\UserRepository;
 class SecurityController extends AbstractController
 {
     /**
+     * @Route("/login", name="app_login")
+     *
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
-     * @Route("/login", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -45,11 +46,12 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/register", name="app_register")
+     *
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param MailerService $mailer
      * @return Response
-     * @throws \Exception
-     * @Route("/register", name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, MailerService $mailer): Response
     {
@@ -76,12 +78,13 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $mailer->sendEmail(
-                $user->getFirstname(), 
-                $user->getEmail(), 
-                'Validation de votre compte',
-                'emails/signup.html.twig',
-                $user->getToken()
+            $mailer->sendInBlueEmail(
+                $user->getEmail(),
+                11,
+                [
+                    'PRENOM' => $user->getFirstname(),
+                    'TOKEN' => $user->getToken()
+                ]
             );
 
             $this->addFlash('success', 'Votre compte utilisateur a bien été créé. Un email de validation vous a été envoyé.');
@@ -103,6 +106,7 @@ class SecurityController extends AbstractController
      *
      * @param string $token
      * @param UserRepository $userRepository
+     * @param MailerService $mailer
      * @return RedirectResponse
      */
     public function activeAccount(string $token, UserRepository $userRepository, MailerService $mailer): RedirectResponse
@@ -117,12 +121,12 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $mailer->sendEmail(
-                $user->getFirstname(), 
+            $mailer->sendInBlueEmail(
                 $user->getEmail(),
-                'Bienvenue dans la communauté Bends !',
-                'emails/welcome.html.twig',
-                $user->getToken()
+                12,
+                [
+                    'PRENOM' => $user->getFirstname()
+                ]
             );
 
             $this->addFlash('success', 'Votre compte utilisateur est actif.');
@@ -151,12 +155,13 @@ class SecurityController extends AbstractController
             $em->flush();
         }
 
-        $mailer->sendEmail(
-            $user->getFirstname(), 
-            $user->getEmail(), 
-            'Validation de votre compte',
-            'emails/signup.html.twig',
-            $user->getToken()
+        $mailer->sendInBlueEmail(
+            $user->getEmail(),
+            11,
+            [
+                'PRENOM' => $user->getFirstname(),
+                'TOKEN' => $user->getToken()
+            ]
         );
 
         $this->addFlash('success', 'Un email de validation vous a été envoyé.');
@@ -185,12 +190,13 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $mailer->sendEmail(
-                $user->getFirstname(), 
-                $user->getEmail(), 
-                'Réinitialisation de votre mot de passe',
-                'emails/recover.html.twig',
-                $user->getToken()
+            $mailer->sendInBlueEmail(
+                $user->getEmail(),
+                10,
+                [
+                    'PRENOM' => $user->getFirstname(),
+                    'TOKEN' => $user->getToken()
+                ]
             );
         }
 
@@ -229,11 +235,12 @@ class SecurityController extends AbstractController
                 $em->persist($user);
                 $em->flush();
 
-                $mailer->sendEmail(
-                    $user->getFirstname(), 
-                    $user->getEmail(), 
-                    'Modification de votre mot de passe',
-                    'emails/passwordModified.html.twig'
+                $mailer->sendInBlueEmail(
+                    $user->getEmail(),
+                    9,
+                    [
+                        'PRENOM' => $user->getFirstname()
+                    ]
                 );
 
                 $this->addFlash('success', 'Votre mot de passe à bien été modifié.');

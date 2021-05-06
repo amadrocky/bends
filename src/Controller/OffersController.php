@@ -27,7 +27,6 @@ use Dompdf\Options;
 use Endroid\QrCode\QrCode;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
-use App\Service\MailerService;
 
 /**
  * @Route("/app/offers")
@@ -234,7 +233,7 @@ class OffersController extends AbstractController
      * @param DiscussionsRepository $discussionsRepository
      * @return Response
      */
-    public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, AssociationsRepository $associationsRepository, FavoritesRepository $favoritesRepository, MailerService $mailer): Response
+    public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, AssociationsRepository $associationsRepository, FavoritesRepository $favoritesRepository): Response
     {
         if ($offer->getWorkflowState() != 'active') {
             return $this->redirectToRoute('offers_deleted', ['id' => $offer->getId()]);

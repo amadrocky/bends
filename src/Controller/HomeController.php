@@ -21,13 +21,14 @@ class HomeController extends AbstractController
     public function landing(Request $request, MailerService $mailer): Response
     {
         if ($request->IsMethod('POST')) {
-            $mailer->sendEmail(
-                $_POST['email'],
-                $_POST['email'],
-                'Nouveau message de ' . $_POST['name'],
-                'emails/landingMessage.html.twig',
-                null,
-                $_POST['message']
+            $mailer->sendInBlueEmail(
+                'amadou.kane.dev@gmail.com',
+                7,
+                [
+                    'PRENOM' => $_POST['name'],
+                    'EMAIL' => $_POST['email'],
+                    'MESSAGE' => $_POST['message']
+                ]
             );
         }
 

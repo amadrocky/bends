@@ -95,11 +95,13 @@ class MessagesController extends AbstractController
         $entityManager->persist($message);
         $entityManager->flush();
 
-        $mailer->sendEmail(
-            $offer->getCreatedBy()->getFirstname(), 
-            $offer->getCreatedBy()->getEmail(), 
-            'Nouveau message de ' . $this->getUser()->getPseudonym(),
-            'emails/newMessage.html.twig'
+        $mailer->sendInBlueEmail(
+            $offer->getCreatedBy()->getEmail(),
+            8,
+            [
+                'FROM' => $this->getUser()->getPseudonym(),
+                'PRENOM' => $offer->getCreatedBy()->getFirstname()
+            ]
         );
 
         return $this->json(['offer' => $offer->getId()]);
@@ -150,12 +152,11 @@ class MessagesController extends AbstractController
     /**
      * @Route("/discussion/{id}/new", name="discussion_message", requirements={"id":"\d+"}, methods={"POST"})
      *
-     * @param Request $request
      * @param Discussions $discussion
      * @param MailerService $mailer
      * @return Response
      */
-    public function newMessage(Request $request, Discussions $discussion, MailerService $mailer): Response
+    public function newMessage(Discussions $discussion, MailerService $mailer): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $message = new Message();
@@ -186,11 +187,13 @@ class MessagesController extends AbstractController
         $entityManager->persist($message);
         $entityManager->flush();
 
-        $mailer->sendEmail(
-            $discussion->getCreatedBy() === $this->getUser() ? $discussion->getOffer()->getCreatedBy()->getFirstname() : $discussion->getCreatedBy()->getFirstname(), 
-            $discussion->getCreatedBy() === $this->getUser() ? $discussion->getOffer()->getCreatedBy()->getEmail() : $discussion->getCreatedBy()->getEmail(), 
-            'Nouveau message de '. $this->getUser()->getPseudonym(),
-            'emails/newMessage.html.twig'
+        $mailer->sendInBlueEmail(
+            $discussion->getCreatedBy() === $this->getUser() ? $discussion->getOffer()->getCreatedBy()->getEmail() : $discussion->getCreatedBy()->getEmail(),
+            8,
+            [
+                'FROM' => $this->getUser()->getPseudonym(),
+                'PRENOM' => $discussion->getCreatedBy() === $this->getUser() ? $discussion->getOffer()->getCreatedBy()->getFirstname() : $discussion->getCreatedBy()->getFirstname()
+            ]
         );
 
         return $this->json(['message' => $message->getId()]);

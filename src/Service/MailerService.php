@@ -98,11 +98,10 @@ class MailerService
         $sendSmtpEmail['to'] = [['email' => $to]];
         $sendSmtpEmail['templateId'] = $templateId;
         $sendSmtpEmail['params'] = $params;
-        //$sendSmtpEmail['headers'] = array('X-Mailin-custom'=>'custom_header_1:custom_value_1|custom_header_2:custom_value_2');
+        //$sendSmtpEmail['headers'] = ['X-Mailin-custom' => 'content-type:application/json|accept:application/json'];
 
         try {
             $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
-            print_r($result);
         } catch (Exception $e) {
             echo 'Exception when calling TransactionalEmailsApi->sendTransacEmail: ', $e->getMessage(), PHP_EOL;
         }
