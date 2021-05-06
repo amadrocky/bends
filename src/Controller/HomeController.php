@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\MessageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Service\MailerService;
+use App\Entity\ContactMessage;
 
 class HomeController extends AbstractController
 {
@@ -15,21 +15,21 @@ class HomeController extends AbstractController
      * @Route("/", name="land", methods={"GET","POST"})
      *
      * @param Request $request
-     * @param MailerService $mailer
      * @return Response
      */
-    public function landing(Request $request, MailerService $mailer): Response
+    public function landing(Request $request): Response
     {
         if ($request->IsMethod('POST')) {
-            $mailer->sendInBlueEmail(
-                'amadou.kane.dev@gmail.com',
-                7,
-                [
-                    'PRENOM' => $_POST['name'],
-                    'EMAIL' => $_POST['email'],
-                    'MESSAGE' => $_POST['message']
-                ]
-            );
+            $message = new ContactMessage();
+            $em = $this->getDoctrine()->getManager();
+
+            $message->setName($_POST['name']);
+            $message->setEmail($_POST['email']);
+            $message->setMessage($_POST['message']);
+            $message->setCreatedAt(new \DateTime());
+            $message->setWorkflowState('active');
+            $em->persist($message);
+            $em->flush();
         }
 
         return $this->render('home/landing.html.twig');
