@@ -310,6 +310,23 @@ footer {
     }
 }
 
+.banniere {
+    background: rgba(96, 125, 139, .8);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    font-family: 'Oswald', 'sans-serif';
+}
+
+.text-banniere {
+    font-size: 12px;
+}
+
 @keyframes apparition {
     100% {
         opacity: 1;

@@ -240,6 +240,16 @@
 		</div>
 	</footer>
 
+	{% if cookie %}
+		<div id="cookie" class="banniere">
+			<div class="text-banniere d-flex">
+				<p class="mb-0 my-auto">Notre site utilise des cookies pour une meilleure expérience. En poursuivant votre navigation, vous acceptez l'utilisation.</p>
+			</div>
+			<div class="button-banniere">
+				<button class="btn btn-info shadow-box" onclick="acceptCookie()">J'accepte</button>
+			</div>
+		</div>
+	{% endif %}
 	<script type="text/javascript">
 		function scro(id) {
 document.getElementById(id).scrollIntoView({behavior: 'smooth'});
@@ -280,6 +290,19 @@ alert('error');
 
 function closeNav() {
 document.getElementById("landing-nav-btn").click();
+}
+
+function acceptCookie() {
+$.ajax({
+url: "{{ path('accept_cookie') }}",
+type: 'POST',
+success: function () {
+	document.getElementById('cookie').classList.add('d-none');
+},
+error: function () {
+alert('error')
+}
+})
 }
 	</script>
 {% endblock %}

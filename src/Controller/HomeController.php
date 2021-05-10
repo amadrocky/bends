@@ -19,6 +19,12 @@ class HomeController extends AbstractController
      */
     public function landing(Request $request): Response
     {
+        $cookie = true;
+
+        if (isset($_COOKIE['accept-cookie'])) {
+            $cookie = false;
+        }
+        
         if ($request->IsMethod('POST')) {
             $message = new ContactMessage();
             $em = $this->getDoctrine()->getManager();
@@ -32,7 +38,7 @@ class HomeController extends AbstractController
             $em->flush();
         }
 
-        return $this->render('home/landing.html.twig');
+        return $this->render('home/landing.html.twig', ['cookie' => $cookie]);
     }
 
     /**
@@ -56,5 +62,17 @@ class HomeController extends AbstractController
             'user' => $this->getUser(),
             'messages' => $messages
         ]);
+    }
+
+    /**
+     * @Route("/accept-cookie", name="accept_cookie", methods={"POST"})
+     *
+     * @return Response
+     */
+    public function setCookie(): Response
+    {
+        \setcookie('accept-cookie', 'true', time() + 365*24*3600); // 1 year
+
+        return $this->json(['accept-cookie' => 'created']);
     }
 }
