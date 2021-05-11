@@ -26,6 +26,23 @@
     {% endblock %}
 
     <title>{% block title %}Welcome!{% endblock %}</title>
+    <meta name="description" content="Donnez ou récupérez des objets et services bénévoles auprès de particuliers, professionnels et associations autour de vous !">
+
+    <!-- Meta facebook, linkedin, ... -->
+    <meta property="og:image" content="https://bends-community.fr/build/images/Bends-rem-bg.png"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:description" content="Donnez ou récupérez des objets et services bénévoles auprès de particuliers, professionnels et associations autour de vous !"/>
+    <meta property="og:locale" content="fr_FR"/>
+    <meta property="og:title" content="Bends | La communauté solidaire"/>
+
+    <!-- Meta Twitter -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:site" content="@bends-community"/>
+    <meta name="twitter:creator" content="@amadrocky"/>
+    <meta name="twitter:title" content="Bends | La communauté solidaire"/>
+    <meta name="twitter:description" content="Donnez ou récupérez des objets et services bénévoles auprès de particuliers, professionnels et associations autour de vous !"/>
+    <meta name="twitter:image" content="https://bends-community.fr/build/images/Bends-rem-bg.png"/>
+
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
