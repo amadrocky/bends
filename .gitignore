@@ -7,6 +7,12 @@
 /public/bundles/
 /var/
 /vendor/
+/assets/static/images/actualities/
+/assets/static/images/associations/
+/assets/static/images/messages/
+/assets/static/images/offers/
+/assets/static/images/profil/
+/assets/static/images/qrCodes/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
