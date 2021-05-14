@@ -173,7 +173,7 @@ class OffersController extends AbstractController
             $entityManager->flush();
 
             // Create a basic QR code
-            $qrCode = new QrCode('http://127.0.0.1:8000/offers/' . $offer->getId());
+            $qrCode = new QrCode('https://www.bends-community.fr/app/offers/' . $offer->getId());
             $qrCode->setSize(300);
 
             // Set advanced options
