@@ -40,7 +40,7 @@
                     {% if user %}
                         {% if user.profilImage %}
                             <img class="menuButton rounded-circle"
-                                 src="/build/images/profil/{{ user.profilImage }}"
+                                 src="{{ asset('build/images/profil/') }}{{ user.profilImage }}"
                                  alt="Avatar">
                         {% else %}
                             <img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}"
