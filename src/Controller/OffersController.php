@@ -187,7 +187,7 @@ class OffersController extends AbstractController
             $qrCodeName = uniqId() . '.png';
 
             // Save it to a file
-            $qrCode->writeFile($_SERVER['PWD'] . '/assets/static/images/qrCodes/'. $qrCodeName);
+            $qrCode->writeFile('/var/www/bends/bends/assets/static/images/qrCodes/'. $qrCodeName);
 
             $offer->setQrCode($qrCodeName);
             $entityManager->persist($offer);
