@@ -76,7 +76,7 @@ class UserController extends AbstractController
         $cities = [];
         $entityManager = $this->getDoctrine()->getManager();
         $fileName = $_FILES['imgProfile']['name'];
-        $uploadDir = $_SERVER['PWD'] . '/assets/static/images/profil/';
+        $uploadDir = './assets/static/images/profil/';
 
         if ($_POST['lastname'] !== $user->getLastname()) {
             $user->setLastname($_POST['lastname']);
