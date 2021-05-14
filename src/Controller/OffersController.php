@@ -147,7 +147,7 @@ class OffersController extends AbstractController
             }
 
             /* Récupération des images */
-            $uploadDir = $_SERVER['PWD'] . '/assets/static/images/offers/';
+            $uploadDir = '/var/www/bends/bends/assets/static/images/offers/';
             $files = [];
 
             for ($i = 1; $i <= 3; $i++) {

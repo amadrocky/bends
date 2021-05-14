@@ -143,7 +143,7 @@ class UserController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
-            $uploadDir = $_SERVER['PWD'] . '/assets/static/images/profil/';
+            $uploadDir = '/var/www/bends/bends/assets/static/images/profil/';
             
             foreach ($user->getOffers() as $offer) {
                 $user->removeOffer($offer);
