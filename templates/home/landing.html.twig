@@ -238,6 +238,20 @@
 				</a>
 			</div>
 		</div>
+		<div class="text-center">
+			<p>
+				<small>Bends -</small>
+				<a href="https://www.facebook.com/Bends-106875601578213" target="_blank">
+					<i class="fab fa-facebook-square"></i>
+				</a>
+				<a href="https://www.instagram.com/bends_community/" target="_blank">
+					<i class="fab fa-instagram"></i>
+				</a>
+				<a href="https://www.linkedin.com/company/bends-community" target="_blank">
+					<i class="fab fa-linkedin"></i>
+				</a>
+			</p>
+		</div>
 	</footer>
 
 	{% if cookie %}
@@ -297,7 +311,7 @@ $.ajax({
 url: "{{ path('accept_cookie') }}",
 type: 'POST',
 success: function () {
-	document.getElementById('cookie').classList.add('d-none');
+document.getElementById('cookie').classList.add('d-none');
 },
 error: function () {
 alert('error')
