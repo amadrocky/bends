@@ -12,7 +12,7 @@
 					<div class="card-body">
 						<div class="text-center">
 							{% if user.profilImage %}
-								<img class="profilImage rounded-circle img-thumbnail" src="/build/images/profil/{{ user.profilImage }}" alt="Avatar">
+								<img class="profilImage rounded-circle img-thumbnail" src="{{ asset('build/images/profil/' }}{{ user.profilImage }}" alt="Avatar">
 							{% else %}
 								<img class="profilImage rounded-circle img-thumbnail" src="{{ asset('build/icons/Avatar.png') }}" alt="Avatar">
 							{% endif %}
