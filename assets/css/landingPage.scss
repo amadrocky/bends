@@ -24,6 +24,10 @@
     border-color: rgba(96, 125, 139, .2) !important;
 }
 
+.transparent-nav {
+    background-color: rgba(248, 249, 250, .95);
+}
+
 .landing-link {
     color: $blue !important;
     &:after {
