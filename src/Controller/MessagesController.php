@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Repository\MessageRepository;
 use App\Repository\DiscussionsRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -20,23 +21,40 @@ use App\Service\MailerService;
  */
 class MessagesController extends AbstractController
 {
+    private $paginator;
+
+    private $msg;
+
+    private $mailer;
+
+    public function __construct(
+        DiscussionsRepository $discussionsRepository, 
+        MessageRepository $msg, 
+        PaginatorInterface $paginator, 
+        MailerService $mailer
+    )
+    {
+        $this->discussionsRepository = $discussionsRepository;
+        $this->msg = $msg;
+        $this->paginator = $paginator;
+        $this->mailer = $mailer;
+    }
+    
     /**
      * @Route("/", name="index", methods={"GET"})
      *
      * @param Request $request
-     * @param MessageRepository $messageRepository
-     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function index(Request $request, DiscussionsRepository $discussionsRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $datas = $discussionsRepository->findByUser($this->getUser());
+        $datas = $this->discussionsRepository->findByUser($this->getUser());
 
-        $discussions = $paginator->paginate(
+        $discussions = $this->paginator->paginate(
             $datas, //on passe les données
             $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
             10// nombre d'éléments
@@ -56,11 +74,9 @@ class MessagesController extends AbstractController
      *
      * @param Request $request
      * @param Offers $offer
-     * @param DiscussionsRepository $discussionsRepository
-     * @param MailerService $mailer
      * @return Response
      */
-    public function new(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, MailerService $mailer): Response
+    public function new(Request $request, Offers $offer): Response
     {
         $discussion = new Discussions();
         $message = new Message();
@@ -68,7 +84,7 @@ class MessagesController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         /** Cas où une discussion existe déja entre les utilisateurs sur l'offre. */
-        $existingDiscussion = $discussionsRepository->findByUserAndOffer($this->getUser(), $offer);
+        $existingDiscussion = $this->discussionsRepository->findByUserAndOffer($this->getUser(), $offer);
         if ($existingDiscussion === null) {
             $discussion->setCreatedBy($this->getUser());
             $discussion->setCreatedAt($now);
@@ -95,7 +111,7 @@ class MessagesController extends AbstractController
         $entityManager->persist($message);
         $entityManager->flush();
 
-        $mailer->sendInBlueEmail(
+        $this->mailer->sendInBlueEmail(
             $offer->getCreatedBy()->getEmail(),
             8,
             [
@@ -114,7 +130,7 @@ class MessagesController extends AbstractController
      * @param Discussions $discussion
      * @return Response
      */
-    public function show(Request $request, Discussions $discussion, MessageRepository $msg, MailerService $mailer): Response
+    public function show(Request $request, Discussions $discussion): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -136,7 +152,7 @@ class MessagesController extends AbstractController
             }
         }
         
-        $countMessages = count($msg->findUnreads($this->getUser()));
+        $countMessages = count($this->msg->findUnreads($this->getUser()));
 
         $request->getSession()->set('messages', $countMessages);
         
@@ -153,10 +169,9 @@ class MessagesController extends AbstractController
      * @Route("/discussion/{id}/new", name="discussion_message", requirements={"id":"\d+"}, methods={"POST"})
      *
      * @param Discussions $discussion
-     * @param MailerService $mailer
      * @return Response
      */
-    public function newMessage(Discussions $discussion, MailerService $mailer): Response
+    public function newMessage(Discussions $discussion): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $message = new Message();
@@ -187,7 +202,7 @@ class MessagesController extends AbstractController
         $entityManager->persist($message);
         $entityManager->flush();
 
-        $mailer->sendInBlueEmail(
+        $this->mailer->sendInBlueEmail(
             $discussion->getCreatedBy() === $this->getUser() ? $discussion->getOffer()->getCreatedBy()->getEmail() : $discussion->getCreatedBy()->getEmail(),
             8,
             [
@@ -204,9 +219,9 @@ class MessagesController extends AbstractController
      *
      * @param Request $request
      * @param Discussions $discussion
-     * @return Response
+     * @return RedirectResponse
      */
-    public function signalDiscussion(Request $request, Discussions $discussion): Response
+    public function signalDiscussion(Request $request, Discussions $discussion): RedirectResponse
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -231,10 +246,9 @@ class MessagesController extends AbstractController
     /**
      * @Route("/discussion/deleteSelection", name="deleteSelection")
      *
-     * @param DiscussionsRepository $discussionsRepository
-     * @return void
+     * @return RedirectResponse
      */
-    public function deleteSelection(DiscussionsRepository $discussionsRepository)
+    public function deleteSelection(): RedirectResponse
     {
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -244,7 +258,7 @@ class MessagesController extends AbstractController
             $this->redirectToRoute('messages_index');
         } else {
             foreach ($_POST['discussions'] as $discussionId) {
-                $discussion = $discussionsRepository->find($discussionId);
+                $discussion = $this->discussionsRepository->find($discussionId);
                 if ($discussion->getCreatedBy() === $this->getUser()) {
                     $discussion->setIsDeletedCreator(true);
                 } else {

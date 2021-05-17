@@ -30,21 +30,49 @@ use App\Repository\ContactMessageRepository;
  */
 class AdminController extends AbstractController
 {
+    private $mailer;
+
+    private $messages;
+
+    private $paginator;
+
+    public function __construct(
+        OffersRepository $offersRepository, 
+        UserRepository $userRepository, 
+        AssociationsRepository $associationsRepository, 
+        MailerService $mailer, 
+        ArticlesRepository $articlesRepository,
+        SignaledOffersRepository $signaledOffersRepository,
+        SignaledDiscussionsRepository $signaledDiscussionsRepository,
+        ReportsService $reportsService,
+        ContactMessageRepository $messages,
+        PaginatorInterface $paginator
+    )
+    {
+        $this->offersRepository = $offersRepository;
+        $this->userRepository = $userRepository;
+        $this->associationsRepository = $associationsRepository;
+        $this->mailer = $mailer;
+        $this->articlesRepository = $articlesRepository;
+        $this->signaledOffersRepository = $signaledOffersRepository;
+        $this->signaledDiscussionsRepository = $signaledDiscussionsRepository;
+        $this->reportsService = $reportsService;
+        $this->messages = $messages;
+        $this->paginator = $paginator;
+    }
+
     /**
      * @Route("/", name="home")
      *
-     * @param OffersRepository $offersRepository
-     * @param UserRepository $userRepository
-     * @param AssociationsRepository $associationsRepository
      * @return Response
      */
-    public function index(OffersRepository $offersRepository, UserRepository $userRepository, AssociationsRepository $associationsRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function index(): Response
     {
-        $offersDatas = $this->getDatas($offersRepository);
-        $usersDatas = $this->getDatas($userRepository);
-        $associationsDatas = $this->getDatas($associationsRepository);
+        $offersDatas = $this->getDatas($this->offersRepository);
+        $usersDatas = $this->getDatas($this->userRepository);
+        $associationsDatas = $this->getDatas($this->associationsRepository);
 
-        $categoriesDatas = $offersRepository->getByCategories();
+        $categoriesDatas = $this->offersRepository->getByCategories();
         $total = 0;
         foreach($categoriesDatas as $value){
             $total += $value['nbOffers'];
@@ -52,17 +80,17 @@ class AdminController extends AbstractController
 
         return $this->render('admin/index.html.twig', [
             'user' => $this->getUser(),
-            'countOffers' => count($offersRepository->findByworkflowState('active')),
-            'countUsers' => count($userRepository->findAll()),
-            'countAsso' => count($associationsRepository->findByworkflowState('active')),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countOffers' => count($this->offersRepository->findByworkflowState('active')),
+            'countUsers' => count($this->userRepository->findAll()),
+            'countAsso' => count($this->associationsRepository->findByworkflowState('active')),
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
             'offersDatas' => $offersDatas,
             'usersDatas' => $usersDatas,
             'associationsDatas' => $associationsDatas,
             'categoriesDatas' => $categoriesDatas,
             'total' => $total,
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -70,22 +98,20 @@ class AdminController extends AbstractController
      * @Route("/offers", name="offers")
      *
      * @param Request $request
-     * @param PaginatorInterface $paginator
-     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminOffers(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminOffers(Request $request): Response
     {
-        $datas = $offersRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC']);
+        $datas = $this->offersRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC']);
 
-        $offers = $paginator->paginate($datas, $request->query->getInt('page', 1), 20);
+        $offers = $this->paginator->paginate($datas, $request->query->getInt('page', 1), 20);
 
         return $this->render('admin/offers/index.html.twig', [
             'user' => $this->getUser(),
             'offers' => $offers,
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -93,22 +119,20 @@ class AdminController extends AbstractController
      * @Route("/offers/validations", name="offers_validations")
      *
      * @param Request $request
-     * @param PaginatorInterface $paginator
-     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminOffersToValidate(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminOffersToValidate(Request $request): Response
     {
-        $datas = $offersRepository->findByWorkflowState('created');
+        $datas = $this->offersRepository->findByWorkflowState('created');
 
-        $offers = $paginator->paginate($datas, $request->query->getInt('page', 1), 20);
+        $offers = $this->paginator->paginate($datas, $request->query->getInt('page', 1), 20);
 
         return $this->render('admin/offers/validations.html.twig', [
             'user' => $this->getUser(),
             'offers' => $offers,
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -116,19 +140,17 @@ class AdminController extends AbstractController
      * @Route("/offers/{id}", name="offers_show", requirements={"id":"\d+"})
      *
      * @param Offers $offer
-     * @param AssociationsRepository $associationsRepository
-     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminOffersShow(Offers $offer, AssociationsRepository $associationsRepository, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminOffersShow(Offers $offer): Response
     {
         return $this->render('admin/offers/show.html.twig', [
             'user' => $this->getUser(),
             'offer' => $offer,
-            'offerAssociation' => $associationsRepository->findByOffer($offer),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'offerAssociation' => $this->associationsRepository->findByOffer($offer),
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -136,10 +158,9 @@ class AdminController extends AbstractController
      * @Route("/offers/{id}/action", name="offers_action", requirements={"id":"\d+"}, methods={"POST"})
      *
      * @param Offers $offer
-     * @param MailerService $mailer
      * @return Response
      */
-    public function offerAction(Offers $offer, MailerService $mailer): Response
+    public function offerAction(Offers $offer): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -149,7 +170,7 @@ class AdminController extends AbstractController
         $em->flush();
 
         if ($_POST['action'] == 'active') {
-            $mailer->sendInBlueEmail(
+            $this->mailer->sendInBlueEmail(
                 $offer->getCreatedBy()->getEmail(),
                 2,
                 [
@@ -157,7 +178,7 @@ class AdminController extends AbstractController
                 ]
             );
         } else {
-            $mailer->sendInBlueEmail(
+            $this->mailer->sendInBlueEmail(
                 $offer->getCreatedBy()->getEmail(),
                 5,
                 [
@@ -173,39 +194,35 @@ class AdminController extends AbstractController
     /**
      * @Route("/users", name="users")
      *
-     * @param UserRepository $userRepository
-     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminUsers(UserRepository $userRepository, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminUsers(): Response
     {
         return $this->render('admin/users/index.html.twig', [
             'user' => $this->getUser(),
-            'users' => $userRepository->getUsersArray(),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'users' => $this->userRepository->getUsersArray(),
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
     /**
      * @Route("/users/{id}", name="users_show", requirements={"id":"\d+"})
      *
-     * @param User $user
-     * @param AssociationsRepository $associationsRepository
-     * @param OffersRepository $offersRepository
+     * @param User $adminUser
      * @return Response
      */
-    public function adminUsersShow(User $adminUser, AssociationsRepository $associationsRepository, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminUsersShow(User $adminUser): Response
     {
         return $this->render('admin/users/show.html.twig', [
             'user' => $this->getUser(),
             'adminUser' => $adminUser,
-            'userAssociation' => $associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'])[0] : [],
-            'userOffers' => $offersRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'], ['createdAt' => 'DESC']),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'userAssociation' => $this->associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active']) ? $this->associationsRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'])[0] : [],
+            'userOffers' => $this->offersRepository->findBy(['createdBy' => $adminUser->getId(), 'workflowState' => 'active'], ['createdAt' => 'DESC']),
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -213,12 +230,9 @@ class AdminController extends AbstractController
      * @Route("/users/{id}/action", name="users_action", requirements={"id":"\d+"}, methods={"POST"})
      *
      * @param User $user
-     * @param OffersRepository $offersRepository
-     * @param AssociationsRepository $associationsRepository
-     * @param MailerService $mailer
      * @return Response
      */
-    public function adminUsersAction(User $user, OffersRepository $offersRepository, AssociationsRepository $associationsRepository, MailerService $mailer): Response
+    public function adminUsersAction(User $user): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -226,7 +240,7 @@ class AdminController extends AbstractController
         $user->setModifiedAt(new \DateTime());
         $em->persist($user);
 
-        $userOffers = $_POST['action'] == 'active' ? $offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'inactive']) : $offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']);
+        $userOffers = $_POST['action'] == 'active' ? $this->offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'inactive']) : $this->offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']);
         if(count($userOffers) > 0){
             foreach($userOffers as $offer){
                 $offer->setWorkFlowState($_POST['action']);
@@ -235,7 +249,7 @@ class AdminController extends AbstractController
             }
         }
 
-        $userAsso = $_POST['action'] == 'active' ? $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'inactive']) : $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']);
+        $userAsso = $_POST['action'] == 'active' ? $this->associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'inactive']) : $this->associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']);
         if(count($userAsso) > 0){
             $userAsso[0]->setWorkFlowState($_POST['action']);
             $userAsso[0]->setModifiedAt(new \DateTime());
@@ -245,7 +259,7 @@ class AdminController extends AbstractController
         $em->flush();
 
         if ($_POST['action'] == 'active') {
-            $mailer->sendInBlueEmail(
+            $this->mailer->sendInBlueEmail(
                 $user->getEmail(),
                 12,
                 [
@@ -253,7 +267,7 @@ class AdminController extends AbstractController
                 ]
             );
         } else {
-            $mailer->sendInBlueEmail(
+            $this->mailer->sendInBlueEmail(
                 $user->getEmail(),
                 6,
                 [
@@ -268,36 +282,33 @@ class AdminController extends AbstractController
     /**
      * @Route("/associations", name="associations")
      *
-     * @param AssociationsRepository $associationsRepository
-     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminAssociations(AssociationsRepository $associationsRepository, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminAssociations(): Response
     {
         return $this->render('admin/associations/index.html.twig', [
             'user' => $this->getUser(),
-            'associations' => $associationsRepository->getAssociationsArray(),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'associations' => $this->associationsRepository->getAssociationsArray(),
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
     /**
      * @Route("/associations/{id}", name="associations_show", requirements={"id":"\d+"})
      *
-     * @param AssociationsRepository $associationsRepository
-     * @param OffersRepository $offersRepository
+     * @param Associations $association
      * @return Response
      */
-    public function adminAssociationsShow(Associations $association, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminAssociationsShow(Associations $association): Response
     {
         return $this->render('admin/associations/show.html.twig', [
             'user' => $this->getUser(),
             'association' => $association,
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -305,10 +316,9 @@ class AdminController extends AbstractController
      * @Route("/associations/{id}/action", name="associations_action", requirements={"id":"\d+"}, methods={"POST"})
      *
      * @param Associations $association
-     * @param MailerService $mailer
      * @return Response
      */
-    public function adminAssociationsAction(Associations $association, MailerService $mailer): Response
+    public function adminAssociationsAction(Associations $association): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -318,7 +328,7 @@ class AdminController extends AbstractController
         $em->flush();
 
         if ($_POST['action'] == 'active') {
-            $mailer->sendInBlueEmail(
+            $this->mailer->sendInBlueEmail(
                 $association->getCreatedBy()->getEmail(),
                 1,
                 [
@@ -326,7 +336,7 @@ class AdminController extends AbstractController
                 ]
             );
         } else {
-            $mailer->sendInBlueEmail(
+            $this->mailer->sendInBlueEmail(
                 $association->getCreatedBy()->getEmail(),
                 4,
                 [
@@ -341,18 +351,16 @@ class AdminController extends AbstractController
     /**
      * @Route("/articles", name="articles")
      *
-     * @param ArticlesRepository $articlesRepository
-     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminArticles(ArticlesRepository $articlesRepository, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminArticles(): Response
     {
         return $this->render('admin/articles/index.html.twig', [
             'user' => $this->getUser(),
-            'articles' => $articlesRepository->getArticlesArray(),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'articles' => $this->articlesRepository->getArticlesArray(),
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -360,10 +368,9 @@ class AdminController extends AbstractController
      * @Route("/articles/new", name="articles_new", methods={"GET","POST"})
      *
      * @param Request $request
-     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminArticlesNew(Request $request, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminArticlesNew(Request $request): Response
     {
         $article = new Articles();
         $form = $this->createForm(ArticleType::class, $article);
@@ -400,10 +407,10 @@ class AdminController extends AbstractController
 
         return $this->render('admin/articles/new.html.twig', [
             'user' => $this->getUser(),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
             'form' => $form->createView(),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -411,17 +418,16 @@ class AdminController extends AbstractController
      * @Route("/articles/{id}", name="articles_show", requirements={"id":"\d+"})
      *
      * @param Articles $article
-     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminArticlesShow(Articles $article, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminArticlesShow(Articles $article): Response
     {
         return $this->render('admin/articles/show.html.twig', [
             'user' => $this->getUser(),
             'article' => $article,
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -447,14 +453,12 @@ class AdminController extends AbstractController
      * @Route("/messages", name="messages", methods={"GET","POST"})
      *
      * @param Request $request
-     * @param OffersRepository $offersRepository
-     * @param MailerService $mailer
      * @return Response
      */
-    public function adminSendMessage(Request $request, OffersRepository $offersRepository, MailerService $mailer, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminSendMessage(Request $request): Response
     {
         if ($request->IsMethod('POST')) {
-            $mailer->sendInBlueEmail(
+            $this->mailer->sendInBlueEmail(
                 $_POST['email'],
                 3,
                 [
@@ -466,10 +470,10 @@ class AdminController extends AbstractController
 
         return $this->render('admin/messages.html.twig', [
             'user' => $this->getUser(),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'contactMessages' => $messages->findAll(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'contactMessages' => $this->messages->findAll(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -516,20 +520,17 @@ class AdminController extends AbstractController
     /**
      * @Route("/reports", name="reports")
      *
-     * @param SignaledOffersRepository $signaledOffersRepository
-     * @param SignaledDiscussionsRepository $signaledDiscussionsRepository
-     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminReports(SignaledOffersRepository $signaledOffersRepository, SignaledDiscussionsRepository $signaledDiscussionsRepository, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminReports(): Response
     {
         return $this->render('admin/reports/index.html.twig', [
             'user' => $this->getUser(),
-            'signaledOffers' => $signaledOffersRepository->findByWorkflowState('created'),
-            'signaledDiscussions' => $signaledDiscussionsRepository->findByWorkflowState('created'),
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'signaledOffers' => $this->signaledOffersRepository->findByWorkflowState('created'),
+            'signaledDiscussions' => $this->signaledDiscussionsRepository->findByWorkflowState('created'),
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 
@@ -538,10 +539,9 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      * @param SignaledDiscussions $signaledDiscussion
-     * @param OffersRepository $offersRepository
      * @return Response
      */
-    public function adminReportsDiscussionShow(Request $request, SignaledDiscussions $signaledDiscussion, OffersRepository $offersRepository, ReportsService $reportsService, ContactMessageRepository $messages): Response
+    public function adminReportsDiscussionShow(Request $request, SignaledDiscussions $signaledDiscussion): Response
     {
         if ($request->IsMethod('POST')) {
             $em = $this->getDoctrine()->getManager();
@@ -557,9 +557,9 @@ class AdminController extends AbstractController
         return $this->render('admin/reports/discussion.html.twig', [
             'user' => $this->getUser(),
             'signaledDiscussion' => $signaledDiscussion,
-            'countValidations' => count($offersRepository->findByWorkflowState('created')),
-            'countReports' => $reportsService->getCountOfReportedElements(),
-            'messages' => count($messages->findByworkflowState('active'))
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'messages' => count($this->messages->findByworkflowState('active'))
         ]);
     }
 

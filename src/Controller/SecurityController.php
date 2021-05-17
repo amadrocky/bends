@@ -20,6 +20,13 @@ use App\Repository\UserRepository;
  */
 class SecurityController extends AbstractController
 {
+    private $mailer;
+
+    public function __construct(MailerService $mailer, UserRepository $userRepository)
+    {
+        $this->mailer = $mailer;
+        $this->userRepository = $userRepository;
+    }
     /**
      * @Route("/login", name="app_login")
      *
@@ -50,10 +57,9 @@ class SecurityController extends AbstractController
      *
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param MailerService $mailer
      * @return Response
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, MailerService $mailer): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('profil_index');
@@ -78,7 +84,7 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $mailer->sendInBlueEmail(
+            $this->mailer->sendInBlueEmail(
                 $user->getEmail(),
                 11,
                 [
@@ -105,13 +111,11 @@ class SecurityController extends AbstractController
      * @Route("/activation/{token}", name="active_account", methods={"GET"})
      *
      * @param string $token
-     * @param UserRepository $userRepository
-     * @param MailerService $mailer
      * @return RedirectResponse
      */
-    public function activeAccount(string $token, UserRepository $userRepository, MailerService $mailer): RedirectResponse
+    public function activeAccount(string $token): RedirectResponse
     {
-        $user = $userRepository->findOneBy(['token' => $token]);
+        $user = $this->userRepository->findOneBy(['token' => $token]);
 
         if ($user) {
             $em = $this->getDoctrine()->getManager();
@@ -121,7 +125,7 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $mailer->sendInBlueEmail(
+            $this->mailer->sendInBlueEmail(
                 $user->getEmail(),
                 12,
                 [
@@ -143,10 +147,9 @@ class SecurityController extends AbstractController
      * @Route("/activation-mail/{id}", name="activation_mail", requirements={"id":"\d+"}, methods={"GET"})
      *
      * @param User $user
-     * @param MailerService $mailer
      * @return RedirectResponse
      */
-    public function sendActivationMail(User $user, MailerService $mailer): RedirectResponse
+    public function sendActivationMail(User $user): RedirectResponse
     {
         if ($user->getToken() == "") {
             $em = $this->getDoctrine()->getManager();
@@ -155,7 +158,7 @@ class SecurityController extends AbstractController
             $em->flush();
         }
 
-        $mailer->sendInBlueEmail(
+        $this->mailer->sendInBlueEmail(
             $user->getEmail(),
             11,
             [
@@ -174,15 +177,13 @@ class SecurityController extends AbstractController
      * 
      * @Route("/recover", name="recover", methods={"POST"})
      *
-     * @param string $email
-     * @param UserRepository $userRepository
-     * @param MailerService $mailer
+     * @param Request $request
      * @return RedirectResponse
      */
-    public function forgotPassword(Request $request, UserRepository $userRepository, MailerService $mailer): RedirectResponse
+    public function forgotPassword(Request $request): RedirectResponse
     {
         $email = $request->request->get('email');
-        $user = $userRepository->findOneBy(['email' => $email]);
+        $user = $this->userRepository->findOneBy(['email' => $email]);
 
         if ($user) {
             $em = $this->getDoctrine()->getManager();
@@ -190,7 +191,7 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $mailer->sendInBlueEmail(
+            $this->mailer->sendInBlueEmail(
                 $user->getEmail(),
                 10,
                 [
@@ -211,14 +212,12 @@ class SecurityController extends AbstractController
      * @Route("/reset-password/{token}", name="reset_password", methods={"GET","POST"})
      *
      * @param Request $request
-     * @param UserRepository $userRepository
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param MailerService $mailer
      * @return Response
      */
-    public function resetPassword(Request $request, string $token, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, MailerService $mailer): Response
+    public function resetPassword(Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $user = $userRepository->findOneBy(['token' => $token]);
+        $user = $this->userRepository->findOneBy(['token' => $token]);
 
         if ($user) {
             $form = $this->createForm(ResetPasswordType::class, $user);
@@ -235,7 +234,7 @@ class SecurityController extends AbstractController
                 $em->persist($user);
                 $em->flush();
 
-                $mailer->sendInBlueEmail(
+                $this->mailer->sendInBlueEmail(
                     $user->getEmail(),
                     9,
                     [
@@ -266,7 +265,12 @@ class SecurityController extends AbstractController
         throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall');
     }
 
-    private function generateToken()
+    /**
+     * Token generation
+     *
+     * @return string
+     */
+    private function generateToken(): string
     {
         return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
     }

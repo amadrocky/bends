@@ -12,15 +12,14 @@ use App\Form\OffersType;
 use App\Form\SignalOfferType;
 use App\Repository\CategoriesRepository;
 use App\Repository\OffersRepository;
-use App\Repository\UserRepository;
 use App\Repository\DiscussionsRepository;
 use App\Repository\FavoritesRepository;
 use App\Repository\AssociationsRepository;
-use App\Service\FileUploader;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -33,18 +32,35 @@ use Symfony\Contracts\Cache\ItemInterface;
  */
 class OffersController extends AbstractController
 {
+    private $paginator;
+
+    public function __construct(
+        CategoriesRepository $categoriesRepository,
+        OffersRepository $offersRepository,
+        DiscussionsRepository $discussionsRepository,
+        FavoritesRepository $favoritesRepository,
+        AssociationsRepository $associationsRepository,
+        PaginatorInterface $paginator
+    )
+    {
+        $this->categoriesRepository = $categoriesRepository;
+        $this->offersRepository = $offersRepository;
+        $this->discussionsRepository = $discussionsRepository;
+        $this->favoritesRepository = $favoritesRepository;
+        $this->associationsRepository = $associationsRepository;
+        $this->paginator = $paginator;
+    }
+
     /**
      * @Route("/", name="offers_index", methods={"GET"})
      *
      * @param Request $request
-     * @param PaginatorInterface $paginator
-     * @param OffersRepository $offersRepository
-     * @param CategoriesRepository $categoriesRepository
+     * @param CacheInterface $cache
      * @return Response
      */
-    public function index(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository, CacheInterface $cache): Response
+    public function index(Request $request, CacheInterface $cache): Response
     {
-        $datas = $offersRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC']);
+        $datas = $this->offersRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC']);
 
         if(isset($_GET['search'])) {
             $search = $_GET['search'];
@@ -61,7 +77,7 @@ class OffersController extends AbstractController
                     if ($category === 'allCat') {
                         $research->setCategory(null);
                     } else {
-                        $research->setCategory($categoriesRepository->find($category));
+                        $research->setCategory($this->categoriesRepository->find($category));
                     }
                     $research->setSearch($search);
                     if ($location === 'allReg') {
@@ -82,10 +98,10 @@ class OffersController extends AbstractController
                 }
             }
 
-            $datas = $offersRepository->getSearchResults($search, $category, $location);
+            $datas = $this->offersRepository->getSearchResults($search, $category, $location);
         }
 
-        $offers = $paginator->paginate(
+        $offers = $this->paginator->paginate(
             $datas, //on passe les données
             $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
             20// nombre d'éléments
@@ -101,7 +117,7 @@ class OffersController extends AbstractController
             'offers' => $offers,
             'user' => $this->getUser(),
             'messages' => $request->getSession()->get('messages'),
-            'categories' => $categoriesRepository->findAll(),
+            'categories' => $this->categoriesRepository->findAll(),
             'regions' => json_decode($regions),
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),
@@ -112,10 +128,9 @@ class OffersController extends AbstractController
      * @Route("/new", name="offers_new", methods={"GET","POST"})
      *
      * @param Request $request
-     * @param AssociationsRepository $associationsRepository
      * @return Response
      */
-    function new(Request $request, AssociationsRepository $associationsRepository): Response 
+    function new(Request $request): Response 
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -230,10 +245,9 @@ class OffersController extends AbstractController
      *
      * @param Request $request
      * @param Offers $offer
-     * @param DiscussionsRepository $discussionsRepository
      * @return Response
      */
-    public function show(Request $request, Offers $offer, DiscussionsRepository $discussionsRepository, AssociationsRepository $associationsRepository, FavoritesRepository $favoritesRepository): Response
+    public function show(Request $request, Offers $offer): Response
     {
         if ($offer->getWorkflowState() != 'active') {
             return $this->redirectToRoute('offers_deleted', ['id' => $offer->getId()]);
@@ -241,7 +255,7 @@ class OffersController extends AbstractController
 
         $isFavorite = false;
         if ($this->getUser()){
-            $isFavorite = count($favoritesRepository->findByUserAndOffer($this->getUser(), $offer)) > 0;
+            $isFavorite = count($this->favoritesRepository->findByUserAndOffer($this->getUser(), $offer)) > 0;
         }
 
         $apiRequest = json_decode(
@@ -260,7 +274,7 @@ class OffersController extends AbstractController
             'coordinates' => $coordinates,
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),
-            'offerAssociation' => $associationsRepository->findByOffer($offer)
+            'offerAssociation' => $this->associationsRepository->findByOffer($offer)
         ]);
     }
 
@@ -270,7 +284,7 @@ class OffersController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function lastResearches(Request $request) :Response
+    public function lastResearches(Request $request): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -312,19 +326,17 @@ class OffersController extends AbstractController
      * @Route("/favorites", name="favorites", methods={"GET"})
      *
      * @param Request $request
-     * @param FavoritesRepository $messageRepository
-     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function favorites(Request $request, FavoritesRepository $favoritesRepository, PaginatorInterface $paginator): Response
+    public function favorites(Request $request): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $datas = $favoritesRepository->findByUser($this->getUser());
+        $datas = $this->favoritesRepository->findByUser($this->getUser());
 
-        $favorites = $paginator->paginate(
+        $favorites = $this->paginator->paginate(
             $datas, //on passe les données
             $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
             10// nombre d'éléments
@@ -342,10 +354,9 @@ class OffersController extends AbstractController
     /**
      * @Route("/favorite/deleteSelection", name="favorites_deleteSelection")
      *
-     * @param DiscussionsRepository $discussionsRepository
-     * @return void
+     * @return RedirectResponse
      */
-    public function deleteSelection(FavoritesRepository $favoritesRepository)
+    public function deleteSelection(): RedirectResponse
     {
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -355,7 +366,7 @@ class OffersController extends AbstractController
             $this->redirectToRoute('favorites');
         } else {
             foreach ($_POST['favorites'] as $favoriteId) {
-                $favorite = $favoritesRepository->find($favoriteId);
+                $favorite = $this->favoritesRepository->find($favoriteId);
                 $entityManager->remove($favorite);
             }
 
@@ -373,7 +384,7 @@ class OffersController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function signalOffer(Offers $offer, Request $request) :Response
+    public function signalOffer(Offers $offer, Request $request): Response
     {
         $signaledOffer = new SignaledOffers();
         $form = $this->createForm(SignalOfferType::class, $signaledOffer);
@@ -442,29 +453,6 @@ class OffersController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="offers_edit", methods={"GET","POST"})
-     * @param Request $request
-     * @param Offers $offer
-     * @return Response
-     */
-    public function edit(Request $request, Offers $offer): Response
-    {
-        $form = $this->createForm(OffersType::class, $offer);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('offers_index');
-        }
-
-        return $this->render('offers/edit.html.twig', [
-            'offer' => $offer,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * Redirect if offer is deleted
      * 
      * @Route("/{id}/status", name="offers_deleted", methods={"GET"})
@@ -485,9 +473,9 @@ class OffersController extends AbstractController
      * 
      * @param Request $request
      * @param Offers $offer
-     * @return Response
+     * @return RedirectResponse
      */
-    public function delete(Request $request, Offers $offer): Response
+    public function delete(Request $request, Offers $offer): RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete' . $offer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

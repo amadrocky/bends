@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Form\ProfilImageType;
-use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\AssociationsRepository;
 use App\Repository\OffersRepository;
@@ -18,13 +16,19 @@ use App\Entity\User;
  */
 class UserController extends AbstractController
 {
+    public function __construct(AssociationsRepository $associationsRepository, OffersRepository $offersRepository)
+    {
+        $this->associationsRepository = $associationsRepository;
+        $this->offersRepository = $offersRepository;
+    }
+
     /**
-     * @param Request $request
-     * @param FileUploader $fileUploader
-     * @return Response
      * @Route("/", name="index")
+     *
+     * @param Request $request
+     * @return Response
      */
-    public function index(Request $request, FileUploader $fileUploader, AssociationsRepository $associationsRepository, OffersRepository $offersRepository) :Response
+    public function index(Request $request): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -54,9 +58,9 @@ class UserController extends AbstractController
         return $this->render('user/profil.html.twig', [
             'user' => $user,
             'messages' => $request->getSession()->get('messages'),
-            'userAssociation' => $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0] : [],
+            'userAssociation' => $this->associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']) ? $this->associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0] : [],
             'cities' => $cities,
-            'userOffers' => $offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'], ['createdAt' => 'DESC'])
+            'userOffers' => $this->offersRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'], ['createdAt' => 'DESC'])
         ]);
     }
 
@@ -65,9 +69,9 @@ class UserController extends AbstractController
      *
      * @param Request $request
      * @param User $user
-     * @return Response
+     * @return RedirectResponse
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, User $user): RedirectResponse
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -137,9 +141,9 @@ class UserController extends AbstractController
      *
      * @param Request $request
      * @param User $user
-     * @return Response
+     * @return RedirectResponse
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(Request $request, User $user): RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();

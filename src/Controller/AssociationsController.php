@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Repository\AssociationsRepository;
 use App\Repository\OffersRepository;
 use App\Repository\CategoriesRepository;
@@ -20,6 +21,21 @@ use Symfony\Contracts\Cache\ItemInterface;
  */
 class AssociationsController extends AbstractController
 {
+    private $paginator;
+
+    public function __construct(
+        AssociationsRepository $associationsRepository,
+        OffersRepository $offersRepository,
+        CategoriesRepository $categoriesRepository,
+        PaginatorInterface $paginator
+    )
+    {
+        $this->associationsRepository = $associationsRepository;
+        $this->offersRepository = $offersRepository;        
+        $this->categoriesRepository = $categoriesRepository;
+        $this->paginator = $paginator;
+    }
+
     /**
      * @Route("/", name="home")
      *
@@ -38,19 +54,18 @@ class AssociationsController extends AbstractController
      * @Route("/all", name="index", methods={"GET"})
      *
      * @param Request $request
-     * @param PaginatorInterface $paginator
-     * @param AssociationsRepository $associationsRepository
+     * @param CacheInterface $cache
      * @return Response
      */
-    public function index(Request $request, PaginatorInterface $paginator, AssociationsRepository $associationsRepository, CacheInterface $cache): Response
+    public function index(Request $request, CacheInterface $cache): Response
     {
         if (isset($_GET['location'])) {
-            $datas = $associationsRepository->findByLocation($_GET['location']);
+            $datas = $this->associationsRepository->findByLocation($_GET['location']);
         } else {
-            $datas = $associationsRepository->findBy(['workflowState' => 'active'], ['modifiedAt' => 'DESC']);
+            $datas = $this->associationsRepository->findBy(['workflowState' => 'active'], ['modifiedAt' => 'DESC']);
         }
 
-        $associations = $paginator->paginate(
+        $associations = $this->paginator->paginate(
             $datas, //on passe les données
             $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
             10// nombre d'éléments
@@ -71,17 +86,15 @@ class AssociationsController extends AbstractController
     }
 
     /**
-     * * @Route("/offers", name="offers", methods={"GET"})
+     * @Route("/offers", name="offers", methods={"GET"})
      *
      * @param Request $request
-     * @param PaginatorInterface $paginator
-     * @param OffersRepository $offersRepository
-     * @param CategoriesRepository $categoriesRepository
+     * @param CacheInterface $cache
      * @return Response
      */
-    public function offers(Request $request, PaginatorInterface $paginator, OffersRepository $offersRepository, CategoriesRepository $categoriesRepository, CacheInterface $cache): Response
+    public function offers(Request $request, CacheInterface $cache): Response
     {
-        $datas = $offersRepository->findByAssociations();
+        $datas = $this->offersRepository->findByAssociations();
         
         if(isset($_GET['search'])) {
             $search = $_GET['search'];
@@ -98,7 +111,7 @@ class AssociationsController extends AbstractController
                     if ($category === 'allCat') {
                         $research->setCategory(null);
                     } else {
-                        $research->setCategory($categoriesRepository->find($category));
+                        $research->setCategory($this->categoriesRepository->find($category));
                     }
                     $research->setSearch($search);
                     if ($location === 'allReg') {
@@ -119,10 +132,10 @@ class AssociationsController extends AbstractController
                 }
             }
 
-            $datas = $offersRepository->getSearchResults($search, $category, $location, true);
+            $datas = $this->offersRepository->getSearchResults($search, $category, $location, true);
         }
 
-        $offers = $paginator->paginate(
+        $offers = $this->paginator->paginate(
             $datas, //on passe les données
             $request->query->getInt('page', 1), //numéro de la page en cours, 1 par défaut
             20// nombre d'éléments
@@ -138,7 +151,7 @@ class AssociationsController extends AbstractController
             'offers' => $offers,
             'user' => $this->getUser(),
             'messages' => $request->getSession()->get('messages'),
-            'categories' => $categoriesRepository->findAll(),
+            'categories' => $this->categoriesRepository->findAll(),
             'regions' => json_decode($regions),
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),
@@ -151,10 +164,9 @@ class AssociationsController extends AbstractController
      * @Route("/new", name="new")
      *
      * @param Request $request
-     * @param AssociationsRepository $associationsRepository
      * @return Response
      */
-    public function new(Request $request, AssociationsRepository $associationsRepository): Response
+    public function new(Request $request): Response
     {
         $user = $this->getUser();
 
@@ -162,7 +174,7 @@ class AssociationsController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $userHasAsso = !empty($associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']));
+        $userHasAsso = !empty($this->associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']));
         $session = $request->getSession();
         $association = new Associations();
         $form = $this->createForm(AssociationType::class, $association);
@@ -237,7 +249,7 @@ class AssociationsController extends AbstractController
             'association' => $userHasAsso,
             'form' => $form->createView(),
             'cities' => $cities,
-            'userAssociation' => $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']) ? $associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0] : []
+            'userAssociation' => $this->associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active']) ? $this->associationsRepository->findBy(['createdBy' => $user->getId(), 'workflowState' => 'active'])[0] : []
         ]);
     }
 
@@ -248,7 +260,7 @@ class AssociationsController extends AbstractController
      * @param Associations $association
      * @return Response
      */
-    public function show(Request $request, Associations $association, OffersRepository $offersRepository): Response
+    public function show(Request $request, Associations $association): Response
     {
         if ($association->getWorkflowState() != 'active') {
             return $this->redirectToRoute('associations_associations_deleted', ['id' => $association->getId()]);
@@ -261,7 +273,7 @@ class AssociationsController extends AbstractController
             'messages' => $request->getSession()->get('messages'),
             'today' => new \DateTime(),
             'yesterday' => (new \DateTime())->modify('-1 day'),
-            'associationOffers' => $offersRepository->findByAssociation($association)
+            'associationOffers' => $this->offersRepository->findByAssociation($association)
         ]);
     }
 
@@ -271,9 +283,9 @@ class AssociationsController extends AbstractController
      *
      * @param Request $request
      * @param Associations $association
-     * @return Response
+     * @return RedirectResponse
      */
-    public function edit(Request $request, Associations $association): Response
+    public function edit(Request $request, Associations $association): RedirectResponse
     {
         $session = $request->getSession();
         $entityManager = $this->getDoctrine()->getManager();
@@ -356,9 +368,9 @@ class AssociationsController extends AbstractController
      *
      * @param Request $request
      * @param Associations $association
-     * @return Response
+     * @return RedirectResponse
      */
-    public function delete(Request $request, Associations $association): Response
+    public function delete(Request $request, Associations $association): RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete'.$association->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();

@@ -11,6 +11,13 @@ use App\Entity\ContactMessage;
 
 class HomeController extends AbstractController
 {
+    private $message;
+
+    public function __construct(MessageRepository $message)
+    {
+        $this->message = $message;
+    }
+
     /**
      * @Route("/", name="land", methods={"GET","POST"})
      *
@@ -45,15 +52,14 @@ class HomeController extends AbstractController
      * @Route("/app", name="home")
      *
      * @param Request $request
-     * @param MessageRepository $message
      * @return Response
      */
-    public function index(Request $request, MessageRepository $message): Response
+    public function index(Request $request): Response
     {
         $messages = 0;
 
         if ($this->getUser()) {
-            $messages = count($message->findUnreads($this->getUser()));
+            $messages = count($this->message->findUnreads($this->getUser()));
         }
 
         $request->getSession()->set('messages', $messages);
