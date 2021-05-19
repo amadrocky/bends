@@ -16,7 +16,7 @@
 			</div>
 			<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2 cursorPointer" v-for="article in filteredArticles" :key="article.id" v-on:click="show(article.id)">
 				<div class="col">
-					<img :src="article.image == null ? '/build/images/picture-no-image.jpg' : '/build/images/actualities/' + article.image" class="miniature" alt="image">
+					<img :src="article.image == null ? '/build/images/picture-no-image.jpg' : '/bends/images/actualities/' + article.image" class="miniature" alt="image">
 				</div>
 				<div class="col d-flex flex-columns align-items-center">
 					<h4 class="cmnty">{{article.title}}</h4>

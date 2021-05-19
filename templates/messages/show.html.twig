@@ -18,7 +18,7 @@
 						</div>
 						<a href="{{ path('offers_show', {'id': discussion.offer.id}) }}" class="discussion-link">
 							{% if discussion.offer.pictures is not empty %}
-								<img src="{{ asset('build/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="img-thumbnail miniature mx-1" alt="miniature">
+								<img src="{{ asset('bends/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="img-thumbnail miniature mx-1" alt="miniature">
 							{% else %}
 								<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="img-thumbnail miniature mx-1" alt="photo">
 							{% endif %}
@@ -41,8 +41,8 @@
 										</div>
 									{% endif %}
 									{% if message.file is not empty %}
-										<a href="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
-											<img src="{{ asset('build/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
+										<a href="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
+											<img src="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
 										</a>
 									{% endif %}
 								</div>
@@ -56,8 +56,8 @@
 										</div>
 									{% endif %}
 									{% if message.file is not empty %}
-										<a href="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
-											<img src="{{ asset('build/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
+										<a href="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
+											<img src="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
 										</a>
 									{% endif %}
 

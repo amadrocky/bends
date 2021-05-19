@@ -2,7 +2,7 @@
 	<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2">
 		<div class="col">
 			{% if offer.pictures is not empty %}
-				<img src="{{ asset('/build/images/offers/') }}{{ offer.pictures[0] }}" class="miniature" alt="image">
+				<img src="{{ asset('/bends/images/offers/') }}{{ offer.pictures[0] }}" class="miniature" alt="image">
 			{% else %}
 				<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature" alt="image">
 			{% endif %}

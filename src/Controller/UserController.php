@@ -80,7 +80,7 @@ class UserController extends AbstractController
         $cities = [];
         $entityManager = $this->getDoctrine()->getManager();
         $fileName = $_FILES['imgProfile']['name'];
-        $uploadDir = '/var/www/bends/bends/assets/static/images/profil/';
+        $uploadDir = '/var/www/bends/bends/public/bends/images/profil/';
 
         if ($_POST['lastname'] !== $user->getLastname()) {
             $user->setLastname($_POST['lastname']);
@@ -147,7 +147,7 @@ class UserController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
-            $uploadDir = '/var/www/bends/bends/assets/static/images/profil/';
+            $uploadDir = '/var/www/bends/bends/public/bends/images/profil/';
             
             foreach ($user->getOffers() as $offer) {
                 $user->removeOffer($offer);

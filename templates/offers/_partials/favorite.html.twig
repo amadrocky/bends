@@ -2,7 +2,7 @@
 	<a href="{{ path('offers_show', {'id': favorite.offer.id}) }}" class="discussion-link">
 		<div class="d-flex">
 			{% if favorite.offer.pictures is not empty %}
-				<img src="{{ asset('build/images/offers/') }}{{ favorite.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
+				<img src="{{ asset('bends/images/offers/') }}{{ favorite.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
 			{% else %}
 				<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
 			{% endif %}

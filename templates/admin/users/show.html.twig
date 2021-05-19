@@ -7,7 +7,7 @@
 				<tr>
 					<td rowspan="8" class="text-center">
 						{% if adminUser.profilImage %}
-							<img class="adminProfilImage rounded-circle img-thumbnail" src="{{ asset('build/images/profil/') }}{{ adminUser.profilImage }}" alt="Avatar">
+							<img class="adminProfilImage rounded-circle img-thumbnail" src="{{ asset('bends/images/profil/') }}{{ adminUser.profilImage }}" alt="Avatar">
 						{% else %}
 							<img class="adminProfilImage rounded-circle img-thumbnail" src="{{ asset('build/icons/Avatar.png') }}" alt="Avatar">
 						{% endif %}
@@ -65,7 +65,7 @@
 						<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2 cursorPointer">
 							<div class="col">
 								{% if userAssociation.picture %}
-									<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" class="miniature">
+									<img src="{{ asset('bends/images/associations/') }}{{ userAssociation.picture }}" alt="image" class="miniature">
 								{% else %}
 									<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="image" class="miniature">
 								{% endif %}

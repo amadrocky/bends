@@ -380,7 +380,7 @@ class AdminController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             $fileName = $_FILES['imgArticle']['name'];
-            $uploadDir = '/var/www/bends/bends/assets/static/images/actualities/';
+            $uploadDir = '/var/www/bends/bends/public/bends/images/actualities/';
 
             if ($fileName !== "") {
                 $file = null;

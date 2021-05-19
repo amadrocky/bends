@@ -9,7 +9,7 @@
 			</div>
 			<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2 cursorPointer" v-for="association in filteredAssociations" :key="association.id" v-on:click="show(association.id)">
 				<div class="col">
-					<img :src="association.picture == null ? '/build/images/picture-no-image.jpg' : '/build/images/associations/' + association.picture" class="miniature" alt="image">
+					<img :src="association.picture == null ? '/build/images/picture-no-image.jpg' : '/bends/images/associations/' + association.picture" class="miniature" alt="image">
 				</div>
 				<div class="col d-flex flex-columns align-items-center">
 					<h4 class="cmnty">{{association.name}}</h4>

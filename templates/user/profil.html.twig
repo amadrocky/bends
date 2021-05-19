@@ -12,7 +12,7 @@
 					<div class="card-body">
 						<div class="text-center">
 							{% if user.profilImage %}
-								<img class="profilImage rounded-circle img-thumbnail" src="{{ asset('build/images/profil/') }}{{ user.profilImage }}" alt="Avatar">
+								<img class="profilImage rounded-circle img-thumbnail" src="{{ asset('bends/images/profil/') }}{{ user.profilImage }}" alt="Avatar">
 							{% else %}
 								<img class="profilImage rounded-circle img-thumbnail" src="{{ asset('build/icons/Avatar.png') }}" alt="Avatar">
 							{% endif %}
@@ -96,7 +96,7 @@
 													<h5 class="text-white m-0">Image de profil</h5>
 												</div>
 												{% if user.profilImage %}
-													<img src="/build/images/profil/{{ user.profilImage }}" style="max-height: 150px" alt="Avatar">
+													<img src="/bends/images/profil/{{ user.profilImage }}" style="max-height: 150px" alt="Avatar">
 												{% endif %}
 												<label for="imgProfile" class="cursorPointer m-0 img-offers">
 													<i class="fas fa-camera"></i>
@@ -157,7 +157,7 @@
 										{% if userAssociation.picture is null %}
 											<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="associationImage box-shadow" alt="image">
 										{% else %}
-											<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" class="associationImage box-shadow" alt="image">
+											<img src="{{ asset('bends/images/associations/') }}{{ userAssociation.picture }}" class="associationImage box-shadow" alt="image">
 										{% endif %}
 									</div>
 									<div class="col-12 col-md mx-2">
@@ -211,7 +211,7 @@
 															{% if userAssociation is null %}
 																<img src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo" style="max-height: 100px">
 															{% else %}
-																<img src="{{ asset('build/images/associations/') }}{{ userAssociation.picture }}" alt="image" style="max-height: 100px">
+																<img src="{{ asset('bends/images/associations/') }}{{ userAssociation.picture }}" alt="image" style="max-height: 100px">
 															{% endif %}
 														</div>
 														<div class="col-12 col-md mb-2">
@@ -306,7 +306,7 @@
 										<div class="d-flex">
 											<a href="{{ path('offers_show', {'id': offer.id}) }}" class="discussion-link d-flex w-100">
 												{% if offer.pictures is not empty %}
-													<img src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
+													<img src="{{ asset('bends/images/offers/') }}{{ offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
 												{% else %}
 													<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
 												{% endif %}

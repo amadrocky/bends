@@ -196,7 +196,7 @@ class AssociationsController extends AbstractController
             }
 
             /* Récupération de l'image */
-            $uploadDir = '/var/www/bends/bends/assets/static/images/associations/';
+            $uploadDir = '/var/www/bends/bends/public/bends/images/associations/';
             $file = null;
 
             if (isset($_FILES['img'])) {
@@ -305,7 +305,7 @@ class AssociationsController extends AbstractController
 
         if ($fileName !== "") {
             /* Récupération de l'image */
-            $uploadDir = '/var/www/bends/bends/assets/static/images/associations/';
+            $uploadDir = '/var/www/bends/bends/public/bends/images/associations/';
             $file = null;
 
             /* On renomme l'image */

@@ -85,7 +85,7 @@
 			</b>
 			{{ offer.category.name }}</p>
 		{% if offer.pictures|length > 0 %}
-			<img class="photo" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}" height="200" alt="image">
+			<img class="photo" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('bends/images/offers/') }}{{ offer.pictures[0] }}" height="200" alt="image">
 		{% endif %}
 		<p class="justified">
 			<b>Description:
@@ -118,7 +118,7 @@
 		<img src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/images/pointer.png') }}" height="30" alt="localisation">
 	</div>
 
-	<img class="img-qrCode" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/images/qrCodes/') }}{{ offer.qrCode }}" width="100" alt="image">
+	<img class="img-qrCode" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('bends/images/qrCodes/') }}{{ offer.qrCode }}" width="100" alt="image">
 	<img class="img-smartphone" src="{{ app.request.getSchemeAndHttpHost() }}{{ asset('build/images/smartphone.png') }}" height="200" alt="localisation">
 
 {% endblock %}

@@ -14,8 +14,8 @@
 									</div>
 								{% endif %}
 								{% if message.file is not empty %}
-									<a href="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
-										<img src="{{ asset('build/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
+									<a href="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
+										<img src="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
 									</a>
 								{% endif %}
 							</div>
@@ -29,8 +29,8 @@
 									</div>
 								{% endif %}
 								{% if message.file is not empty %}
-									<a href="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('build/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
-										<img src="{{ asset('build/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
+									<a href="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" data-size="1024x1024" data-med="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" data-med-size="1024x1024" class="demo-gallery__img--main">
+										<img src="{{ asset('bends/images/messages/') }}{{ message.file[0] }}" class="image-sent" itemprop="thumbnail" alt="photo">
 									</a>
 								{% endif %}
 
@@ -43,7 +43,7 @@
 				<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2">
 					<div class="col">
 						{% if signaledDiscussion.discussion.createdBy.profilImage %}
-							<img class="menuButton rounded-circle" src="{{ asset('build/images/profil/') }}{{ signaledDiscussion.discussion.createdBy.profilImage }}" alt="Avatar">
+							<img class="menuButton rounded-circle" src="{{ asset('bends/images/profil/') }}{{ signaledDiscussion.discussion.createdBy.profilImage }}" alt="Avatar">
 						{% else %}
 							<img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}" alt="Avatar">
 						{% endif %}
@@ -62,7 +62,7 @@
 				<div class="row w-100 m-0 text-white shadow-box py-1 mb-2" style="background-color: #3f51b5">
 					<div class="col">
 						{% if signaledDiscussion.discussion.offer.createdBy.profilImage %}
-							<img class="menuButton rounded-circle" src="{{ asset('build/images/profil/') }}{{ signaledDiscussion.discussion.offer.createdBy.profilImage }}" alt="Avatar">
+							<img class="menuButton rounded-circle" src="{{ asset('bends/images/profil/') }}{{ signaledDiscussion.discussion.offer.createdBy.profilImage }}" alt="Avatar">
 						{% else %}
 							<img class="menuButton" src="{{ asset('build/icons/Avatar.png') }}" alt="Avatar">
 						{% endif %}

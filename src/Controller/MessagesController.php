@@ -178,7 +178,7 @@ class MessagesController extends AbstractController
         $fileName = $_FILES['fname']['name'];
 
         if ($fileName !== "") {
-            $uploadDir = '/var/www/bends/bends/assets/static/images/messages/';
+            $uploadDir = '/var/www/bends/bends/public/bends/images/messages/';
             $extention = strrchr($fileName, ".");
             $fileName = 'message_image_' . uniqid() . $extention;
             $uploadFile = $uploadDir . basename($fileName);

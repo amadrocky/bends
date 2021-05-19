@@ -162,7 +162,7 @@ class OffersController extends AbstractController
             }
 
             /* Récupération des images */
-            $uploadDir = '/var/www/bends/bends/assets/static/images/offers/';
+            $uploadDir = '/var/www/bends/bends/public/bends/images/offers/';
             $files = [];
 
             for ($i = 1; $i <= 3; $i++) {
@@ -202,7 +202,7 @@ class OffersController extends AbstractController
             $qrCodeName = uniqId() . '.png';
 
             // Save it to a file
-            $qrCode->writeFile('/var/www/bends/bends/assets/static/images/qrCodes/'. $qrCodeName);
+            $qrCode->writeFile('/var/www/bends/bends/public/bends/images/qrCodes/'. $qrCodeName);
 
             $offer->setQrCode($qrCodeName);
             $entityManager->persist($offer);

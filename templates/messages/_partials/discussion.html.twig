@@ -3,7 +3,7 @@
 		<div class="d-flex">
 			{% if discussion.offer %}
 				{% if discussion.offer.pictures is not empty %}
-					<img src="{{ asset('build/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
+					<img src="{{ asset('bends/images/offers/') }}{{ discussion.offer.pictures[0] }}" class="miniature mx-1" alt="miniature">
 				{% else %}
 					<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
 				{% endif %}

@@ -14,7 +14,7 @@
 						<div class="card col-sm-12 col-md m-2 p-2">
 							<h3 class="offer-title pl-2">{{ offer.title }}</h1>
 							{% if offer.pictures|length > 0 %}
-								<img class="offer-pictures mx-auto" src="{{ asset('build/images/offers/') }}{{ offer.pictures[0] }}" alt="Photo"/>
+								<img class="offer-pictures mx-auto" src="{{ asset('bends/images/offers/') }}{{ offer.pictures[0] }}" alt="Photo"/>
 							{% else %}
 								<img class="offer-pictures mx-auto" src="{{ asset('build/images/picture-no-image.jpg') }}" alt="photo">
 							{% endif %}

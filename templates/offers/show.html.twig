@@ -13,8 +13,8 @@
 					{% if offer.pictures|length > 0 %}
 						<div id="demo-test-gallery" class="demo-gallery bg-dark text-center m-2 p-2">
 							{% for picture in offer.pictures %}
-								<a href="{{ asset('build/images/offers/') }}{{ picture }}" data-size="1024x1024" data-med="{{ asset('build/images/offers/') }}{{ picture }}" data-med-size="1024x1024" class="demo-gallery__img--main">
-									<img class="offer-pictures m-1" src="{{ asset('build/images/offers/') }}{{ picture }}" itemprop="thumbnail" alt="Photo"/>
+								<a href="{{ asset('bends/images/offers/') }}{{ picture }}" data-size="1024x1024" data-med="{{ asset('bends/images/offers/') }}{{ picture }}" data-med-size="1024x1024" class="demo-gallery__img--main">
+									<img class="offer-pictures m-1" src="{{ asset('bends/images/offers/') }}{{ picture }}" itemprop="thumbnail" alt="Photo"/>
 								</a>
 							{% endfor %}
 						</div>
@@ -102,7 +102,7 @@
 										<div class="d-flex">
 											<div class="d-flex flex-columns align-items-center">
 												{% if offerAssociation[0].picture is not empty %}
-													<img src="{{ asset('build/images/associations/') }}{{ offerAssociation[0].picture }}" class="miniature mx-1" alt="miniature">
+													<img src="{{ asset('bends/images/associations/') }}{{ offerAssociation[0].picture }}" class="miniature mx-1" alt="miniature">
 												{% else %}
 													<img src="{{ asset('build/images/picture-no-image.jpg') }}" class="miniature mx-1" alt="photo">
 												{% endif %}
