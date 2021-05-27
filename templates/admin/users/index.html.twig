@@ -41,7 +41,7 @@
             }),
             computed: {
                 filteredUsers() {
-                    return this.search.length > 0 ? this.users.filter(user => user.email.includes(this.search.toLowerCase())) : this.users;
+                    return this.search.length > 0 ? this.users.filter(user => user.email.toLowerCase().includes(this.search.toLowerCase())) : this.users;
                 },
             },
 			methods: {
