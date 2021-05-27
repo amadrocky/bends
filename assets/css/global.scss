@@ -161,6 +161,11 @@ h1 {
     z-index: 1000;
 }
 
+.donate-img {
+    width: auto;
+    height: 300px;
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -222,5 +227,9 @@ h1 {
     }
     .shiny-btn {
         background-size: cover;
+    }
+    .donate-img {
+        width: auto;
+        height: 200px;
     }
 }

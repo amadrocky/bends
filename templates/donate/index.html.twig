@@ -1,0 +1,82 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Nous aider
+{% endblock %}
+
+{% block body %}
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col-12 col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
+				<h2 class="loginTitle mb-3 text-center">Nous aider</h2>
+				<div>
+					<p>
+						Afin de vous proposer nos services
+						<strong>gratuitement</strong>, une aide est toujours la bienvenue.
+					</p>
+					<p>
+						Celle-ci aura pour but de financer la maintenance et l'amélioration de nos services. Elle financera également le coût des serveurs et services tiers (mises à jour, mailing, nom de domaine, ...).
+					</p>
+					<p>En espérant toujours pouvoir proposer nos services gratuitement, toute l'équipe
+						<em class="bnds">Bends</em>
+						vous remiercie pour votre soutient.</p>
+				</div>
+			</div>
+			<div class="col-12 col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
+				<h2 class="loginTitle mb-3 text-center">Faire un don</h2>
+				<div class="row">
+					<div class="col-12 col-md mb-2">
+						<form class="mb-3" method="post">
+							<input type="number" id="amount" name="amount" class="form-control" placeholder="Veuillez indiquer un montant (€-EUR)" required>
+						</form>
+                        <div class="text-center">
+							    <button id="checkout-button" class="btn btn-success">Paiement sécurisé avec Stripe</button>
+						    </div>
+						<div class="text-center">
+							<small class="text-muted">
+								<i class="fas fa-info-circle"></i>
+								Plus d'informations sur
+								<a href="https://www.stripe.com" target="_blank">stripe.com</a>.
+							</small>
+						</div>
+					</div>
+					<div class="col text-center">
+						<img src="{{ asset('build/images/1_3F0aVwtldSINy6PNcd2OBw.jpeg') }}" alt="image" class="donate-img">
+					</div>
+				</div>
+
+			</div>
+		</div>
+		{% include '/footer.html.twig' %}
+
+        <script type="text/javascript">
+            // Create an instance of the Stripe object with your publishable API key
+            var stripe = Stripe('pk_test_51I7qCgIjktDIYiezyk245q27khXTpXCzXgu9AMx3A6n1ay8U81Ap7Rt8EpMUwu9kk9qWC2QC5Ymi0MJ9eJahAiBR00gqYitQ6F');
+            var checkoutButton = document.getElementById('checkout-button');
+            checkoutButton.addEventListener('click', function() {
+                const data = document.getElementById('amount').value;
+                // Create a new Checkout Session using the server-side endpoint you
+                // created in step 3.
+                fetch('/donate/create-checkout-session/?amount=' + data, {
+                    method: 'GET',
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(session) {
+                    return stripe.redirectToCheckout({ sessionId: session.id });
+                })
+                .then(function(result) {
+                    // If `redirectToCheckout` fails due to a browser or network
+                    // error, you should display the localized error message to your
+                    // customer using `error.message`.
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                });
+            });
+        </script>
+	</div>
+{% endblock %}

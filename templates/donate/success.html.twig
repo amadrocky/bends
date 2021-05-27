@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Merci !
+{% endblock %}
+
+{% block body %}
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col-12 col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
+				<h2 class="loginTitle mb-3 text-center">Merci</h2>
+                <div>
+					<p>
+						Votre payement a bien été enregistré.
+					</p>
+					<p>
+						Toute l'équipe <em class="bnds">Bends</em> vous remercie et vous souhaite une bonne continuation dans vos prochaines démarches solidaires.
+					</p>
+				</div>
+                <div class="text-center my-3">
+                    <a href="{{ path('home') }}" class="btn btn-primary">Retour à l'accueil</a>
+                </div>
+			</div>
+			{% include '/footer.html.twig' %}
+		</div>
+	</div>
+{% endblock %}

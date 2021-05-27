@@ -82,51 +82,8 @@
 			</div>
 		</div>
 	</div>
-	<footer class="bg-dark p-5">
-		<div class="row w-100 m-0">
-			<div class="col-12 col-md-4 text-center">
-				<h3 class="bnds">Bends</h3>
-				<h6 class="cmnty">La communauté solidaire</h6>
-				<p>contact@bends.fr</p>
-			</div>
-			<div class="col-12 col-md-4 text-center">
-				<a href="{{ path('land') }}">
-					<p>Qui sommes-nous?</p>
-				</a>
-				<a href="{{ path('associations_home') }}">
-					<p>Éspace associations</p>
-				</a>
-				<a href="{{ path('actuality_home') }}">
-					<p>Actualités</p>
-				</a>
-			</div>
-			<div class="col-12 col-md-4 text-center">
-				<a href="">
-					<p>Mentions légales</p>
-				</a>
-				<a href="">
-					<p>Conditions générales d'utilisation</p>
-				</a>
-				<a href="">
-					<p>Aidez-nous</p>
-				</a>
-			</div>
-		</div>
-		<div class="text-center">
-			<p>
-				<small>Bends -</small>
-				<a href="https://www.facebook.com/Bends-106875601578213" target="_blank">
-					<i class="fab fa-facebook-square"></i>
-				</a>
-				<a href="https://www.instagram.com/bends_community/" target="_blank">
-					<i class="fab fa-instagram"></i>
-				</a>
-				<a href="https://www.linkedin.com/company/bends-community" target="_blank">
-					<i class="fab fa-linkedin"></i>
-				</a>
-			</p>
-		</div>
-	</footer>
+	
+	{% include 'footer.html.twig' %}
 
 	<script>
 		document.querySelector('#nav').classList.remove('anim');

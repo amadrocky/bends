@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Erreur
+{% endblock %}
+
+{% block body %}
+	<div class="homeSection">
+		<div class="row justify-content-center p-3 w-100 m-0">
+			<div class="col-12 col-md-4 col-lg-8 offset-md-4 loginBlock m-2 p-3">
+				<h2 class="loginTitle mb-3 text-center">Erreur</h2>
+                <div>
+					<p>
+						Une erreur est survenue lors de votre payement.
+					</p>
+					<p>
+						Aucune opération n'a été traitée. Veuillez consulter votre compte ou essayer ultérieurement.
+					</p>
+				</div>
+                <div class="text-center my-3">
+                    <a href="{{ path('home') }}" class="btn btn-primary">Retour à l'accueil</a>
+                </div>
+			</div>
+			{% include '/footer.html.twig' %}
+		</div>
+	</div>
+{% endblock %}
