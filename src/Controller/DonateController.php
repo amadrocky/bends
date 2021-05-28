@@ -36,7 +36,7 @@ class DonateController extends AbstractController
      * @return JsonResponse
      */
     public function createCheckoutSession(
-        string $apiSecretKey = 'sk_test_51I7qCgIjktDIYiezUfNYo411jpXTPey9JPxQBzojqxMJxHKmUA6XN2czkq5r4dGieTTSZytFtYosvhLReG1m3z3E00GDzfPTIn'
+        string $apiSecretKey = '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'
     ): JsonResponse
     {
         \Stripe\Stripe::setApiKey($apiSecretKey);
