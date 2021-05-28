@@ -72,9 +72,10 @@ class DonateController extends AbstractController
      * 
      * @Route("/success", name="success")
      *
+     * @param Request $request
      * @return Response
      */
-    public function success(): Response
+    public function success(Request $request): Response
     {
         return $this->render('donate/success.html.twig', [
             'user' => $this->getUser(),
@@ -87,9 +88,10 @@ class DonateController extends AbstractController
      * 
      * @Route("/error", name="error")
      *
+     * @param Request $request
      * @return Response
      */
-    public function error(): Response
+    public function error(Request $request): Response
     {
         return $this->render('donate/error.html.twig', [
             'user' => $this->getUser(),
