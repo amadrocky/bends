@@ -70,7 +70,7 @@ class DonateController extends AbstractController
     /**
      * Success payment redirection
      * 
-     * @Route("/donate/success", name="success")
+     * @Route("/success", name="success")
      *
      * @return Response
      */
@@ -85,7 +85,7 @@ class DonateController extends AbstractController
     /**
      * Error payment redirection
      * 
-     * @Route("/donate/error", name="error")
+     * @Route("/error", name="error")
      *
      * @return Response
      */
