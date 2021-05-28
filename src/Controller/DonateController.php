@@ -35,11 +35,9 @@ class DonateController extends AbstractController
      * @param string $apiSecretKey
      * @return JsonResponse
      */
-    public function createCheckoutSession(
-        string $apiSecretKey = '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'
-    ): JsonResponse
+    public function createCheckoutSession(): JsonResponse
     {
-        \Stripe\Stripe::setApiKey($apiSecretKey);
+        \Stripe\Stripe::setApiKey($this->getParameter('stripe_api_key'));
 
         $amount = $_GET['amount'] * 100;
 
