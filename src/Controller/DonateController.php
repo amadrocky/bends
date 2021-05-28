@@ -54,7 +54,7 @@ class DonateController extends AbstractController
                 'unit_amount' => $amount,
                 'product_data' => [
                     'name' => 'Donation bends-community.fr',
-                    'images' => ["https://bends-community.fr/build/icons/violetBtn.png"],
+                    'images' => ["https://bends-community.fr/build/images/Webp.net-resizeimage.png"],
                 ],
             ],
             'quantity' => 1,
