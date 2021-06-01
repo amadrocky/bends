@@ -25,4 +25,18 @@ class LegalController extends AbstractController
             'messages' => $request->getSession()->get('messages')
         ]);
     }
+
+    /**
+     * @Route("/CGU", name="CGU")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function displayConditions(Request $request): Response
+    {
+        return $this->render('legal/CGU.html.twig', [
+            'user' => $this->getUser(),
+            'messages' => $request->getSession()->get('messages')
+        ]);
+    }
 }
