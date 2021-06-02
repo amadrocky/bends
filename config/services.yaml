@@ -33,3 +33,8 @@ services:
         arguments:
             $targetDirectory: '%profil_images%'
             $offerTargetDirectory: '%offer_images%'
+
+    App\EventListener\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.authentication.success' }
+        

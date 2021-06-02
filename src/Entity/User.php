@@ -136,6 +136,11 @@ class User implements UserInterface
      */
     private $signaledDiscussions;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
     public function __construct()
     {
         $this->offers = new ArrayCollection();
@@ -602,6 +607,18 @@ class User implements UserInterface
                 $signaledDiscussion->setCreatedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }
