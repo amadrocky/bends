@@ -478,6 +478,27 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/messages/association", name="messages_association", methods={"POST"})
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function adminInviteAssociationMessage(Request $request): Response
+    {
+        $this->mailer->sendInBlueEmail($_POST['email'], 13, ['MESSAGE' => '']);
+
+        $this->addFlash('success', 'Email envoyé');
+
+        return $this->render('admin/messages.html.twig', [
+            'user' => $this->getUser(),
+            'countValidations' => count($this->offersRepository->findByWorkflowState('created')),
+            'countReports' => $this->reportsService->getCountOfReportedElements(),
+            'contactMessages' => $this->messages->findAll(),
+            'messages' => count($this->messages->findByworkflowState('active'))
+        ]);
+    }
+
+    /**
      * @Route("/messages/{id}/action", name="messages_action", requirements={"id":"\d+"}, methods={"POST"})
      *
      * @param ContactMessage $message

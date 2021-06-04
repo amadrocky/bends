@@ -13,6 +13,10 @@
 					Envoyer</button>
 			</div>
 		</form>
+		<form action="{{ path('admin_messages_association') }}" method="post" class="col col-md-6 my-5">
+			<input type="email" name="email" placeholder="Email" class="form-control mb-3" required>
+			<button type="submit" class="btn btn-warning box-shadow text-secondary">Associations - Email d'invitation</button>
+		</form>
 		<div class="my-5">
 			{% for message in contactMessages %}
 				<div class="row w-100 m-0 bg-white shadow-box py-1 mb-2">

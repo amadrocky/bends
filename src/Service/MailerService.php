@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
@@ -11,7 +12,7 @@ use SendinBlue\Bundle\ApiBundle\SendinBlueApiBundle;
 use SendinBlue\Client\Model\SendSmtpEmail;
 use GuzzleHttp\Client;
 
-class MailerService 
+class MailerService extends AbstractController
 {
     private $mailer;
 
@@ -86,7 +87,7 @@ class MailerService
     public function sendInBlueEmail(string $to, int $templateId, array $params)
     {
         // Configure API key authorization: api-key
-        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', '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');
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $this->getParameter('sendinblue_api_key'));
 
         $apiInstance = new TransactionalEmailsApi(
             // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.

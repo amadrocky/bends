@@ -7,6 +7,7 @@ parameters:
     profil_images: '%kernel.project_dir%/assets/static/images/profil'
     offer_images: '%kernel.project_dir%/assets/static/images/offers'
     stripe_api_key: '%env(STRIPE_API_SECRET_KEY)%'
+    sendinblue_api_key: '%env(SENDINBLUE_API_KEY)%'
 
 services:
     # default configuration for services in *this* file
