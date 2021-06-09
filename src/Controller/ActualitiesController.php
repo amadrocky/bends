@@ -43,6 +43,11 @@ class ActualitiesController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        if ($this->getUser()->getWorkflowState() !== 'active') {
+            $this->addFlash('info', 'Veuillez activer votre compte');
+            return $this->redirectToRoute('profil_index');
+        }
+
         $datas = $this->articlesRepository->findBy(['workflowState' => 'active'], ['createdAt' => 'DESC']);
 
         $articles = $this->paginator->paginate(

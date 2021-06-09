@@ -52,6 +52,11 @@ class MessagesController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        if ($this->getUser()->getWorkflowState() !== 'active') {
+            $this->addFlash('info', 'Veuillez activer votre compte');
+            return $this->redirectToRoute('profil_index');
+        }
+
         $datas = $this->discussionsRepository->findByUser($this->getUser());
 
         $discussions = $this->paginator->paginate(

@@ -290,6 +290,11 @@ class OffersController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        if ($this->getUser()->getWorkflowState() !== 'active') {
+            $this->addFlash('info', 'Veuillez activer votre compte');
+            return $this->redirectToRoute('profil_index');
+        }
+
         $researches = array_reverse($this->getUser()->getResearches()->getValues());
 
         return $this->render('offers/lastResearches.html.twig', [
@@ -332,6 +337,11 @@ class OffersController extends AbstractController
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
+        }
+
+        if ($this->getUser()->getWorkflowState() !== 'active') {
+            $this->addFlash('info', 'Veuillez activer votre compte');
+            return $this->redirectToRoute('profil_index');
         }
 
         $datas = $this->favoritesRepository->findByUser($this->getUser());
