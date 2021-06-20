@@ -27,10 +27,16 @@
 					<div class="col-12 col-md mb-2">
 						<form class="mb-3" method="post">
 							<input type="number" id="amount" name="amount" class="form-control" placeholder="Veuillez indiquer un montant (€-EUR)" required>
+							<div class="text-center">
+								<small class="text-muted">
+									<i class="fas fa-info-circle"></i>
+									Montant minimum : 10 €
+								</small>
+							</div>
 						</form>
-                        <div class="text-center">
-							    <button id="checkout-button" class="btn btn-success">Paiement sécurisé avec Stripe</button>
-						    </div>
+						<div class="text-center">
+							<button id="checkout-button" class="btn btn-success">Paiement sécurisé avec Stripe</button>
+						</div>
 						<div class="text-center">
 							<small class="text-muted">
 								<i class="fas fa-info-circle"></i>
@@ -47,35 +53,29 @@
 		</div>
 		{% include '/footer.html.twig' %}
 
-        <script type="text/javascript">
-            // Create an instance of the Stripe object with your publishable API key
-            var stripe = Stripe('pk_live_51I7qCgIjktDIYiezJN7uiebMCGVkrogeflD2HEOXuF5ATTM2PN8NR4PyZCDY3KrPFtbYdTpoNkxQ4KxIwR3hC0rM00woGjgRrX');
-            var checkoutButton = document.getElementById('checkout-button');
-            checkoutButton.addEventListener('click', function() {
-                const data = document.getElementById('amount').value;
-                // Create a new Checkout Session using the server-side endpoint you
-                // created in step 3.
-                fetch('/donate/create-checkout-session/?amount=' + data, {
-                    method: 'GET',
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(session) {
-                    return stripe.redirectToCheckout({ sessionId: session.id });
-                })
-                .then(function(result) {
-                    // If `redirectToCheckout` fails due to a browser or network
-                    // error, you should display the localized error message to your
-                    // customer using `error.message`.
-                    if (result.error) {
-                        alert(result.error.message);
-                    }
-                })
-                .catch(function(error) {
-                    console.error('Error:', error);
-                });
-            });
-        </script>
+		<script type="text/javascript">
+			// Create an instance of the Stripe object with your publishable API key
+var stripe = Stripe('pk_live_51I7qCgIjktDIYiezJN7uiebMCGVkrogeflD2HEOXuF5ATTM2PN8NR4PyZCDY3KrPFtbYdTpoNkxQ4KxIwR3hC0rM00woGjgRrX');
+var checkoutButton = document.getElementById('checkout-button');
+checkoutButton.addEventListener('click', function () {
+const data = document.getElementById('amount').value;
+// Create a new Checkout Session using the server-side endpoint you
+// created in step 3.
+fetch('/donate/create-checkout-session/?amount=' + data, {method: 'GET'}).then(function (response) {
+return response.json();
+}).then(function (session) {
+return stripe.redirectToCheckout({sessionId: session.id});
+}).then(function (result) {
+// If `redirectToCheckout` fails due to a browser or network
+// error, you should display the localized error message to your
+// customer using `error.message`.
+if (result.error) {
+alert(result.error.message);
+}
+}).catch(function (error) {
+console.error('Error:', error);
+});
+});
+		</script>
 	</div>
 {% endblock %}
