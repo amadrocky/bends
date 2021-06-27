@@ -36,11 +36,6 @@
                 </a>
             </div>
             <div class="col-4 my-auto text-right">
-                {% if user %}
-                    {% if is_granted('ROLE_MODERATOR') == true %}
-                        <a href="{{ path('admin_home') }}"><i class="fas fa-sliders-h text-dark" style="font-size: 20px"></i></a>
-                    {% endif %}
-                {% endif %}
                 <a href="{{ path('profil_index') }}">
                     {% if user %}
                         {% if user.profilImage %}
@@ -56,6 +51,11 @@
                              alt="Avatar">
                     {% endif %}
                 </a>
+                {% if user %}
+                    {% if is_granted('ROLE_MODERATOR') == true %}
+                        <a href="{{ path('admin_home') }}"><i class="fas fa-cog text-dark" style="font-size: 20px"></i></a>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
         <input type="checkbox" id="side-menu-switch" checked>
