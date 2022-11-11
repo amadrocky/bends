@@ -11,6 +11,7 @@ use App\Repository\AssociationsRepository;
 use App\Repository\OffersRepository;
 use App\Repository\CategoriesRepository;
 use App\Entity\Associations;
+use App\Entity\Research;
 use App\Form\AssociationType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
